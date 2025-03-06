@@ -13,6 +13,6 @@ If your plugin does not need CSS, delete this file.
 	display: flex;
 	justify-content: center;
 }
-.ink img {
+.ink .markdown-preview-view img:not([width]) {
 	max-width: 50%;
 }

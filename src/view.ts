@@ -2,7 +2,7 @@ import { ItemView, WorkspaceLeaf } from "obsidian";
 import { createElement } from "react";
 import { Root, createRoot } from "react-dom/client";
 import { InkStory } from "@/components";
-import { useFile } from "@/hooks";
+import { useFile, useScene } from "@/hooks";
 
 export const INK_STORY_VIEW = "Ink Story View";
 
@@ -27,6 +27,7 @@ export class InkStoryView extends ItemView {
 	}
 
 	async onClose() {
-		// Nothing to clean up.
+		useScene.getState().cleanupMusic();
+		useScene.getState().cleanupSound();
 	}
 }

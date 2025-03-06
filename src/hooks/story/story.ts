@@ -47,12 +47,11 @@ const useStory = create<StoryState>((set, get) => {
 			}
 			story.state.LoadJson(saveData.save ? saveData.save : "{}");
 			get().clear();
+			// 其他资源的处理
 			useContents.getState().setContents(saveData.contents);
 			get().continue();
 		},
 		clear: () => {
-			useScene.getState().sound_stop();
-			useScene.getState().setBackground("");
 			useScene.getState().setImage("");
 			useContents.getState().empty();
 		},
@@ -78,6 +77,8 @@ const useStory = create<StoryState>((set, get) => {
 		restart: () => {
 			const story = get().story;
 			story?.ResetState();
+			useScene.getState().sound_stop();
+			useScene.getState().setBackground("");
 			get().clear();
 			get().continue();
 		},
