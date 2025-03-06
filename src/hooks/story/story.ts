@@ -27,7 +27,7 @@ const useStory = create<StoryState>((set, get) => {
 		save: (index: number) => {
 			const story = get().story;
 			if (!story) {
-				errorHandler("No story to load", "error");
+				errorHandler("No story to load");
 				return;
 			}
 			const newData = {
@@ -42,7 +42,7 @@ const useStory = create<StoryState>((set, get) => {
 			const saveData = JSON.parse(save);
 
 			if (!story) {
-				errorHandler("No story to load", "error");
+				errorHandler("No story to load");
 				return;
 			}
 			story.state.LoadJson(saveData.save ? saveData.save : "{}");

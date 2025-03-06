@@ -1,23 +1,20 @@
-import { Notice } from 'obsidian';
+import { Notice } from "obsidian";
 import { create } from "zustand";
 import createSelectors from "@/lib/utils/createSelectors";
+import type { ErrorHandler } from "inkjs/engine/Error";
 
 type Error = {
-  error: string | null;
-  setError: (error: string | null) => void;
-  errorHandler:(message: any, type: any) => void;
+	error: string | null;
+	errorHandler: (message: string) => void;
 };
 
 const useError = create<Error>((set) => ({
-  error: null,
-  setError: (error) => {
-    set({ error });
-  },
-  errorHandler: (message, type) => {
-    console.error(message, type);
-    new Notice(`${type}: ${message}` );
-    set({ error: `${type}: ${message}` });
-  },
+	error: null,
+	errorHandler: (message) => {
+		console.error(message);
+		new Notice(message);
+		set({ error: message });
+	},
 }));
 
 export default createSelectors(useError);
