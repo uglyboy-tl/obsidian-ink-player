@@ -1,11 +1,7 @@
 import { useFile, useError, useStory } from "@/hooks";
-
-export const getParentPath = (path: string) => {
-	return path.split("/").slice(0, -1).join("/");
-};
 export const compiledStory = (path: string, markdown: string) => {
 	useFile.getState().setFilePath(path);
-	const dir_path = getParentPath(path);
+	const dir_path = useFile.getState().getParentPath();
 	var inkjs = require("inkjs/full");
 	var {
 		PosixFileHandler,

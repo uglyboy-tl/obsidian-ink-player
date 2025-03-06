@@ -1,20 +1,36 @@
-import { Plugin, WorkspaceLeaf, MarkdownView } from "obsidian";
+import {
+	Plugin,
+	WorkspaceLeaf,
+	MarkdownView,
+	FileSystemAdapter,
+} from "obsidian";
 import { InkStoryView, INK_STORY_VIEW } from "./view";
 import { compiledStory } from "@/lib/markdown2story";
+import { useFile } from "@/hooks";
 
 export class InkStorylugin extends Plugin {
 	async onload() {
 		this.registerView(INK_STORY_VIEW, (leaf) => new InkStoryView(leaf));
 
 		this.addRibbonIcon("dice", "Activate view", () => {
-			// 获取 Obsidian 当前编辑的文件的文件夹的路径
-			const path = this.app.vault.adapter.getFullPath(
-				this.app.workspace.getActiveFile()?.path || ""
-			);
-			// 获取当前编辑区的文件的 markdown 源码
-			const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-			let markdown = view?.editor.getValue() || "";
-			compiledStory(path, markdown);
+			const path = this.app.workspace.getActiveFile()?.path || "";
+			const markdown =
+				this.app.workspace
+					.getActiveViewOfType(MarkdownView)
+					?.editor.getValue() || "";
+			// 设置资源路径
+			useFile
+				.getState()
+				.setSourcePath(
+					this.app.vault.adapter
+						.getResourcePath(path)
+						.split("/")
+						.slice(0, -1)
+						.join("/")
+				);
+			// 获取文件真实路径
+			const file_adapter = this.app.vault.adapter as FileSystemAdapter;
+			compiledStory(file_adapter.getFullPath(path), markdown);
 			this.activateView();
 		});
 	}
@@ -28,12 +44,9 @@ export class InkStorylugin extends Plugin {
 		const leaves = workspace.getLeavesOfType(INK_STORY_VIEW);
 
 		if (leaves.length > 0) {
-			// A leaf with our view already exists, use that
 			leaf = leaves[0];
 		} else {
-			// Our view could not be found in the workspace, create a new leaf
-			// in the right sidebar for it
-			leaf = workspace.splitActiveLeaf();
+			leaf = workspace.createLeafBySplit(workspace.getLeaf(false));
 			await leaf.setViewState({ type: INK_STORY_VIEW, active: true });
 		}
 

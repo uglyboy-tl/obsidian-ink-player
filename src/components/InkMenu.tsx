@@ -1,9 +1,9 @@
 import { memo, useRef, useState } from "react";
 import { useStory } from "@/hooks";
 import { MdSave, MdRestore, MdReplay } from "react-icons/md";
+import GameMenuModal from "./InkMenuModal";
 
-interface GameMenuProps {}
-const GameMenu: React.FC<GameMenuProps> = ({}) => {
+const GameMenu: React.FC = () => {
 	const [type, setType] = useState<string>("");
 	const modalRef = useRef<HTMLDialogElement | null>(null);
 	const openModal = (type: string) => {
@@ -14,31 +14,33 @@ const GameMenu: React.FC<GameMenuProps> = ({}) => {
 	};
 
 	return (
-		<nav className="nav">
-			<div className="container">
+		<nav className="view-header">
+			<div className="view-header-title-container mod-at-start mod-fade"></div>
+			<div className="view-actions">
 				<button
-					className="btn"
+					className="clickable-icon nav-action-button"
 					onClick={() => {
-						setType("restore");
 						openModal("restore");
 					}}
 				>
-					<MdRestore />
+					<MdRestore size={18} />
 				</button>
 				<button
-					className="btn"
+					className="clickable-icon nav-action-button"
 					onClick={() => {
-						setType("save");
 						openModal("save");
 					}}
 				>
-					<MdSave />
+					<MdSave size={18} />
 				</button>
-				<button className="btn" onClick={useStory.getState().restart}>
-					<MdReplay />
+				<button
+					className="clickable-icon nav-action-button"
+					onClick={useStory.getState().restart}
+				>
+					<MdReplay size={18} />
 				</button>
 			</div>
-			{/* <GameMenuModal modalRef={modalRef} type={type} /> */}
+			{<GameMenuModal modalRef={modalRef} type={type} />}
 		</nav>
 	);
 };

@@ -3,7 +3,6 @@ import { createElement } from "react";
 import { Root, createRoot } from "react-dom/client";
 import { InkStory } from "@/components";
 import { useFile } from "@/hooks";
-import { getParentPath } from "@/lib/markdown2story";
 
 export const INK_STORY_VIEW = "Ink Story View";
 
@@ -18,7 +17,7 @@ export class InkStoryView extends ItemView {
 	}
 
 	getDisplayText() {
-		return getParentPath(useFile.getState().filePath);
+		return useFile.getState().getParentPath();
 	}
 
 	async onOpen() {

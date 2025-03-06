@@ -1,13 +1,10 @@
 import { memo, useEffect } from "react";
-import { useStory, useError } from "@/hooks";
+import { useStory } from "@/hooks";
 import InkScreen from "./InkScreen";
 import InkMenu from "./InkMenu";
 
-interface RenderResultProps {}
-
-const InkComponent: React.FC<RenderResultProps> = ({}) => {
+const InkComponent: React.FC = () => {
 	const story = useStory.use.story();
-	const error = useError.use.error();
 
 	// 初始化故事
 	useEffect(() => {

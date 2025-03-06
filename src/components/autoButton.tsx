@@ -33,7 +33,11 @@ const AutoButton: React.FC<AutoButtonProps> = ({
 		}, cd * 1000);
 	};
 
-	return <button className={`${className} hidden`}>{children}</button>;
+	return (
+		<button className={className} style={{ display: "none" }}>
+			{children}
+		</button>
+	);
 };
 
 export default memo(AutoButton);

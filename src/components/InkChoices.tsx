@@ -30,7 +30,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 	return (
 		<ul className="">
 			{choices.map((choice) => (
-				<li key={choice.index} className="my-2">
+				<li key={choice.index} className="">
 					{choice.type === "cd" ? (
 						<CDButton
 							cd={choice.cd}
@@ -53,11 +53,8 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 								if (choice.type === "unclickable") return;
 								handleClick(choice.index);
 							}}
-							className={`btn ${className} ${
-								choice.type === "unclickable"
-									? "disabled"
-									: ""
-							} `}
+							className={`btn ${className}`}
+							disabled={choice.type === "unclickable"}
 						>
 							{choice.text}
 						</button>

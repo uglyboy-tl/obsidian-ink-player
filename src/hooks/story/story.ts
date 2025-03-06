@@ -46,12 +46,14 @@ const useStory = create<StoryState>((set, get) => {
 				return;
 			}
 			story.state.LoadJson(saveData.save ? saveData.save : "{}");
+			get().clear();
 			useContents.getState().setContents(saveData.contents);
 			get().continue();
 		},
 		clear: () => {
 			useScene.getState().sound_stop();
 			useScene.getState().setBackground("");
+			useScene.getState().setImage("");
 			useContents.getState().empty();
 		},
 		continue: () => {
@@ -105,11 +107,11 @@ const process_tags = (tags: string[] | null): boolean => {
 		} else {
 			const TAG = tag.toUpperCase();
 			if (TAG == "CLEAR") {
-				useContents.getState().empty();
+				useStory.getState().clear();
 				flag = true;
 			} else if (TAG == "RESTART") {
 				useStory.getState().restart();
-        flag = true;
+				flag = true;
 			}
 		}
 	}

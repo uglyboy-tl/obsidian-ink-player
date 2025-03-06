@@ -29,8 +29,9 @@ const CooldownButton: React.FC<CooldownButtonProps> = ({
 
 	return (
 		<button
-			className={`${className} ${isDisabled ? "disabled" : ""}`}
+			className={className}
 			onClick={handleClick}
+			disabled={isDisabled}
 		>
 			{children}
 		</button>

@@ -5,7 +5,6 @@
 	"minAppVersion": "0.15.0",
 	"description": "基于 ink 脚本语言的文字互动游戏播放器",
 	"author": "Uglyboy",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"authorUrl": "https://blog.uglyboy.cn",
 	"isDesktopOnly": false
 }

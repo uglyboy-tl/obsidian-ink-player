@@ -6,3 +6,13 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+.ink dialog.modal {
+	display: revert;
+}
+.ink .ink-image {
+	display: flex;
+	justify-content: center;
+}
+.ink img {
+	max-width: 50%;
+}
