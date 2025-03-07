@@ -6,6 +6,9 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+.ink {
+	height: 99%;
+}
 .ink dialog.modal {
 	display: revert;
 }

@@ -2,7 +2,12 @@ import { memo, useEffect } from "react";
 import { useStory, useScene } from "@/hooks/story";
 import InkChoices from "./InkChoices";
 import InkContents from "./InkContents";
-const InkScreenComponent: React.FC = () => {
+
+interface InkScreenProps {
+	className: string;
+}
+
+const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 	const background = useScene.use.background();
 	const image = useScene.use.image();
 	const { cleanupMusic, cleanupSound } = useScene();
@@ -18,7 +23,8 @@ const InkScreenComponent: React.FC = () => {
 
 	return (
 		<div
-			className="markdown-preview-view"
+			id="ink-screen"
+			className={className}
 			style={{
 				backgroundImage: `url(${background})`,
 			}}

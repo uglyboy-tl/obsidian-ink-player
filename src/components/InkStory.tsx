@@ -21,7 +21,7 @@ const InkComponent: React.FC = () => {
 	return (
 		<div className="ink">
 			<InkMenu />
-			<InkScreen />
+			<InkScreen className="markdown-preview-view"/>
 		</div>
 	);
 };

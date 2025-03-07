@@ -12,7 +12,7 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ modalRef, type }) => {
 	const button = [0, 1, 2];
 	const save = getSaves();
 	return (
-		<dialog ref={modalRef} className={"ink modal"}>
+		<dialog ref={modalRef} className={"modal"}>
 			<div className="modal-header">
 				<div className="modal-title">
 					{type === "save" ? "Save" : "Restore"}

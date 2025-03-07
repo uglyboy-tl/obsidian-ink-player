@@ -17,10 +17,15 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 	useEffect(() => {
 		requestAnimationFrame(() => {
 			const lastButton = document.querySelector(
-				"ul.container > li:last-child"
+				"ul#ink-choices > li:last-child"
 			) as HTMLElement;
 			if (lastButton) {
-				window.scrollTo({
+				console.log(lastButton);
+				const element = document.querySelector(
+					"#ink-screen"
+				) as HTMLElement;
+				console.log(element);
+				element.scrollTo({
 					top: lastButton.offsetTop,
 					behavior: "smooth",
 				});
@@ -28,7 +33,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 		});
 	}, [choices]);
 	return (
-		<ul className="">
+		<ul id="ink-choices" className="">
 			{choices.map((choice) => (
 				<li key={choice.index} className="">
 					{choice.type === "cd" ? (
