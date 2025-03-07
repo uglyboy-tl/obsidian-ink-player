@@ -72,7 +72,7 @@ const useStory = create<StoryState>((set, get) => {
 
 			const { currentChoices, variablesState } = story;
 			useChoices.getState().setChoices(currentChoices);
-			useVariables.getState().getGlobalVars(variablesState);
+			useVariables.getState().setGlobalVars(variablesState);
 		},
 		restart: () => {
 			const story = get().story;

@@ -22,8 +22,7 @@ type StoryScene = {
 };
 
 const getPath = (path: string) => {
-	const dir_path = useFile.getState().sourcePath;
-	return dir_path + "/" + path;
+	return useFile.getState().resourcePath + "/" + path;
 };
 
 const useStoryScene = create<StoryScene>((set, get) => ({
@@ -38,7 +37,6 @@ const useStoryScene = create<StoryScene>((set, get) => ({
 	setBackground: (background) => set({ background }),
 	setImage: (image) => set({ image }),
 	setSound: (path: string) => {
-
 		const _sound = new Audio(getPath(path));
 		const handler = () => {
 			_sound.play();

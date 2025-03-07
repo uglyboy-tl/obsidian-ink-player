@@ -1,14 +1,16 @@
 import { useFile, useError, useStory } from "@/hooks";
-import { Compiler, PosixFileHandler } from "inkjs/types";
 import type { ErrorHandler } from "inkjs/engine/Error";
-export const compiledStory = (path: string, markdown: string) => {
-	useFile.getState().setFilePath(path);
-	const dir_path = useFile.getState().getParentPath();
-	const fileHandler = new PosixFileHandler(dir_path);
+import { ObsidianFileHandler } from "@/lib/utils/ObsidianFileHandler";
+export const compiledStory = () => {
+	const fileHandler = new ObsidianFileHandler(
+		useFile.getState().resourcePath
+	);
 	const errorHandler: ErrorHandler = (message, errorType) => {
 		useError.getState().errorHandler(`${errorType}: ${message}`);
 	};
-	const story = new Compiler(markdown, {
+	const markdown = useFile.getState().markdown;
+	const inkjs = require("inkjs/full")
+	const story = new inkjs.Compiler(markdown, {
 		fileHandler,
 		errorHandler,
 	}).Compile();

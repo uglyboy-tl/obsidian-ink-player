@@ -17,7 +17,7 @@ export class InkStoryView extends ItemView {
 	}
 
 	getDisplayText() {
-		return useFile.getState().getParentPath();
+		return useFile.getState().filePath;
 	}
 
 	async onOpen() {

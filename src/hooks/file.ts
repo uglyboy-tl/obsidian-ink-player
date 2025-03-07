@@ -1,26 +1,31 @@
 import { create } from "zustand";
 import createSelectors from "@/lib/utils/createSelectors";
 
+const xhr = new XMLHttpRequest();
+
 type File = {
 	filePath: string;
-	sourcePath: string;
 	markdown: string;
-	setFilePath: (path: string) => void;
-	setSourcePath: (path: string) => void;
-	setMarkdown: (content: string) => void;
-	getParentPath: () => string;
+	resourcePath: string;
+	init: (filePath: string, markdown: string, resourcePath: string) => void;
+	getResource: (path: string) => string;
 };
 
-const useFile = create<File>((set, get) => ({
+const useFile = create<File>((set) => ({
 	filePath: "",
-	sourcePath: "",
 	markdown: "",
-	setFilePath: (path) => set({ filePath: path }),
-	setSourcePath: (path) => set({ sourcePath: path }),
-	setMarkdown: (content) => set({ markdown: content }),
-	getParentPath: () => {
-		const path = get().filePath;
-		return path.split("/").slice(0, -1).join("/");
+	resourcePath: "",
+	init: (filePath, markdown, resourcePath) =>
+		set({ filePath, markdown, resourcePath }),
+	getResource: (path) => {
+		xhr.open("GET", path, false);
+		xhr.send();
+
+		if (xhr.status === 200) {
+			return xhr.responseText;
+		}
+
+		throw new Error(`Failed to load file: ${path}`);
 	},
 }));
 
