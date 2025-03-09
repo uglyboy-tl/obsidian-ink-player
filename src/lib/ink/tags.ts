@@ -1,5 +1,3 @@
-import { Story } from "./story";
-
 export class Tags {
 	private static _functions: { [key: string]: Function };
 
@@ -14,12 +12,13 @@ export class Tags {
 	}
 	static process = (
 		inputString: string,
+		contents: string[],
 		options: { [key: string]: string | number | boolean | undefined } = {}
-	): boolean => {
+	) => {
 		var splitTag = splitAtCharacter(inputString, ":");
 		if (splitTag) {
 			if (Tags.functions[splitTag.before]) {
-				return Tags.functions[splitTag.before](splitTag.after) || false;
+				Tags.functions[splitTag.before](splitTag.after, contents);
 			} else if (options[splitTag.before]) {
 				let newValue: any = splitTag.after;
 				// make sure we convert it
@@ -45,7 +44,6 @@ export class Tags {
 				}
 			}
 		}
-		return false;
 	};
 }
 

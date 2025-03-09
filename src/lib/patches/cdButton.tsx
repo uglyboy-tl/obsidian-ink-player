@@ -1,19 +1,14 @@
 import { memo, useState } from "react";
+import { ChoiceParser, ChoiceProps } from "@/lib/ink";
 
-interface CooldownButtonProps {
-	cd: number;
-	onClick: () => void;
-	className?: string;
-	children?: React.ReactNode;
-}
-
-const CooldownButton: React.FC<CooldownButtonProps> = ({
-	cd,
+const CooldownChoice: React.FC<ChoiceProps> = ({
+	val,
 	onClick,
 	className = "",
 	children,
 }) => {
 	const [isDisabled, setIsDisabled] = useState(false);
+	let cd = parseFloat(val);
 	const handleClick = () => {
 		if (isDisabled) return;
 
@@ -38,4 +33,11 @@ const CooldownButton: React.FC<CooldownButtonProps> = ({
 	);
 };
 
-export default memo(CooldownButton);
+ChoiceParser.add(
+	"cd",
+	(new_choice, val) => {
+		new_choice.type = "cd";
+		new_choice.val = val;
+	},
+	memo(CooldownChoice)
+);

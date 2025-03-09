@@ -1,21 +1,14 @@
 import { memo, useEffect } from "react";
-
-interface AutoButtonProps {
-	cd: number;
-	onClick: () => void;
-	display?: boolean;
-	className?: string;
-	children?: React.ReactNode;
-}
-
-const AutoButton: React.FC<AutoButtonProps> = ({
-	cd,
+import { ChoiceParser, ChoiceProps } from "@/lib/ink";
+const AutoChoice: React.FC<ChoiceProps> = ({
+	val,
 	onClick,
 	className = "",
 	children,
 }) => {
 	// 滚动处理
 	let auto: NodeJS.Timeout;
+	let cd = parseFloat(val);
 	useEffect(() => {
 		auto = setTimeout(() => {
 			handleClick();
@@ -40,4 +33,11 @@ const AutoButton: React.FC<AutoButtonProps> = ({
 	);
 };
 
-export default memo(AutoButton);
+ChoiceParser.add(
+	"auto",
+	(new_choice, val) => {
+		new_choice.type = "auto";
+		new_choice.val = val;
+	},
+	memo(AutoChoice)
+);

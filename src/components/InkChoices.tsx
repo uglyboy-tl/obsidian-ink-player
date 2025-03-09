@@ -1,17 +1,27 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, createElement } from "react";
 import { useChoices } from "@/hooks/story";
-import CDButton from "./cdButton";
-import AutoButton from "./autoButton";
+import { ChoiceParser, Choice } from "@/lib/ink";
 
 interface InkChoicesProps {
-	handleClick?: (index: number) => void;
+	handleClick: (index: number) => void;
 	className?: string;
 }
 const InkChoicesComponent: React.FC<InkChoicesProps> = ({
-	handleClick = (_) => {},
+	handleClick,
 	className = "",
 }) => {
 	const choices = useChoices.use.choices();
+
+	const getCompontent = (choice: Choice) =>{
+		const Component = ChoiceParser.components[choice.type];
+		if (!Component) return null;
+		createElement(Component, {
+			onClick: () => handleClick(choice.index),
+			className: `btn ${className}`,
+			val: choice.val,
+			children: choice.text,
+		}as React.ComponentProps<typeof Component>);
+	};
 
 	// 滚动处理
 	useEffect(() => {
@@ -34,22 +44,8 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 		<ul id="ink-choices" className="">
 			{choices.map((choice) => (
 				<li key={choice.index} className="">
-					{choice.type === "cd" ? (
-						<CDButton
-							cd={choice.cd}
-							onClick={() => handleClick(choice.index)}
-							className={`btn ${className}`}
-						>
-							{choice.text}
-						</CDButton>
-					) : choice.type === "auto" ? (
-						<AutoButton
-							cd={choice.cd}
-							onClick={() => handleClick(choice.index)}
-							className={`btn ${className}`}
-						>
-							{choice.text}
-						</AutoButton>
+					{ChoiceParser.components[choice.type] ? (
+						getCompontent(choice)
 					) : (
 						<button
 							onClick={() => {

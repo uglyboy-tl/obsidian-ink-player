@@ -13,6 +13,7 @@ import {
 import { InkStoryView, INK_STORY_VIEW } from "./view";
 import { compiledStory } from "@/lib/markdown2story";
 import { useFile } from "@/hooks";
+import "./patches";
 
 interface InkStoryluginSettings {
 	testSetting: string;
@@ -132,19 +133,21 @@ class InkStoryluginSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const {containerEl} = this;
+		const { containerEl } = this;
 
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.testSetting)
-				.onChange(async (value) => {
-					this.plugin.settings.testSetting = value;
-					await this.plugin.saveSettings();
-				}));
+			.setName("Setting #1")
+			.setDesc("It's a secret")
+			.addText((text) =>
+				text
+					.setPlaceholder("Enter your secret")
+					.setValue(this.plugin.settings.testSetting)
+					.onChange(async (value) => {
+						this.plugin.settings.testSetting = value;
+						await this.plugin.saveSettings();
+					})
+			);
 	}
 }

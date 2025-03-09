@@ -3,7 +3,7 @@ import createSelectors from "@/lib/utils/createSelectors";
 import { Story } from "inkjs";
 import { useError, Save, useSave } from "@/hooks";
 import { useScene, useChoices, useContents, useVariables } from "@/hooks/story";
-import { Tags } from "@/lib/ink";
+import { Tags, Parser } from "@/lib/ink";
 
 interface StoryState {
 	story: Story | null;
@@ -65,11 +65,13 @@ const useStory = create<StoryState>((set, get) => {
 				let current_text = story.Continue() || "";
 				if (story.currentTags) {
 					story.currentTags.forEach((tag) => {
-						if (Tags.process(tag)) {
-							newContent.length = 0;
-						}
+						Tags.process(tag, newContent);
 					});
+					if (current_text && story.currentTags.length){
+						current_text = Parser.process(current_text, story.currentTags);
+					}
 				}
+
 				newContent.push(current_text);
 			}
 			useContents.getState().add(newContent);
@@ -96,12 +98,12 @@ const useStory = create<StoryState>((set, get) => {
 
 export default createSelectors(useStory);
 
-Tags.add("clear", () => {
+Tags.add("clear", (_: any, contents: string[]) => {
+	contents.length = 0;
 	useStory.getState().clear();
-	return true;
 });
 
-Tags.add("restart", () => {
+Tags.add("restart", (_: any, contents: string[]) => {
+	contents.length = 0;
 	useStory.getState().restart();
-	return true;
 });

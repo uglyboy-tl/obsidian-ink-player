@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import createSelectors from "@/lib/utils/createSelectors";
-import { useFile } from "@/hooks";
-import { Tags } from "@/lib/ink";
 
 type StoryScene = {
 	background: string;
@@ -80,46 +77,4 @@ const useStoryScene = create<StoryScene>((set, get) => ({
 	},
 }));
 
-export default createSelectors(useStoryScene);
-
-const getPath = (path: string) => {
-	return useFile.getState().resourcePath + "/" + path;
-};
-
-Tags.add("sound", (val: string | null) => {
-	if (val) {
-		useStoryScene.getState().setSound(getPath(val));
-	} else {
-		useStoryScene.getState().cleanupSound();
-	}
-});
-
-Tags.add("music", (val: string | null) => {
-	if (val) {
-		useStoryScene.getState().setMusic(getPath(val));
-	} else {
-		useStoryScene.getState().cleanupMusic();
-	}
-});
-
-Tags.add("image", (val: string | null) => {
-	if (val) {
-		useStoryScene.getState().setImage(getPath(val));
-	} else {
-		useStoryScene.getState().setImage("");
-	}
-});
-
-Tags.add("background", (val: string | null) => {
-	if (val) {
-		useStoryScene.getState().setBackground(getPath(val));
-	} else {
-		useStoryScene.getState().setBackground("");
-	}
-});
-
-Tags.add("linkopen", (val: string | null) => {
-	if (val) {
-		window.open(val);
-	}
-});
+export default useStoryScene;
