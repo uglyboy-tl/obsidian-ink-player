@@ -20,11 +20,9 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 				"ul#ink-choices > li:last-child"
 			) as HTMLElement;
 			if (lastButton) {
-				console.log(lastButton);
 				const element = document.querySelector(
 					"#ink-screen"
 				) as HTMLElement;
-				console.log(element);
 				element.scrollTo({
 					top: lastButton.offsetTop,
 					behavior: "smooth",

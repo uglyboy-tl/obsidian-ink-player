@@ -1,49 +1,101 @@
 import {
+	App,
 	Plugin,
 	WorkspaceLeaf,
 	MarkdownView,
 	FileSystemAdapter,
-	TAbstractFile,
 	Platform,
+	PluginSettingTab,
+	Setting,
+	TAbstractFile,
+	getLanguage,
 } from "obsidian";
 import { InkStoryView, INK_STORY_VIEW } from "./view";
 import { compiledStory } from "@/lib/markdown2story";
 import { useFile } from "@/hooks";
 
+interface InkStoryluginSettings {
+	testSetting: string;
+}
+
+const DEFAULT_SETTINGS: InkStoryluginSettings = {
+	testSetting: "default",
+};
+
 export class InkStorylugin extends Plugin {
+	settings: InkStoryluginSettings;
 	async onload() {
+		const command_text =
+			getLanguage() === "zh" ? "激活 Ink Story" : "Activate Ink Story";
 		this.registerView(INK_STORY_VIEW, (leaf) => new InkStoryView(leaf));
+
+		this.addRibbonIcon("dice", command_text, () => {
+			this.activateView();
+		});
+
+		this.addCommand({
+			id: "activate-ink-story",
+			name: command_text,
+			icon: "dice",
+			checkCallback: (checking: boolean) => {
+				const { workspace } = this.app;
+				const markdownView =
+					workspace.getActiveViewOfType(MarkdownView);
+				const file = workspace.getActiveFile();
+				if (markdownView && file) {
+					if (markdownView.editor.getValue()) {
+						if (!checking) {
+							this.activateView(file);
+						}
+						return true;
+					}
+				}
+			},
+			callback: () => {
+				this.activateView();
+			},
+		});
 
 		this.registerEvent(
 			this.app.workspace.on("file-menu", (menu, file) => {
 				menu.addItem((item) => {
-					item.setTitle("激活 Ink Story")
+					item.setTitle(command_text)
 						.setIcon("dice")
 						.onClick(async () => {
-							this.init(file);
-							this.activateView();
+							this.activateView(file);
 						});
 				});
 			})
 		);
 
-		this.addRibbonIcon("dice", "激活 Ink Story", () => {
-			const file = this.app.workspace.getActiveFile();
-			if (!file) return;
-			this.init(file);
-			this.activateView();
-		});
+		// This adds a settings tab so the user can configure various aspects of the plugin
+		this.addSettingTab(new InkStoryluginSettingTab(this.app, this));
 	}
 
 	async onunload() {}
 
-	init(file: TAbstractFile) {
-		const fileAdapter = this.app.vault.adapter as FileSystemAdapter;
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
+	async activateView(file: TAbstractFile | null = null) {
+		const { workspace, vault } = this.app;
+		if (!file) {
+			file = workspace.getActiveFile();
+			if (!file) return;
+		}
+		const fileAdapter = vault.adapter as FileSystemAdapter;
 		const filePath = file.path;
 		const markdown =
-			this.app.workspace
-				.getActiveViewOfType(MarkdownView)
-				?.editor.getValue() || "";
+			workspace.getActiveViewOfType(MarkdownView)?.editor.getValue() ||
+			"";
 		const resourcePath = fileAdapter
 			.getResourcePath(filePath)
 			.split("/")
@@ -51,9 +103,6 @@ export class InkStorylugin extends Plugin {
 			.join("/");
 		useFile.getState().init(filePath, markdown, resourcePath);
 		compiledStory();
-	}
-	async activateView() {
-		const { workspace } = this.app;
 
 		let leaf: WorkspaceLeaf | null = null;
 		const leaves = workspace.getLeavesOfType(INK_STORY_VIEW);
@@ -71,5 +120,31 @@ export class InkStorylugin extends Plugin {
 		}
 
 		workspace.revealLeaf(leaf);
+	}
+}
+
+class InkStoryluginSettingTab extends PluginSettingTab {
+	plugin: InkStorylugin;
+
+	constructor(app: App, plugin: InkStorylugin) {
+		super(app, plugin);
+		this.plugin = plugin;
+	}
+
+	display(): void {
+		const {containerEl} = this;
+
+		containerEl.empty();
+
+		new Setting(containerEl)
+			.setName('Setting #1')
+			.setDesc('It\'s a secret')
+			.addText(text => text
+				.setPlaceholder('Enter your secret')
+				.setValue(this.plugin.settings.testSetting)
+				.onChange(async (value) => {
+					this.plugin.settings.testSetting = value;
+					await this.plugin.saveSettings();
+				}));
 	}
 }
