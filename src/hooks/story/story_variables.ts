@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import createSelectors from "@/lib/utils/createSelectors";
 import { VariablesState } from "inkjs/engine/VariablesState";
 
 type StoryVariables = {
@@ -21,4 +20,4 @@ const useStoryVariables = create<StoryVariables>((set) => ({
 	},
 }));
 
-export default createSelectors(useStoryVariables);
+export default useStoryVariables;

@@ -11,7 +11,7 @@ const InkContentsComponent: React.FC<InkContentsProps> = ({
 	return (
 		<section className="story-text">
 			{contents.map((item, i) => (
-				<div key={i} className="mx-2">
+				<div key={i} className="">
 					<p className={className}>{item}</p>
 				</div>
 			))}

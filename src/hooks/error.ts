@@ -1,7 +1,6 @@
 import { Notice } from "obsidian";
 import { create } from "zustand";
 import createSelectors from "@/lib/utils/createSelectors";
-import type { ErrorHandler } from "inkjs/engine/Error";
 
 type Error = {
 	error: string | null;

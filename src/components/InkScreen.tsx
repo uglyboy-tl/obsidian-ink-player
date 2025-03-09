@@ -8,9 +8,7 @@ interface InkScreenProps {
 }
 
 const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
-	const background = useScene.use.background();
-	const image = useScene.use.image();
-	const { cleanupMusic, cleanupSound } = useScene();
+	const { background, image, cleanupMusic, cleanupSound } = useScene();
 	const handleChoice = useStory.getState().handleChoice;
 
 	useEffect(() => {
