@@ -1,16 +1,15 @@
 import { create } from "zustand";
 import createSelectors from "@/lib/utils/createSelectors";
 import { useFile } from "@/hooks";
+import { Tags } from "@/lib/ink";
 
 type StoryScene = {
-	stats: string[];
 	background: string;
 	image: string;
 	sound: HTMLAudioElement | null;
 	music: HTMLAudioElement | null;
 	sound_handler: (() => void) | null;
 	music_handler: (() => void) | null;
-	setStats: (stats: string[]) => void;
 	setBackground: (background: string) => void;
 	setImage: (image: string) => void;
 	setSound: (path: string) => void;
@@ -18,26 +17,19 @@ type StoryScene = {
 	setMusic: (path: string) => void;
 	cleanupMusic: () => void;
 	sound_stop: () => void;
-	processTag: (tag: string, val: string) => void;
-};
-
-const getPath = (path: string) => {
-	return useFile.getState().resourcePath + "/" + path;
 };
 
 const useStoryScene = create<StoryScene>((set, get) => ({
-	stats: [],
 	background: "",
 	image: "",
 	sound: null,
 	music: null,
 	sound_handler: null,
 	music_handler: null,
-	setStats: (stats) => set({ stats }),
 	setBackground: (background) => set({ background }),
 	setImage: (image) => set({ image }),
 	setSound: (path: string) => {
-		const _sound = new Audio(getPath(path));
+		const _sound = new Audio(path);
 		const handler = () => {
 			_sound.play();
 		};
@@ -59,7 +51,7 @@ const useStoryScene = create<StoryScene>((set, get) => ({
 		if (music) {
 			cleanupMusic();
 		}
-		const _music = new Audio(getPath(path));
+		const _music = new Audio(path);
 		const handler = () => {
 			_music.loop = true;
 			_music.play();
@@ -86,48 +78,48 @@ const useStoryScene = create<StoryScene>((set, get) => ({
 			music.pause();
 		}
 	},
-
-	processTag: (tag, val = "") => {
-		if (tag == "AUDIO") {
-			if (val) {
-				get().setSound(getPath(val));
-			} else {
-				get().setSound("");
-			}
-		}
-		// AUDIOLOOP: src
-		else if (tag == "AUDIOLOOP") {
-			if (val) {
-				get().setMusic(val);
-			} else {
-				get().setMusic("");
-			}
-		}
-		// LINKOPEN: url
-		else if (tag == "LINKOPEN") {
-			window.open(val);
-		}
-		// IMAGE: src
-		else if (tag == "IMAGE") {
-			if (val) {
-				get().setImage(getPath(val));
-			} else {
-				get().setImage("");
-			}
-		}
-		// BACKGROUND: src
-		else if (tag == "BACKGROUND") {
-			if (val) {
-				get().setBackground(getPath(val));
-			} else {
-				get().setBackground("");
-			}
-		}
-		// STATS: stat1,stat2,stat3
-		else if (tag == "STATS") {
-			get().setStats(val.split(",").map((stat) => stat.trim()));
-		}
-	},
 }));
 
 export default createSelectors(useStoryScene);
+
+const getPath = (path: string) => {
+	return useFile.getState().resourcePath + "/" + path;
+};
+
+Tags.add("sound", (val: string | null) => {
+	if (val) {
+		useStoryScene.getState().setSound(getPath(val));
+	} else {
+		useStoryScene.getState().cleanupSound();
+	}
+});
+
+Tags.add("music", (val: string | null) => {
+	if (val) {
+		useStoryScene.getState().setMusic(getPath(val));
+	} else {
+		useStoryScene.getState().cleanupMusic();
+	}
+});
+
+Tags.add("image", (val: string | null) => {
+	if (val) {
+		useStoryScene.getState().setImage(getPath(val));
+	} else {
+		useStoryScene.getState().setImage("");
+	}
+});
+
+Tags.add("background", (val: string | null) => {
+	if (val) {
+		useStoryScene.getState().setBackground(getPath(val));
+	} else {
+		useStoryScene.getState().setBackground("");
+	}
+});
+
+Tags.add("linkopen", (val: string | null) => {
+	if (val) {
+		window.open(val);
+	}
+});

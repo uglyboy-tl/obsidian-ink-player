@@ -3,7 +3,7 @@ import createSelectors from "@/lib/utils/createSelectors";
 import { Story } from "inkjs";
 import { useError, Save, useSave } from "@/hooks";
 import { useScene, useChoices, useContents, useVariables } from "@/hooks/story";
-import { splitTag } from "@/lib/utils/splitTag";
+import { Tags } from "@/lib/ink";
 
 interface StoryState {
 	story: Story | null;
@@ -63,8 +63,12 @@ const useStory = create<StoryState>((set, get) => {
 			// 处理故事段落
 			while (story.canContinue) {
 				let current_text = story.Continue() || "";
-				if (process_tags(story.currentTags)) {
-					newContent.length = 0;
+				if (story.currentTags) {
+					story.currentTags.forEach((tag) => {
+						if (Tags.process(tag)) {
+							newContent.length = 0;
+						}
+					});
 				}
 				newContent.push(current_text);
 			}
@@ -92,29 +96,12 @@ const useStory = create<StoryState>((set, get) => {
 
 export default createSelectors(useStory);
 
-const process_tags = (tags: string[] | null): boolean => {
-	let flag = false;
-	if (!tags || tags.length == 0) {
-		return flag;
-	}
-	for (let i = 0; i < tags.length; i++) {
-		const tag = tags[i];
-		const splited_tag = splitTag(tag);
+Tags.add("clear", () => {
+	useStory.getState().clear();
+	return true;
+});
 
-		if (splited_tag) {
-			useScene
-				.getState()
-				.processTag(splited_tag.property, splited_tag.val);
-		} else {
-			const TAG = tag.toUpperCase();
-			if (TAG == "CLEAR") {
-				useStory.getState().clear();
-				flag = true;
-			} else if (TAG == "RESTART") {
-				useStory.getState().restart();
-				flag = true;
-			}
-		}
-	}
-	return flag;
-};
+Tags.add("restart", () => {
+	useStory.getState().restart();
+	return true;
+});
