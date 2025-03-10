@@ -9,7 +9,6 @@ interface InkScreenProps {
 
 const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 	const { background, image, cleanupMusic, cleanupSound } = useScene();
-	const handleChoice = useStory.getState().handleChoice;
 
 	useEffect(() => {
 		return () => cleanupSound();
@@ -33,7 +32,9 @@ const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 				</div>
 			)}
 			<InkContents />
-			<InkChoices handleClick={(index) => handleChoice(index)} />
+			<InkChoices
+				handleClick={(index) => useStory.getState().ink?.choose(index)}
+			/>
 		</div>
 	);
 };

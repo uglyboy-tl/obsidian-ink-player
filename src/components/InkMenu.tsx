@@ -35,7 +35,7 @@ const GameMenu: React.FC = () => {
 				</button>
 				<button
 					className="clickable-icon nav-action-button"
-					onClick={useStory.getState().restart}
+					onClick={() => useStory.getState().ink?.restart()}
 				>
 					<MdReplay size={18} />
 				</button>

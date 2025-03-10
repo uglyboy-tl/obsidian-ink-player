@@ -4,16 +4,16 @@ import InkScreen from "./InkScreen";
 import InkMenu from "./InkMenu";
 
 const InkComponent: React.FC = () => {
-	const story = useStory.use.story();
+	const ink = useStory.use.ink();
 
 	// 初始化故事
 	useEffect(() => {
-		if (story) {
-			useStory.getState().restart();
+		if (ink) {
+			ink.restart();
 		}
-	}, [story]);
+	}, [ink]);
 
-	if (!story) {
+	if (!ink) {
 		console.log("story is null");
 		return null;
 	}
@@ -21,7 +21,7 @@ const InkComponent: React.FC = () => {
 	return (
 		<div className="ink">
 			<InkMenu />
-			<InkScreen className="markdown-preview-view"/>
+			<InkScreen className="markdown-preview-view" />
 		</div>
 	);
 };

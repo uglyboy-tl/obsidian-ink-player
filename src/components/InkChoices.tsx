@@ -40,6 +40,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 			}
 		});
 	}, [choices]);
+
 	return (
 		<ul id="ink-choices" className="">
 			{choices.map((choice) => (

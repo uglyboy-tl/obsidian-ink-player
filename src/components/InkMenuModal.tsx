@@ -1,5 +1,6 @@
 import { memo, useState } from "react";
 import { useSave, useStory } from "@/hooks";
+import memory from "@/lib/patches/memory";
 
 interface GameMenuModalProps {
 	modalRef: React.RefObject<HTMLDialogElement | null>;
@@ -30,16 +31,17 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ modalRef, type }) => {
 								className="suggestion-content"
 								onClick={() => {
 									if (type === "save") {
-										useStory.getState().save(item);
+										const ink = useStory.getState().ink;
+										if (ink) memory.save(item, ink);
 										setRefresh(!refresh);
 									} else if (
 										type === "restore" &&
 										save &&
 										save[item]
 									) {
-										useStory
-											.getState()
-											.load(save[item].data);
+										const ink = useStory.getState().ink;
+										if (ink)
+											memory.load(save[item].data, ink);
 									}
 								}}
 							>

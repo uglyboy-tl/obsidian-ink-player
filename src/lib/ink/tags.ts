@@ -1,3 +1,4 @@
+import { InkStory } from "./main";
 export class Tags {
 	private static _functions: { [key: string]: Function };
 
@@ -10,19 +11,15 @@ export class Tags {
 	static add(tagName: string, callback: Function) {
 		Tags.functions[tagName] = callback;
 	}
-	static process = (
-		inputString: string,
-		contents: string[],
-		options: { [key: string]: string | number | boolean | undefined } = {}
-	) => {
+	static process = (ink: InkStory, inputString: string) => {
 		var splitTag = splitAtCharacter(inputString, ":");
 		if (splitTag) {
 			if (Tags.functions[splitTag.before]) {
-				Tags.functions[splitTag.before](splitTag.after, contents);
-			} else if (options[splitTag.before]) {
+				Tags.functions[splitTag.before](splitTag.after, ink);
+			} else if (ink.options[splitTag.before]) {
 				let newValue: any = splitTag.after;
 				// make sure we convert it
-				switch (typeof options[splitTag.before]) {
+				switch (typeof ink.options[splitTag.before]) {
 					case "string":
 						break;
 					case "number":
@@ -40,7 +37,7 @@ export class Tags {
 				}
 
 				if (newValue !== undefined && !Number.isNaN(newValue)) {
-					options[splitTag.before] = newValue;
+					ink.options[splitTag.before] = newValue;
 				}
 			}
 		}
@@ -72,3 +69,11 @@ export const splitAtCharacter = (text: string, character: string) => {
 		};
 	}
 };
+
+Tags.add("clear", (_: string, ink: InkStory) => {
+	ink.clear();
+});
+
+Tags.add("restart", (_: string, ink: InkStory) => {
+	ink.restart();
+});
