@@ -47,6 +47,7 @@ export class InkStory {
 		useVariables.getState().setGlobalVars(variablesState);
 	}
 	choose(index: number) {
+		useContents.getState().setLastContent();
 		this.story.ChooseChoiceIndex(index);
 		this.continue();
 	}

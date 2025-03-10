@@ -12,7 +12,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 }) => {
 	const choices = useChoices.use.choices();
 
-	const getCompontent = (choice: Choice) =>{
+	const getCompontent = (choice: Choice) => {
 		const Component = ChoiceParser.components[choice.type];
 		if (!Component) return null;
 		createElement(Component, {
@@ -20,7 +20,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 			className: `btn ${className}`,
 			val: choice.val,
 			children: choice.text,
-		}as React.ComponentProps<typeof Component>);
+		} as React.ComponentProps<typeof Component>);
 	};
 
 	// 滚动处理

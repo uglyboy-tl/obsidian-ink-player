@@ -19,3 +19,18 @@ If your plugin does not need CSS, delete this file.
 .ink .markdown-preview-view img:not([width]) {
 	max-width: 50%;
 }
+
+.story-text div {
+	opacity: 0;
+	animation: fadeIn 0.5s forwards;
+	animation-delay: var(--delay, 0s);
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

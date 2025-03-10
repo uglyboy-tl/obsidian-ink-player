@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { useStory, useScene } from "@/hooks/story";
 import InkChoices from "./InkChoices";
 import InkContents from "./InkContents";
@@ -18,6 +18,17 @@ const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 		return () => cleanupMusic();
 	}, [cleanupMusic]);
 
+	const [contentComplete, setContentComplete] = useState(false);
+
+	const handleContentComplete = () => {
+		setContentComplete(true);
+	};
+
+	const handleClick = (index: number) => {
+		setContentComplete(false);
+		useStory.getState().ink?.choose(index);
+	};
+
 	return (
 		<div
 			id="ink-screen"
@@ -31,10 +42,8 @@ const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 					<img src={image} />
 				</div>
 			)}
-			<InkContents />
-			<InkChoices
-				handleClick={(index) => useStory.getState().ink?.choose(index)}
-			/>
+			<InkContents onContentComplete={handleContentComplete} />
+			{contentComplete && <InkChoices handleClick={handleClick} />}
 		</div>
 	);
 };
