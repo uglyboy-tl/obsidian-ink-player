@@ -43,7 +43,9 @@ const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 				</div>
 			)}
 			<InkContents onContentComplete={handleContentComplete} />
-			{contentComplete && <InkChoices handleClick={handleClick} />}
+			<div style={{ visibility: contentComplete ? 'visible' : 'hidden' }}>
+				<InkChoices handleClick={handleClick} key={contentComplete.toString()} />
+			</div>
 		</div>
 	);
 };
