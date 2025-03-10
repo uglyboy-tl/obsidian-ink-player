@@ -23,7 +23,7 @@ export class Patches {
 	}
 
 	static apply(story: InkStory, content: string) {
-		story.options = Object.assign(story.options, Patches._options);
+		Object.assign(story.options, Patches._options);
 		for (let patch of Patches.patches) {
 			if (patch) {
 				patch.bind(story, content)();

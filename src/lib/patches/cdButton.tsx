@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { ChoiceParser, ChoiceProps } from "@/lib/ink";
+import { ChoiceParser, ChoiceProps, Patches } from "@/lib/ink";
 
 const CooldownChoice: React.FC<ChoiceProps> = ({
 	val,
@@ -41,3 +41,9 @@ ChoiceParser.add(
 	},
 	memo(CooldownChoice)
 );
+
+const options = {
+	linedelay: 0.0,
+};
+
+Patches.add(null, options);

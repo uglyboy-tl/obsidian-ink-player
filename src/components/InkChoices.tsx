@@ -48,7 +48,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 			id="ink-choices"
 			key={canShow.toString()}
 			className=""
-			style={{ visibility: canShow && true ? "visible" : "hidden" }}
+			style={{ visibility: canShow ? "visible" : "hidden" }}
 		>
 			{choices.map((choice) => (
 				<li key={choice.index} className="">

@@ -1,15 +1,15 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect } from "react";
 import { useContents } from "@/hooks/story";
-
-const DELAY = 0.5;
 
 interface InkContentsProps {
 	className?: string;
 	onContentComplete?: () => void;
+	DELAY?: number;
 }
 const InkContentsComponent: React.FC<InkContentsProps> = ({
 	className = "",
 	onContentComplete = () => {},
+	DELAY = 0.2,
 }) => {
 	const contents = useContents.use.contents();
 	const last_content = useContents.getState().last_content;

@@ -16,7 +16,7 @@ export class Tags {
 		if (splitTag) {
 			if (Tags.functions[splitTag.before]) {
 				Tags.functions[splitTag.before](splitTag.after, ink);
-			} else if (ink.options[splitTag.before]) {
+			} else if (ink.options[splitTag.before] != undefined) {
 				let newValue: any = splitTag.after;
 				// make sure we convert it
 				switch (typeof ink.options[splitTag.before]) {
@@ -35,7 +35,6 @@ export class Tags {
 					default:
 						newValue = undefined;
 				}
-
 				if (newValue !== undefined && !Number.isNaN(newValue)) {
 					ink.options[splitTag.before] = newValue;
 				}

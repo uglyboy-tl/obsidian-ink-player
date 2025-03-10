@@ -3,6 +3,7 @@ import { useScene, useContents, useChoices, useVariables } from "@/hooks/story";
 import { Patches, Tags, Parser, ExternalFunctions } from "@/lib/ink";
 
 const options = {
+	linedelay: 0.2,
 	debug: false,
 };
 
