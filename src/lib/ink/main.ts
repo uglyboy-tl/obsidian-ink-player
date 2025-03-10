@@ -7,8 +7,9 @@ const options = {
 };
 
 export class InkStory {
-	options: { [key: string]: string | number | boolean | undefined };
 	story: Story;
+	options: { [key: string]: any };
+	_cleanups: Function[] = [];
 	constructor(story: Story) {
 		this.options = options;
 		this.story = story;
@@ -16,7 +17,9 @@ export class InkStory {
 		Patches.apply(this, content);
 		this.bindExternalFunctions(content);
 	}
-
+	get cleanups() {
+		return this._cleanups;
+	}
 	continue() {
 		const newContent: string[] = [];
 
@@ -57,10 +60,15 @@ export class InkStory {
 	}
 	restart() {
 		this.story.ResetState();
-		useScene.getState().sound_stop();
-		useScene.getState().setBackground("");
 		this.clear();
 		this.continue();
+	}
+	dispose() {
+		this.cleanups.map((cleanup) => {
+			if (cleanup) {
+				cleanup();
+			}
+		});
 	}
 	bindExternalFunctions = (content: string) => {
 		new Set(

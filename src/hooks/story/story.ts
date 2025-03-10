@@ -7,10 +7,11 @@ interface StoryState {
 	setStory: (story: any) => void;
 }
 
-const useStory = create<StoryState>((set) => {
+const useStory = create<StoryState>((set, get) => {
 	return {
 		ink: null,
 		setStory: (story) => {
+			get().ink?.dispose();
 			set({ ink: new InkStory(story) });
 		},
 	};

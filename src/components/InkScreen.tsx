@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useStory, useScene } from "@/hooks/story";
 import InkChoices from "./InkChoices";
 import InkContents from "./InkContents";
@@ -8,17 +8,8 @@ interface InkScreenProps {
 }
 
 const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
-	const { background, image, cleanupMusic, cleanupSound } = useScene();
-
-	useEffect(() => {
-		return () => cleanupSound();
-	}, [cleanupSound]);
-
-	useEffect(() => {
-		return () => cleanupMusic();
-	}, [cleanupMusic]);
-
-	const [contentComplete, setContentComplete] = useState(false);
+	const { image } = useScene();
+	const [contentComplete, setContentComplete] = useState(true);
 
 	const handleContentComplete = () => {
 		setContentComplete(true);
@@ -30,22 +21,14 @@ const InkScreenComponent: React.FC<InkScreenProps> = ({ className = "" }) => {
 	};
 
 	return (
-		<div
-			id="ink-screen"
-			className={className}
-			style={{
-				backgroundImage: `url(${background})`,
-			}}
-		>
+		<div id="ink-screen" className={className}>
 			{image && (
 				<div className="ink-image">
 					<img src={image} />
 				</div>
 			)}
 			<InkContents onContentComplete={handleContentComplete} />
-			<div style={{ visibility: contentComplete ? 'visible' : 'hidden' }}>
-				<InkChoices handleClick={handleClick} key={contentComplete.toString()} />
-			</div>
+			<InkChoices handleClick={handleClick} canShow={contentComplete} />
 		</div>
 	);
 };
