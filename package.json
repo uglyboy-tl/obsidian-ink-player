@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-ink-player",
-	"version": "1.0.0",
-	"description": "基于 ink 脚本语言的文字互动游戏播放器",
+	"name": "ink-player",
+	"version": "1.0.1",
+	"description": "Playing interactive fiction powered by Inkle's ink engine",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
