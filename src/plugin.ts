@@ -3,7 +3,6 @@ import {
 	Plugin,
 	WorkspaceLeaf,
 	MarkdownView,
-	FileSystemAdapter,
 	Platform,
 	PluginSettingTab,
 	Setting,
@@ -92,7 +91,7 @@ export class InkStorylugin extends Plugin {
 			file = workspace.getActiveFile();
 			if (!file) return;
 		}
-		const fileAdapter = vault.adapter as FileSystemAdapter;
+		const fileAdapter = vault.adapter;
 		const filePath = file.path;
 		const markdown =
 			workspace.getActiveViewOfType(MarkdownView)?.editor.getValue() ||

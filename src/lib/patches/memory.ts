@@ -2,15 +2,12 @@ import { InkStory, Patches } from "@/lib/ink";
 import { useSave } from "@/hooks";
 import { useContents } from "@/hooks/story";
 
-var options = {
+let options = {
 	memorycard_format: "session",
 };
 
-const save = (
-	index: number,
-	ink: InkStory,
-) => {
-	var save = {
+const save = (index: number, ink: InkStory) => {
+	let save = {
 		state: ink.story.state.toJson(),
 		contents: useContents.getState().contents,
 	};

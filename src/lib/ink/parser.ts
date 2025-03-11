@@ -35,7 +35,7 @@ export class Parser {
 		if (!text) return "";
 
 		// create an object to store our line in
-		var line = { text: text, tags: tags, classes: [] };
+		let line = { text: text, tags: tags, classes: [] };
 
 		// if we submitted tags, and tags exist to style with,
 		if (line.tags.length && Object.keys(Parser.tags).length) {

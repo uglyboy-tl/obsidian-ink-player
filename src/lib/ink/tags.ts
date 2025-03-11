@@ -12,7 +12,7 @@ export class Tags {
 		Tags.functions[tagName] = callback;
 	}
 	static process = (ink: InkStory, inputString: string) => {
-		var splitTag = splitAtCharacter(inputString, ":");
+		let splitTag = splitAtCharacter(inputString, ":");
 		if (splitTag) {
 			if (Tags.functions[splitTag.before]) {
 				Tags.functions[splitTag.before](splitTag.after, ink);
@@ -50,7 +50,7 @@ export const splitAtCharacter = (text: string, character: string) => {
 	}
 
 	// find first occurence of character
-	var splitIndex = text.indexOf(character);
+	let splitIndex = text.indexOf(character);
 
 	// if the text doesn't contain that character,
 	if (splitIndex == -1) {
