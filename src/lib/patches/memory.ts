@@ -9,13 +9,11 @@ var options = {
 const save = (
 	index: number,
 	ink: InkStory,
-	format = ink.options.memorycard_format
 ) => {
 	var save = {
 		state: ink.story.state.toJson(),
 		contents: useContents.getState().contents,
 	};
-	useSave.getState().setFormat(format as string);
 	useSave.getState().setSaves(index, save);
 };
 const load = (save_data: string, ink: InkStory) => {
@@ -28,6 +26,8 @@ const load = (save_data: string, ink: InkStory) => {
 	}
 };
 
-Patches.add(null, options);
+Patches.add(function () {
+	useSave.getState().setFormat(options.memorycard_format);
+}, options);
 
 export default { options: options, save: save, load: load };

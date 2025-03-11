@@ -8,7 +8,10 @@ const StorageType: { [key: string]: Storage } = {
 	session: sessionStorage,
 };
 
-let defaultStorage = StorageType["session"];
+let type = "session";
+const getStorage = () => {
+	return StorageType[type];
+};
 
 class Save {
 	data: string;
@@ -54,14 +57,14 @@ const useSavesBase = create<Saves>()(
 				set({ saves: newSavesMap });
 			},
 			setFormat: (format) => {
-				defaultStorage = StorageType[format];
+				type = format;
 			},
 		}),
 		{
 			name: "inkStory", // 存储项的名称（必须是唯一的）
 			storage: {
 				getItem: (name) => {
-					const str = defaultStorage.getItem(name);
+					const str = getStorage().getItem(name);
 					if (!str) return null;
 					const { state } = JSON.parse(str);
 					return {
@@ -78,9 +81,11 @@ const useSavesBase = create<Saves>()(
 							saves: Array.from(newValue.state.saves.entries()),
 						},
 					});
-					defaultStorage.setItem(name, str);
+					getStorage().setItem(name, str);
 				},
-				removeItem: (name) => defaultStorage.removeItem(name),
+				removeItem: (name) => {
+					getStorage().removeItem(name);
+				},
 			},
 		}
 	)
