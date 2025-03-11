@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-ink-player",
 	"name": "Ink Player",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "基于 ink 脚本语言的文字互动游戏播放器",
 	"author": "Uglyboy",
