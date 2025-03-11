@@ -55,16 +55,19 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 					{ChoiceParser.components[choice.type] ? (
 						getCompontent(choice)
 					) : (
-						<button
+						<a
 							onClick={() => {
 								if (choice.type === "unclickable") return;
 								handleClick(choice.index);
 							}}
-							className={`btn ${className}`}
-							disabled={choice.type === "unclickable"}
+							className={`btn ${className} ${
+								choice.type === "unclickable" ? "disabled" : ""
+							}`}
+							aria-disabled={choice.type === "unclickable"}
+							//disabled={choice.type === "unclickable"}
 						>
 							{choice.text}
-						</button>
+						</a>
 					)}
 				</li>
 			))}

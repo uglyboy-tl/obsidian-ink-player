@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, CSSProperties } from "react";
 import { useContents } from "@/hooks/story";
 
 interface InkContentsProps {
@@ -27,19 +27,19 @@ const InkContentsComponent: React.FC<InkContentsProps> = ({
 
 	return (
 		<section className="story-text">
-			{contents.map((item, i) => (
-				<div
-					key={`${i}_${item}`}
-					className=""
-					style={{
-						["--delay" as any]: `${
-							(i > visibleLines ? i - visibleLines : 0) * DELAY
-						}s`,
-					}}
-				>
-					<p className={className}>{item}</p>
-				</div>
-			))}
+			{contents.map((item, i) => {
+				const style: CSSProperties = {
+					"--delay": `${
+						(i > visibleLines ? i - visibleLines : 0) * DELAY
+					}s`,
+				} as CSSProperties & { "--delay": string };
+
+				return (
+					<div key={`${i}_${item}`} style={style}>
+						<p className={className}>{item}</p>
+					</div>
+				);
+			})}
 		</section>
 	);
 };

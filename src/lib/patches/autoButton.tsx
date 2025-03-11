@@ -27,9 +27,9 @@ const AutoChoice: React.FC<ChoiceProps> = ({
 	};
 
 	return (
-		<button className={className} style={{ display: "none" }}>
+		<a className={className} style={{ display: "none" }}>
 			{children}
-		</button>
+		</a>
 	);
 };
 

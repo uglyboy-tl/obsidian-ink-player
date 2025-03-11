@@ -20,7 +20,8 @@ If your plugin does not need CSS, delete this file.
 	max-width: 50%;
 }
 
-.story-text div {
+.story-text div,
+#ink-choices {
 	opacity: 0;
 	animation: fadeIn 0.5s forwards;
 	animation-delay: var(--delay, 0s);
@@ -33,4 +34,18 @@ If your plugin does not need CSS, delete this file.
 	to {
 		opacity: 1;
 	}
+}
+
+#ink-choices a {
+	padding: 0.2em 0.4em; /* 添加一些内边距 */
+	display: inline-block; /* 使其可以设置宽度和高度 */
+	border: 1px solid #ccc; /* 设置边框样式 */
+	border-radius: 5px; /* 可选：添加圆角 */
+}
+
+#ink-choices a.disabled {
+	color: gray;
+	cursor: not-allowed;
+	text-decoration: none;
+	pointer-events: none; /* 阻止点击事件 */
 }

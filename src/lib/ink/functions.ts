@@ -19,7 +19,7 @@ export class ExternalFunctions {
 	}
 
 	static bind(ink: InkStory, id: string) {
-		let externalFunction = ExternalFunctions.get(id) || (window as any)[id];
+		let externalFunction = ExternalFunctions.get(id) || (window as unknown as Record<string, Function>)[id];
 		if (externalFunction) {
 			ink.story.BindExternalFunction(id, externalFunction.bind(ink));
 		}
