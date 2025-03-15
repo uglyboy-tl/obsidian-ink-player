@@ -1,7 +1,7 @@
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { createElement } from "react";
 import { Root, createRoot } from "react-dom/client";
-import { InkStory } from "@/components";
+import { Ink } from "@/components";
 import { useFile, useStory } from "@/hooks";
 
 export const INK_STORY_VIEW = "Ink Story View";
@@ -23,7 +23,7 @@ export class InkStoryView extends ItemView {
 	async onOpen() {
 		const container = this.containerEl.children[1];
 		this.root = createRoot(container);
-		this.root.render(createElement(InkStory));
+		this.root.render(createElement(Ink));
 	}
 
 	async onClose() {

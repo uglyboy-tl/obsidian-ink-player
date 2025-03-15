@@ -11,13 +11,12 @@ type StoryChoices = {
 const useStoryChoices = create<StoryChoices>((set) => ({
 	choices: [],
 	setChoices: (ink_choices) => {
-		let choices: Choice[] = [];
-		ink_choices.forEach((choice) => {
+		const choices = ink_choices.map((choice) => {
 			const new_choice = new Choice(choice.text, choice.index);
 			if (choice.tags && choice.tags.length) {
 				ChoiceParser.process(choice, new_choice);
 			}
-			choices.push(new_choice);
+			return new_choice;
 		});
 		set({ choices });
 	},

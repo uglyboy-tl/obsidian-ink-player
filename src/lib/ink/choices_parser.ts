@@ -22,16 +22,14 @@ export class Choice {
 }
 
 export class ChoiceParser {
-	private static _tags: { [key: string]: Function };
-	private static _components: { [key: string]: FC };
+	private static _tags: Map<string, Function> = new Map();
+	private static _components: Map<string, FC> = new Map();
 
 	static get tags() {
-		if (!ChoiceParser._tags) ChoiceParser._tags = {};
 		return ChoiceParser._tags;
 	}
 
 	static get components() {
-		if (!ChoiceParser._components) ChoiceParser._components = {};
 		return ChoiceParser._components;
 	}
 	static add = (
@@ -39,9 +37,9 @@ export class ChoiceParser {
 		callback: (choice: Choice, val?: string) => void,
 		component?: FC
 	) => {
-		ChoiceParser.tags[tag] = callback;
+		ChoiceParser.tags.set(tag, callback);
 		if (component) {
-			ChoiceParser.components[tag] = component;
+			ChoiceParser.components.set(tag, component);
 		}
 	};
 
@@ -59,15 +57,16 @@ export class ChoiceParser {
 				let splitTag = splitAtCharacter(tag, ":");
 
 				// if the tag exists in our tags,
-				if (splitTag && splitTag.before in ChoiceParser.tags) {
-					// then we process our line with the tag
-					ChoiceParser.tags[splitTag.before](choice, splitTag.after);
+				if (splitTag && ChoiceParser.tags.has(splitTag.before)) {
+					ChoiceParser.tags.get(splitTag.before)?.(
+						choice,
+						splitTag.after
+					);
 				}
 			});
 		}
 	};
 }
-
 ChoiceParser.add("unclickable", (new_choice, val) => {
 	new_choice.type = "unclickable";
 });

@@ -1,1 +1,1 @@
-export { default as InkStory } from "./InkStory";
+export { default as Ink } from "./Ink";

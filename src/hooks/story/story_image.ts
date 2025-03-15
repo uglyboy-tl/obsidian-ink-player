@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-type StoryScene = {
+type StoryImage = {
 	image: string;
 	setImage: (image: string) => void;
 };
 
-const useStoryScene = create<StoryScene>((set) => ({
+const useStoryImage = create<StoryImage>((set) => ({
 	image: "",
 	setImage: (image) => set({ image }),
 }));
 
-export default useStoryScene;
+export default useStoryImage;

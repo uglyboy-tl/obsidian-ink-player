@@ -26,7 +26,7 @@ const InkContentsComponent: React.FC<InkContentsProps> = ({
 	}, [contents]);
 
 	return (
-		<section className="story-text">
+		<section id="ink-contents">
 			{contents.map((item, i) => {
 				const style: CSSProperties = {
 					"--delay": `${

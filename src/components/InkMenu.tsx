@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useRef, useState, useCallback } from "react";
 import { useStory } from "@/hooks";
 import { MdSave, MdRestore, MdReplay } from "react-icons/md";
 import GameMenuModal from "./InkMenuModal";
@@ -6,12 +6,12 @@ import GameMenuModal from "./InkMenuModal";
 const GameMenu: React.FC = () => {
 	const [type, setType] = useState<string>("");
 	const modalRef = useRef<HTMLDialogElement | null>(null);
-	const openModal = (type: string) => {
+	const openModal = useCallback((type: string) => {
 		if (modalRef.current && type) {
 			modalRef.current.showModal();
 		}
 		setType(type);
-	};
+	}, []);
 
 	return (
 		<nav className="view-header">

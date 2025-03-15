@@ -1,5 +1,5 @@
 import { Story } from "inkjs/engine/Story";
-import { useScene, useContents, useChoices, useVariables } from "@/hooks/story";
+import { useImage, useContents, useChoices, useVariables } from "@/hooks/story";
 import { Patches, Tags, Parser, ExternalFunctions } from "@/lib/ink";
 
 const options = {
@@ -56,7 +56,7 @@ export class InkStory {
 		this.continue();
 	}
 	clear() {
-		useScene.getState().setImage("");
+		useImage.getState().setImage("");
 		useContents.getState().empty();
 	}
 	restart() {

@@ -1,4 +1,5 @@
-import { useScene, useFile } from "@/hooks";
+import { useFile } from "@/hooks";
+import { useImage } from "@/hooks/story";
 import { Tags } from "@/lib/ink";
 
 const getPath = (path: string) => {
@@ -7,8 +8,8 @@ const getPath = (path: string) => {
 
 Tags.add("image", (val: string | null) => {
 	if (val) {
-		useScene.getState().setImage(getPath(val));
+		useImage.getState().setImage(getPath(val));
 	} else {
-		useScene.getState().setImage("");
+		useImage.getState().setImage("");
 	}
 });

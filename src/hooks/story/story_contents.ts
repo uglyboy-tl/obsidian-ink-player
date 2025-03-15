@@ -15,6 +15,7 @@ const useStoryContent = create<StoryContent>((set, get) => ({
 	last_content: "",
 	setContents: (contents) => set({ contents }),
 	setLastContent: () => {
+		if (get().contents.length === 0) return;
 		const last_content = get().contents[get().contents.length - 1];
 		set({ last_content });
 	},

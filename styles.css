@@ -6,17 +6,18 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
-.ink {
+#ink {
 	height: 99%;
 }
-.ink dialog.modal {
+
+#ink dialog.modal {
 	display: revert;
 }
-.ink .ink-image {
+#ink-image {
 	display: flex;
 	justify-content: center;
 }
-.ink .markdown-preview-view img:not([width]) {
+#ink .markdown-preview-view img:not([width]) {
 	max-width: 50%;
 }
 
@@ -41,6 +42,8 @@ If your plugin does not need CSS, delete this file.
 	display: inline-block; /* 使其可以设置宽度和高度 */
 	border: 1px solid #ccc; /* 设置边框样式 */
 	border-radius: 5px; /* 可选：添加圆角 */
+	text-decoration: none;
+	cursor: pointer;
 }
 
 #ink-choices a.disabled {

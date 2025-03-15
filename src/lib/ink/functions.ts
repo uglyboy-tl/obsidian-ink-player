@@ -1,8 +1,7 @@
 import { InkStory } from "./main";
 export class ExternalFunctions {
-	private static _functions: { [key: string]: Function };
+	private static _functions: Map<string, Function> = new Map();
 	static get functions() {
-		if (!ExternalFunctions._functions) ExternalFunctions._functions = {};
 		return ExternalFunctions._functions;
 	}
 
@@ -11,21 +10,21 @@ export class ExternalFunctions {
 	}
 
 	static add(id: string, func: Function) {
-		ExternalFunctions.functions[id] = func;
+		ExternalFunctions.functions.set(id, func);
 	}
 
 	static get(id: string) {
-		return ExternalFunctions.functions[id];
+		return ExternalFunctions.functions.get(id);
 	}
 
 	static bind(ink: InkStory, id: string) {
-		let externalFunction = ExternalFunctions.get(id) || (window as unknown as Record<string, Function>)[id];
+		const externalFunction = ExternalFunctions.get(id) || (window as unknown as Record<string, Function>)[id];
 		if (externalFunction) {
 			ink.story.BindExternalFunction(id, externalFunction.bind(ink));
 		}
 	}
 
 	static clear() {
-		ExternalFunctions.functions = {};
+		ExternalFunctions.functions.clear();
 	}
 }
