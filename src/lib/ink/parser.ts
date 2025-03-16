@@ -38,7 +38,7 @@ export class Parser {
 		let line = { text: text, tags: tags, classes: [] };
 
 		// if we submitted tags, and tags exist to style with,
-		if (line.tags.length && Object.keys(Parser.tags).length) {
+		if (line.tags.length && Parser.tags.size) {
 			// process each
 			line.tags.forEach(function (tag) {
 				// split up the tag into tag and property

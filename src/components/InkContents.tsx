@@ -1,29 +1,17 @@
-import { memo, useEffect, CSSProperties } from "react";
+import { memo, CSSProperties } from "react";
 import { useContents } from "@/hooks/story";
 
 interface InkContentsProps {
+	DELAY: number;
+	visibleLines: number;
 	className?: string;
-	onContentComplete?: () => void;
-	DELAY?: number;
 }
 const InkContentsComponent: React.FC<InkContentsProps> = ({
+	DELAY,
+	visibleLines,
 	className = "",
-	onContentComplete = () => {},
-	DELAY = 0.2,
 }) => {
 	const contents = useContents.use.contents();
-	const last_content = useContents.getState().last_content;
-	const visibleLines = contents.indexOf(last_content);
-
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			onContentComplete();
-		}, (contents.length - visibleLines) * DELAY * 1000);
-
-		return () => {
-			clearTimeout(timer);
-		};
-	}, [contents]);
 
 	return (
 		<section id="ink-contents">

@@ -24,7 +24,7 @@ const CooldownChoice: React.FC<ChoiceProps> = ({
 
 	return (
 		<a
-			className={`${className} ${isDisabled ? "disabled" : ""}`}
+			className={`btn ${className} ${isDisabled ? "disabled" : ""}`}
 			onClick={handleClick}
 		>
 			{children}

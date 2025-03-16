@@ -1,15 +1,38 @@
 import { useFile } from "@/hooks";
-import { useImage } from "@/hooks/story";
-import { Tags } from "@/lib/ink";
+import { create } from "zustand";
+import createSelectors from "@/lib/utils/createSelectors";
+import { InkStory, Tags, Patches } from "@/lib/ink";
+
+type StoryImage = {
+	image: string;
+	setImage: (image: string) => void;
+};
+
+const useStoryImage = create<StoryImage>((set) => ({
+	image: "",
+	setImage: (image) => set({ image }),
+}));
 
 const getPath = (path: string) => {
 	return useFile.getState().resourcePath + "/" + path;
 };
 
-Tags.add("image", (val: string | null) => {
+Tags.add("image", (val: string | null, ink: InkStory) => {
 	if (val) {
-		useImage.getState().setImage(getPath(val));
+		ink.image = getPath(val);
 	} else {
-		useImage.getState().setImage("");
+		ink.image = "";
 	}
 });
+
+Patches.add(function () {
+	Object.defineProperty(this, "image", {
+		get() {
+			return createSelectors(useStoryImage).use.image();
+		},
+
+		set(path: string) {
+			useStoryImage.getState().setImage(path);
+		},
+	});
+}, {});

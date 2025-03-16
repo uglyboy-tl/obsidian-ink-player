@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, createElement } from "react";
+import { memo, createElement } from "react";
 import { useChoices } from "@/hooks/story";
 import { ChoiceParser, Choice } from "@/lib/ink";
 
@@ -13,8 +13,6 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 	canShow = true,
 }) => {
 	const choices = useChoices.use.choices();
-
-	const lastButtonRef = useRef<HTMLElement | null>(null);
 	const getCompontent = (choice: Choice) => {
 		const Component = ChoiceParser.components.get(choice.type);
 		if (!Component) return null;
@@ -25,20 +23,6 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 			children: choice.text,
 		} as React.ComponentProps<typeof Component>);
 	};
-
-	useEffect(() => {
-		lastButtonRef.current = document.querySelector(
-			"ul#ink-choices > li:last-child"
-		) as HTMLElement;
-
-		if (lastButtonRef.current) {
-			const element = document.querySelector("#ink-story") as HTMLElement;
-			element.scrollTo({
-				top: lastButtonRef.current.offsetTop,
-				behavior: "smooth",
-			});
-		}
-	}, [choices]);
 
 	return (
 		<ul

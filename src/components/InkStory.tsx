@@ -1,5 +1,4 @@
-import { memo, useEffect, useState } from "react";
-import { useImage } from "@/hooks/story";
+import { memo, useEffect } from "react";
 import { InkStory } from "@/lib/ink";
 import InkChoices from "./InkChoices";
 import InkContents from "./InkContents";
@@ -9,40 +8,30 @@ interface InkStoryProps {
 	className: string;
 }
 
-const InkStoryComponent: React.FC<InkStoryProps> = ({ ink, className = "" }) => {
-	const { image } = useImage();
-	const [contentComplete, setContentComplete] = useState(true);
-	const DELAY: number = ink.options.linedelay;
-
+const InkStoryComponent: React.FC<InkStoryProps> = ({ ink, className }) => {
 	useEffect(() => {
-		if (ink) {
-			ink.restart();
-		}
+		ink.restart();
 	}, [ink]);
 
-	const handleContentComplete = () => {
-		setContentComplete(true);
-	};
+	ink.useEffect();
 
-	const handleClick = (index: number) => {
-		if (DELAY > 0) {
-			setContentComplete(false);
-		}
-		ink.choose(index);
-	};
+	const image_src = ink.image;
 
 	return (
 		<div id="ink-story" className={className}>
-			{image && (
+			{image_src && (
 				<div id="ink-image">
-					<img src={image} />
+					<img src={image_src} />
 				</div>
 			)}
 			<InkContents
-				onContentComplete={handleContentComplete}
-				DELAY={DELAY}
+				DELAY={ink.options.linedelay}
+				visibleLines={ink.visibleLines}
 			/>
-			<InkChoices handleClick={handleClick} canShow={contentComplete} />
+			<InkChoices
+				handleClick={(index) => ink.choose(index)}
+				canShow={ink.choicesCanShow}
+			/>
 		</div>
 	);
 };

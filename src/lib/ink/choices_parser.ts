@@ -46,17 +46,10 @@ export class ChoiceParser {
 	static process = (item: inkChoice, choice: Choice) => {
 		if (!item.text) return choice;
 
-		if (
-			item.tags &&
-			item.tags.length &&
-			Object.keys(ChoiceParser.tags).length
-		) {
-			// process each
+		if (item.tags && item.tags.length && ChoiceParser.tags.size) {
 			item.tags.forEach(function (tag) {
-				// split up the tag into tag and property
 				let splitTag = splitAtCharacter(tag, ":");
 
-				// if the tag exists in our tags,
 				if (splitTag && ChoiceParser.tags.has(splitTag.before)) {
 					ChoiceParser.tags.get(splitTag.before)?.(
 						choice,
@@ -67,6 +60,7 @@ export class ChoiceParser {
 		}
 	};
 }
+
 ChoiceParser.add("unclickable", (new_choice, val) => {
 	new_choice.type = "unclickable";
 });

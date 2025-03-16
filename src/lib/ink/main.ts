@@ -1,30 +1,62 @@
 import { Story } from "inkjs/engine/Story";
-import { useImage, useContents, useChoices, useVariables } from "@/hooks/story";
+import { useContents, useChoices, useVariables } from "@/hooks/story";
 import { Patches, Tags, Parser, ExternalFunctions } from "@/lib/ink";
 
 const options = {
-	linedelay: 0.2,
 	debug: false,
 };
 
 export class InkStory {
 	story: Story;
 	options: { [key: string]: any };
+	_side_effects: Function[] = [];
 	_cleanups: Function[] = [];
 	constructor(story: Story) {
 		this.options = options;
 		this.story = story;
 		const content = this.story.ToJson() || "";
+		bindFunctions(this);
 		Patches.apply(this, content);
 		this.bindExternalFunctions(content);
 	}
+
+	get image() {
+		return "";
+	}
+
+	set image(value: string) {}
+
+	get contents() {
+		return useContents.getState().contents;
+	}
+
+	set contents(value: string[]) {
+		useContents.getState().setContents(value);
+	}
+
+	get visibleLines() {
+		const last_content = useContents.getState().last_content;
+		return this.contents.indexOf(last_content);
+	}
+
+	get choicesCanShow() {
+		return true;
+	}
+
+	get choices() {
+		return useChoices.getState().choices;
+	}
+
 	get cleanups() {
 		return this._cleanups;
+	}
+
+	get effects() {
+		return this._side_effects;
 	}
 	continue() {
 		const newContent: string[] = [];
 
-		// 处理故事段落
 		while (this.story.canContinue) {
 			let current_text = this.story.Continue() || "";
 			if (this.story.currentTags) {
@@ -56,14 +88,23 @@ export class InkStory {
 		this.continue();
 	}
 	clear() {
-		useImage.getState().setImage("");
-		useContents.getState().empty();
+		this.image = "";
+		this.contents = [];
 	}
 	restart() {
 		this.story.ResetState();
 		this.clear();
 		this.continue();
 	}
+
+	useEffect() {
+		this.effects.map((effect) => {
+			if (effect) {
+				effect();
+			}
+		});
+	}
+
 	dispose() {
 		this.cleanups.map((cleanup) => {
 			if (cleanup) {
@@ -78,4 +119,18 @@ export class InkStory {
 			ExternalFunctions.bind(this, match);
 		});
 	};
+}
+
+function bindFunctions(target: any) {
+	var prototype = Object.getPrototypeOf(target);
+
+	Object.getOwnPropertyNames(prototype).forEach(function (property) {
+		if (
+			property != "constructor" &&
+			typeof Object.getOwnPropertyDescriptor(prototype, property)
+				?.value == "function"
+		) {
+			(target as any)[property] = (target as any)[property].bind(target);
+		}
+	});
 }

@@ -21,7 +21,7 @@ If your plugin does not need CSS, delete this file.
 	max-width: 50%;
 }
 
-.story-text div,
+#ink-contents div,
 #ink-choices {
 	opacity: 0;
 	animation: fadeIn 0.5s forwards;
@@ -37,7 +37,7 @@ If your plugin does not need CSS, delete this file.
 	}
 }
 
-#ink-choices a {
+#ink-choices .btn {
 	padding: 0.2em 0.4em; /* 添加一些内边距 */
 	display: inline-block; /* 使其可以设置宽度和高度 */
 	border: 1px solid #ccc; /* 设置边框样式 */
@@ -46,7 +46,7 @@ If your plugin does not need CSS, delete this file.
 	cursor: pointer;
 }
 
-#ink-choices a.disabled {
+#ink-choices .btn.disabled {
 	color: gray;
 	cursor: not-allowed;
 	text-decoration: none;

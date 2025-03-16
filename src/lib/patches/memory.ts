@@ -1,6 +1,5 @@
 import { InkStory, Patches } from "@/lib/ink";
 import { useSave } from "@/hooks";
-import { useContents } from "@/hooks/story";
 
 let options = {
 	memorycard_format: "session",
@@ -9,7 +8,8 @@ let options = {
 const save = (index: number, ink: InkStory) => {
 	let save = {
 		state: ink.story.state.toJson(),
-		contents: useContents.getState().contents,
+		contents: ink.contents,
+		image: ink.image,
 	};
 	useSave.getState().setSaves(index, save);
 };
@@ -18,7 +18,8 @@ const load = (save_data: string, ink: InkStory) => {
 	if (save) {
 		ink.story.state.LoadJson(save.state);
 		ink.clear();
-		useContents.getState().setContents(save.contents);
+		ink.contents = save.contents;
+		ink.image = save.image;
 		ink.continue();
 	}
 };
