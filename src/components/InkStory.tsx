@@ -1,7 +1,8 @@
 import { memo, useEffect } from "react";
 import { InkStory } from "@/lib/ink";
-import InkChoices from "./InkChoices";
+import InkImage from "./InkImage";
 import InkContents from "./InkContents";
+import InkChoices from "./InkChoices";
 
 interface InkStoryProps {
 	ink: InkStory;
@@ -15,27 +16,11 @@ const InkStoryComponent: React.FC<InkStoryProps> = ({ ink, className }) => {
 
 	ink.useEffect();
 
-	const image_src =
-		"useImage" in ink && typeof ink.useImage === "string" ? ink.useImage : undefined;
-	const choicesCanShow =
-		"choicesCanShow" in ink && typeof ink.choicesCanShow === "boolean"
-			? ink.choicesCanShow
-			: true;
 	return (
 		<div id="ink-story" className={className}>
-			{image_src && (
-				<div id="ink-image">
-					<img src={image_src} />
-				</div>
-			)}
-			<InkContents
-				DELAY={ink.options.linedelay}
-				visibleLines={ink.visibleLines}
-			/>
-			<InkChoices
-				handleClick={(index) => ink.choose(index)}
-				canShow={choicesCanShow}
-			/>
+			<InkImage image_src={ink.useImage} />
+			<InkContents DELAY={ink.options.linedelay} />
+			<InkChoices handleClick={(index) => ink.choose(index)} />
 		</div>
 	);
 };

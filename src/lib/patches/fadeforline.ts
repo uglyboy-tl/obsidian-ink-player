@@ -5,6 +5,7 @@ import { Patches, InkStory } from "@/lib/ink";
 
 declare module "@/lib/ink" {
 	interface InkStory {
+		visibleLines: number;
 		choicesCanShow: boolean;
 	}
 }
@@ -24,7 +25,10 @@ const useContentComplete = create<ContentComplete>((set) => ({
 	last_content: "",
 	setContentComplete: (contentComplete) => set({ contentComplete }),
 	setLastContent: (contents) => {
-		if (contents.length === 0) return;
+		if (contents.length === 0) {
+			set({ last_content: "" });
+			return;
+		}
 		const last_content = contents[contents.length - 1];
 		set({ last_content });
 	},
@@ -40,6 +44,7 @@ const setChoicesDelay = (ink: InkStory) => {
 			clearTimeout(timer);
 		};
 	}, [ink.contents]);
+	useEffect(() => {}, [ink.choicesCanShow]);
 };
 
 Patches.add(function () {
@@ -64,4 +69,8 @@ Patches.add(function () {
 	});
 	const setDelay = () => setChoicesDelay(this);
 	this.effects.push(setDelay);
+	this.clears.push(() => {
+		useContentComplete.getState().setContentComplete(false);
+		useContentComplete.getState().setLastContent([]);
+	});
 }, options);

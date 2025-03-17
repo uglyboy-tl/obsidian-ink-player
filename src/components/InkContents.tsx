@@ -1,17 +1,17 @@
 import { memo, CSSProperties } from "react";
-import { useContents } from "@/hooks/story";
+import { useContents, useStory } from "@/hooks/story";
 
 interface InkContentsProps {
 	DELAY: number;
-	visibleLines: number;
 	className?: string;
 }
 const InkContentsComponent: React.FC<InkContentsProps> = ({
 	DELAY,
-	visibleLines,
 	className = "",
 }) => {
+	const ink = useStory.getState().ink;
 	const contents = useContents.use.contents();
+	const visibleLines = ink?.visibleLines || contents.length;
 
 	return (
 		<section id="ink-contents">

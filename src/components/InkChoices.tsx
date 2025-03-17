@@ -1,18 +1,18 @@
 import { memo, createElement } from "react";
-import { useChoices } from "@/hooks/story";
+import { useChoices, useStory } from "@/hooks/story";
 import { ChoiceParser, Choice } from "@/lib/ink";
 
 interface InkChoicesProps {
 	handleClick: (index: number) => void;
-	canShow: boolean;
 	className?: string;
 }
 const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 	handleClick,
-	canShow,
 	className = "btn",
 }) => {
+	const ink = useStory.getState().ink;
 	const choices = useChoices.use.choices();
+	const canShow = (ink && "choicesCanShow" in ink) ? ink.choicesCanShow : true;
 	const getCompontent = (choice: Choice) => {
 		const Component = ChoiceParser.components.get(choice.type);
 		if (!Component) return null;

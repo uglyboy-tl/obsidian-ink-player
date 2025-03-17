@@ -56,9 +56,6 @@ export class InkStory {
 		return this._save_label;
 	}
 
-	get visibleLines() {
-		return this.contents.length;
-	}
 	continue() {
 		const newContent: string[] = [];
 
@@ -79,7 +76,7 @@ export class InkStory {
 				}
 			}
 
-			newContent.push(current_text);
+			if (current_text.trim()) newContent.push(current_text);
 		}
 		useContents.getState().add(newContent);
 

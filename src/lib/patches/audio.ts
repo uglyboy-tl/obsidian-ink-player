@@ -67,6 +67,7 @@ export class audio {
 
 Tags.add("sound", (val: string | null) => {
 	if (val) {
+		audio.cleanupSound();
 		audio.set_sound(getPath(val));
 	} else {
 		audio.cleanupSound();
@@ -75,6 +76,7 @@ Tags.add("sound", (val: string | null) => {
 
 Tags.add("music", (val: string | null) => {
 	if (val) {
+		audio.cleanupMusic();
 		audio.set_music(getPath(val));
 	} else {
 		audio.cleanupMusic();
