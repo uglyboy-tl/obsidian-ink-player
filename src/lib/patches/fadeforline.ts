@@ -70,7 +70,8 @@ Patches.add(function () {
 	const setDelay = () => setChoicesDelay(this);
 	this.effects.push(setDelay);
 	this.clears.push(() => {
-		useContentComplete.getState().setContentComplete(false);
+		if (this.options.linedelay != 0)
+			useContentComplete.getState().setContentComplete(false);
 		useContentComplete.getState().setLastContent([]);
 	});
 }, options);
