@@ -4,15 +4,15 @@ import { InkStory } from "@/lib/ink";
 
 interface StoryState {
 	ink: InkStory | null;
-	setStory: (story: any) => void;
+	setStory: (story: any, title: string) => void;
 }
 
 const useStory = create<StoryState>((set, get) => {
 	return {
 		ink: null,
-		setStory: (story) => {
+		setStory: (story, title) => {
 			get().ink?.dispose();
-			set({ ink: new InkStory(story) });
+			set({ ink: new InkStory(story, title) });
 		},
 	};
 });

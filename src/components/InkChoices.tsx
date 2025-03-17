@@ -4,13 +4,13 @@ import { ChoiceParser, Choice } from "@/lib/ink";
 
 interface InkChoicesProps {
 	handleClick: (index: number) => void;
+	canShow: boolean;
 	className?: string;
-	canShow?: boolean;
 }
 const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 	handleClick,
-	className = "",
-	canShow = true,
+	canShow,
+	className = "btn",
 }) => {
 	const choices = useChoices.use.choices();
 	const getCompontent = (choice: Choice) => {
@@ -18,7 +18,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 		if (!Component) return null;
 		return createElement(Component, {
 			onClick: () => handleClick(choice.index),
-			className: `btn ${className}`,
+			className: className,
 			val: choice.val,
 			children: choice.text,
 		} as React.ComponentProps<typeof Component>);
@@ -40,7 +40,7 @@ const InkChoicesComponent: React.FC<InkChoicesProps> = ({
 								if (choice.type === "unclickable") return;
 								handleClick(choice.index);
 							}}
-							className={`btn ${className} ${
+							className={`${className} ${
 								choice.type === "unclickable" ? "disabled" : ""
 							}`}
 							aria-disabled={choice.type === "unclickable"}

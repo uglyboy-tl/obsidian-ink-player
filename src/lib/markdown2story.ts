@@ -8,11 +8,12 @@ export const compiledStory = () => {
 	const errorHandler: ErrorHandler = (message, errorType) => {
 		useError.getState().errorHandler(`${errorType}: ${message}`);
 	};
+	const filePath = useFile.getState().filePath;
 	const markdown = useFile.getState().markdown;
-	const inkjs = require("inkjs/full")
+	const inkjs = require("inkjs/full");
 	const story = new inkjs.Compiler(markdown, {
 		fileHandler,
 		errorHandler,
 	}).Compile();
-	useStory.getState().setStory(story);
+	useStory.getState().setStory(story, filePath);
 };

@@ -7,44 +7,41 @@ const options = {
 };
 
 export class InkStory {
+	title: string;
 	story: Story;
 	options: { [key: string]: any };
 	_side_effects: Function[] = [];
 	_cleanups: Function[] = [];
-	constructor(story: Story) {
+	_clears: Function[] = [];
+	_save_label: string[] = ["contents"];
+
+	constructor(story: Story, title: string) {
 		this.options = options;
 		this.story = story;
+		this.title = title;
 		const content = this.story.ToJson() || "";
 		bindFunctions(this);
 		Patches.apply(this, content);
 		this.bindExternalFunctions(content);
+		this.clears.push(() => {
+			this.contents.length = 0;
+		});
 	}
-
-	get image() {
-		return "";
-	}
-
-	set image(value: string) {}
 
 	get contents() {
 		return useContents.getState().contents;
 	}
 
-	set contents(value: string[]) {
-		useContents.getState().setContents(value);
-	}
-
-	get visibleLines() {
-		const last_content = useContents.getState().last_content;
-		return this.contents.indexOf(last_content);
-	}
-
-	get choicesCanShow() {
-		return true;
+	set contents(newContent: string[]) {
+		useContents.getState().setContents(newContent);
 	}
 
 	get choices() {
 		return useChoices.getState().choices;
+	}
+
+	get clears() {
+		return this._clears;
 	}
 
 	get cleanups() {
@@ -53,6 +50,14 @@ export class InkStory {
 
 	get effects() {
 		return this._side_effects;
+	}
+
+	get save_label() {
+		return this._save_label;
+	}
+
+	get visibleLines() {
+		return this.contents.length;
 	}
 	continue() {
 		const newContent: string[] = [];
@@ -82,15 +87,18 @@ export class InkStory {
 		useChoices.getState().setChoices(currentChoices);
 		useVariables.getState().setGlobalVars(variablesState);
 	}
+
 	choose(index: number) {
-		useContents.getState().setLastContent();
 		this.story.ChooseChoiceIndex(index);
 		this.continue();
 	}
+
 	clear() {
-		this.image = "";
-		this.contents = [];
+		this.clears.map((clear) => {
+			clear();
+		});
 	}
+
 	restart() {
 		this.story.ResetState();
 		this.clear();
@@ -112,6 +120,7 @@ export class InkStory {
 			}
 		});
 	}
+
 	bindExternalFunctions = (content: string) => {
 		new Set(
 			Array.from(content.matchAll(/\"x\(\)\":\"(\w+)/gi), (m) => m["1"])

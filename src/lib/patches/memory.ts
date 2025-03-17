@@ -1,31 +1,45 @@
 import { InkStory, Patches } from "@/lib/ink";
-import { useSave } from "@/hooks";
+import { default as useStorage } from "./storage";
 
 let options = {
-	memorycard_format: "session",
+	memory_format: "session",
 };
 
+const show = (title: string) => {
+	return useStorage.getState().storage.get(title) || null;
+};
 const save = (index: number, ink: InkStory) => {
 	let save = {
 		state: ink.story.state.toJson(),
-		contents: ink.contents,
-		image: ink.image,
 	};
-	useSave.getState().setSaves(index, save);
+	ink.save_label.forEach((label) => {
+		if (label in ink && typeof ink[label as keyof InkStory] !== "undefined")
+			Object.assign(save, {
+				[label]: ink[label as keyof InkStory],
+			});
+	});
+	useStorage.getState().setStorage(ink.title, index, save);
 };
 const load = (save_data: string, ink: InkStory) => {
 	const save = JSON.parse(save_data);
 	if (save) {
 		ink.story.state.LoadJson(save.state);
 		ink.clear();
-		ink.contents = save.contents;
-		ink.image = save.image;
+		ink.save_label.forEach((label) => {
+			if (
+				label in ink &&
+				typeof ink[label as keyof InkStory] !== "undefined" &&
+				label in save
+			)
+				// @ts-ignore
+				ink[label as keyof InkStory] = save[label];
+		});
 		ink.continue();
 	}
 };
 
 Patches.add(function () {
-	useSave.getState().setFormat(options.memorycard_format);
+	useStorage.getState().changeFormat(options.memory_format);
 }, options);
 
-export default { options: options, save: save, load: load };
+export default { save: save, load: load, show: show };

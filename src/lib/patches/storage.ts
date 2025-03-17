@@ -1,7 +1,5 @@
 import { create } from "zustand";
 import { persist, StorageValue } from "zustand/middleware";
-import createSelectors from "@/lib/utils/createSelectors";
-import useFile from "@/hooks/file";
 
 const StorageType: { [key: string]: Storage } = {
 	local: localStorage,
@@ -30,36 +28,31 @@ class Save {
 	}
 }
 
-interface Saves {
-	saves: Map<string, Save[]>;
-	getSaves: () => Save[] | null;
-	setSaves: (index: number, data: object) => void;
-	setFormat: (format: string) => void;
+interface StorageInterface {
+	storage: Map<string, Save[]>;
+	setStorage: (title: string, index: number, data: object) => void;
+	changeFormat: (format: string) => void;
 }
 
-const useSavesBase = create<Saves>()(
+const useStorage = create<StorageInterface>()(
 	persist(
 		(set, get) => ({
-			saves: new Map(),
-			getSaves: () => {
-				const filePath = useFile.use.filePath();
-				let saves = get().saves;
-				return saves.get(filePath) || null;
-			},
-			setSaves: (index, data) => {
-				const filePath = useFile.getState().filePath;
-				const newSavesMap = get().saves.size ? get().saves : new Map();
-				let file_saves = newSavesMap.get(filePath) || [];
+			storage: new Map(),
+			setStorage: (title, index, data) => {
+				const newSavesMap = get().storage.size
+					? get().storage
+					: new Map();
+				let file_saves = newSavesMap.get(title) || [];
 				file_saves[index] = new Save(data);
-				newSavesMap.set(filePath, file_saves);
-				set({ saves: newSavesMap });
+				newSavesMap.set(title, file_saves);
+				set({ storage: newSavesMap });
 			},
-			setFormat: (format) => {
+			changeFormat: (format) => {
 				type = format;
 			},
 		}),
 		{
-			name: "inkStory", // 存储项的名称（必须是唯一的）
+			name: "inkStory",
 			storage: {
 				getItem: (name) => {
 					const str = getStorage().getItem(name);
@@ -68,15 +61,17 @@ const useSavesBase = create<Saves>()(
 					return {
 						state: {
 							...state,
-							saves: new Map(state.saves),
+							storage: new Map(state.storage),
 						},
 					};
 				},
-				setItem: (name, newValue: StorageValue<Saves>) => {
+				setItem: (name, newValue: StorageValue<StorageInterface>) => {
 					const str = JSON.stringify({
 						state: {
 							...newValue.state,
-							saves: Array.from(newValue.state.saves.entries()),
+							storage: Array.from(
+								newValue.state.storage.entries()
+							),
 						},
 					});
 					getStorage().setItem(name, str);
@@ -89,4 +84,4 @@ const useSavesBase = create<Saves>()(
 	)
 );
 
-export default createSelectors(useSavesBase);
+export default useStorage;

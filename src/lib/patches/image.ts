@@ -1,7 +1,14 @@
 import { useFile } from "@/hooks";
 import { create } from "zustand";
 import createSelectors from "@/lib/utils/createSelectors";
-import { InkStory, Tags, Patches } from "@/lib/ink";
+import { Tags, Patches } from "@/lib/ink";
+
+declare module "@/lib/ink" {
+	interface InkStory {
+		image: string;
+		useImage: string;
+	}
+}
 
 type StoryImage = {
 	image: string;
@@ -17,22 +24,31 @@ const getPath = (path: string) => {
 	return useFile.getState().resourcePath + "/" + path;
 };
 
-Tags.add("image", (val: string | null, ink: InkStory) => {
+Tags.add("image", (val: string | null) => {
 	if (val) {
-		ink.image = getPath(val);
+		useStoryImage.getState().setImage(getPath(val));
 	} else {
-		ink.image = "";
+		useStoryImage.getState().setImage("");
 	}
 });
 
 Patches.add(function () {
 	Object.defineProperty(this, "image", {
 		get() {
-			return createSelectors(useStoryImage).use.image();
+			return useStoryImage.getState().image;
 		},
 
 		set(path: string) {
 			useStoryImage.getState().setImage(path);
 		},
+	});
+	Object.defineProperty(this, "useImage", {
+		get() {
+			return createSelectors(useStoryImage).use.image();
+		},
+	});
+	this.save_label.push("image");
+	this.clears.push(() => {
+		this.image = "";
 	});
 }, {});

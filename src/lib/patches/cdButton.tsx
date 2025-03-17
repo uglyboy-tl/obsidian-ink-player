@@ -42,7 +42,7 @@ ChoiceParser.add(
 );
 
 const options = {
-	linedelay: 0.0,
+	linedelay: 0,
 };
 
 Patches.add(null, options);

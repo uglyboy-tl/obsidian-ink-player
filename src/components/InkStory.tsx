@@ -15,8 +15,12 @@ const InkStoryComponent: React.FC<InkStoryProps> = ({ ink, className }) => {
 
 	ink.useEffect();
 
-	const image_src = ink.image;
-
+	const image_src =
+		"useImage" in ink && typeof ink.useImage === "string" ? ink.useImage : undefined;
+	const choicesCanShow =
+		"choicesCanShow" in ink && typeof ink.choicesCanShow === "boolean"
+			? ink.choicesCanShow
+			: true;
 	return (
 		<div id="ink-story" className={className}>
 			{image_src && (
@@ -30,7 +34,7 @@ const InkStoryComponent: React.FC<InkStoryProps> = ({ ink, className }) => {
 			/>
 			<InkChoices
 				handleClick={(index) => ink.choose(index)}
-				canShow={ink.choicesCanShow}
+				canShow={choicesCanShow}
 			/>
 		</div>
 	);

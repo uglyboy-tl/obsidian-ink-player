@@ -5,9 +5,11 @@ import GameMenuModal from "./InkMenuModal";
 
 const GameMenu: React.FC = () => {
 	const [type, setType] = useState<string>("");
+	const [title, setTitle] = useState<string>("");
 	const modalRef = useRef<HTMLDialogElement | null>(null);
 	const openModal = useCallback((type: string) => {
 		if (modalRef.current && type) {
+			setTitle(useStory.getState().ink?.title || "");
 			modalRef.current.showModal();
 		}
 		setType(type);
@@ -40,7 +42,7 @@ const GameMenu: React.FC = () => {
 					<MdReplay size={18} />
 				</button>
 			</div>
-			{<GameMenuModal modalRef={modalRef} type={type} />}
+			{<GameMenuModal modalRef={modalRef} type={type} title={title} />}
 		</nav>
 	);
 };
