@@ -24,6 +24,7 @@ export class audio {
 
 	static set_music(path: string) {
 		this._music = new Audio(path);
+		this._music.loop = true;
 		this._music_handler = () => {
 			this._music?.play();
 		};

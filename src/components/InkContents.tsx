@@ -11,7 +11,8 @@ const InkContentsComponent: React.FC<InkContentsProps> = ({
 }) => {
 	const ink = useStory.getState().ink;
 	const contents = useContents.use.contents();
-	const visibleLines = ink?.visibleLines || contents.length;
+	const visibleLines =
+		ink?.visibleLines != undefined ? ink.visibleLines : contents.length;
 
 	return (
 		<section id="ink-contents">
