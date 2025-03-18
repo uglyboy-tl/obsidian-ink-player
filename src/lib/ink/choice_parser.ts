@@ -24,7 +24,7 @@ export class Choice {
 export class ChoiceParser {
 	private static _tags: Map<string, Function> = new Map();
 	private static _components: Map<string, FC> = new Map();
-
+	private static readonly excludeKeys: Set<string> = new Set(["unclickable"]);
 	static get tags() {
 		return ChoiceParser._tags;
 	}
@@ -34,8 +34,12 @@ export class ChoiceParser {
 	}
 
 	static clear = () => {
-		ChoiceParser._tags.clear();
 		ChoiceParser._components.clear();
+		for (const [key, _] of this._tags.entries()) {
+			if (!this.excludeKeys.has(key)) {
+				this._tags.delete(key);
+			}
+		}
 	};
 
 	static add = (

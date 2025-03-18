@@ -38,10 +38,6 @@ const load = (save_data: string, ink: InkStory) => {
 	}
 };
 
-Patches.add(function () {
-	useStorage.getState().changeFormat(options.memory_format);
-}, options);
-
 export default { save: save, load: load, show: show };
 
 export const load_memory = () => {
