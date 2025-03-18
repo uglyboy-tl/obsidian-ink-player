@@ -13,7 +13,7 @@ import { InkStoryView, INK_STORY_VIEW } from "view";
 import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
 import { compiledStory } from "@/lib/markdown2story";
 import { useFile } from "@/hooks";
-import "./patches";
+import { updatePlugins } from "patches";
 
 export class InkStorylugin extends Plugin {
 	settings: InkStorySettings;
@@ -67,7 +67,7 @@ export class InkStorylugin extends Plugin {
 	}
 
 	private async updateRefreshSettings() {
-		//updatePlugins(this.settings);
+		updatePlugins(this.settings);
 	}
 	async onunload() {}
 

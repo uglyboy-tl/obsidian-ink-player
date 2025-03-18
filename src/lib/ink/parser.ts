@@ -12,6 +12,10 @@ export class Parser {
 		return Parser._tags;
 	}
 
+	static clear = () => {
+		Parser._tags = {};
+		Parser._patterns = [];
+	};
 	// a list of patterns and their associate functions
 	static get patterns() {
 		if (!Parser._patterns) Parser._patterns = [];

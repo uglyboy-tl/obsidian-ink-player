@@ -47,31 +47,37 @@ const setChoicesDelay = (ink: InkStory) => {
 	useEffect(() => {}, [ink.choicesCanShow]);
 };
 
-Patches.add(function () {
-	const originalChoose = this.choose;
-	this.choose = function (index: number) {
-		if (this.options.linedelay != 0) {
-			useContentComplete.getState().setContentComplete(false);
-			useContentComplete.getState().setLastContent(this.contents);
-		}
-		return originalChoose.call(this, index);
-	};
-	Object.defineProperty(this, "visibleLines", {
-		get() {
-			const last_content = useContentComplete.getState().last_content;
-			return this.contents.lastIndexOf(last_content);
-		},
-	});
-	Object.defineProperty(this, "choicesCanShow", {
-		get() {
-			return createSelectors(useContentComplete).use.contentComplete();
-		},
-	});
-	const setDelay = () => setChoicesDelay(this);
-	this.effects.push(setDelay);
-	this.clears.push(() => {
-		if (this.options.linedelay != 0)
-			useContentComplete.getState().setContentComplete(false);
-		useContentComplete.getState().setLastContent([]);
-	});
-}, options);
+const load = () => {
+	Patches.add(function () {
+		const originalChoose = this.choose;
+		this.choose = function (index: number) {
+			if (this.options.linedelay != 0) {
+				useContentComplete.getState().setContentComplete(false);
+				useContentComplete.getState().setLastContent(this.contents);
+			}
+			return originalChoose.call(this, index);
+		};
+		Object.defineProperty(this, "visibleLines", {
+			get() {
+				const last_content = useContentComplete.getState().last_content;
+				return this.contents.lastIndexOf(last_content);
+			},
+		});
+		Object.defineProperty(this, "choicesCanShow", {
+			get() {
+				return createSelectors(
+					useContentComplete
+				).use.contentComplete();
+			},
+		});
+		const setDelay = () => setChoicesDelay(this);
+		this.effects.push(setDelay);
+		this.clears.push(() => {
+			if (this.options.linedelay != 0)
+				useContentComplete.getState().setContentComplete(false);
+			useContentComplete.getState().setLastContent([]);
+		});
+	}, options);
+};
+
+export default load;

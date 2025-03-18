@@ -24,31 +24,35 @@ const getPath = (path: string) => {
 	return useFile.getState().resourcePath + "/" + path;
 };
 
-Tags.add("image", (val: string | null) => {
-	if (val) {
-		useStoryImage.getState().setImage(getPath(val));
-	} else {
-		useStoryImage.getState().setImage("");
-	}
-});
+export const load = () => {
+	Tags.add("image", (val: string | null) => {
+		if (val) {
+			useStoryImage.getState().setImage(getPath(val));
+		} else {
+			useStoryImage.getState().setImage("");
+		}
+	});
 
-Patches.add(function () {
-	Object.defineProperty(this, "image", {
-		get() {
-			return useStoryImage.getState().image;
-		},
+	Patches.add(function () {
+		Object.defineProperty(this, "image", {
+			get() {
+				return useStoryImage.getState().image;
+			},
 
-		set(path: string) {
-			useStoryImage.getState().setImage(path);
-		},
-	});
-	Object.defineProperty(this, "useImage", {
-		get() {
-			return createSelectors(useStoryImage).use.image();
-		},
-	});
-	this.save_label.push("image");
-	this.clears.push(() => {
-		this.image = "";
-	});
-}, {});
+			set(path: string) {
+				useStoryImage.getState().setImage(path);
+			},
+		});
+		Object.defineProperty(this, "useImage", {
+			get() {
+				return createSelectors(useStoryImage).use.image();
+			},
+		});
+		this.save_label.push("image");
+		this.clears.push(() => {
+			this.image = "";
+		});
+	}, {});
+};
+
+export default load;

@@ -16,8 +16,11 @@ const scrollAfterChoice = (choices: Choice[]) => {
 		}
 	}, [choices]);
 };
+const load = () => {
+	Patches.add(function () {
+		const scroll = () => scrollAfterChoice(this.choices);
+		this.effects.push(scroll);
+	}, {});
+};
 
-Patches.add(function () {
-	const scroll = () => scrollAfterChoice(this.choices);
-	this.effects.push(scroll);
-}, {});
+export default load;

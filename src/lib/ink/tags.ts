@@ -10,6 +10,10 @@ export class Tags {
 		return Tags._functions;
 	}
 
+	static clear() {
+		Tags._functions = {};
+	}
+
 	// function executed once the story detects that tag
 	static add(tagName: string, callback: TagFunction) {
 		Tags.functions[tagName] = callback;

@@ -33,11 +33,15 @@ const AutoChoice: React.FC<ChoiceProps> = ({
 	);
 };
 
-ChoiceParser.add(
-	"auto",
-	(new_choice, val) => {
-		new_choice.type = "auto";
-		new_choice.val = val;
-	},
-	memo(AutoChoice)
-);
+const load = () => {
+	ChoiceParser.add(
+		"auto",
+		(new_choice, val) => {
+			new_choice.type = "auto";
+			new_choice.val = val;
+		},
+		memo(AutoChoice)
+	);
+};
+
+export default load;

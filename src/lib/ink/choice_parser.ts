@@ -32,6 +32,12 @@ export class ChoiceParser {
 	static get components() {
 		return ChoiceParser._components;
 	}
+
+	static clear = () => {
+		ChoiceParser._tags.clear();
+		ChoiceParser._components.clear();
+	};
+
 	static add = (
 		tag: string,
 		callback: (choice: Choice, val?: string) => void,

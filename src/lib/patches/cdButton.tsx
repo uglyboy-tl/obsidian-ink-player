@@ -32,17 +32,20 @@ const CooldownChoice: React.FC<ChoiceProps> = ({
 	);
 };
 
-ChoiceParser.add(
-	"cd",
-	(new_choice, val) => {
-		new_choice.type = "cd";
-		new_choice.val = val;
-	},
-	memo(CooldownChoice)
-);
-
 const options = {
 	linedelay: 0,
 };
 
-Patches.add(null, options);
+const load = () => {
+	ChoiceParser.add(
+		"cd",
+		(new_choice, val) => {
+			new_choice.type = "cd";
+			new_choice.val = val;
+		},
+		memo(CooldownChoice)
+	);
+	Patches.add(null, options);
+};
+
+export default load;

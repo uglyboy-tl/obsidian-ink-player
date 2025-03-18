@@ -43,3 +43,9 @@ Patches.add(function () {
 }, options);
 
 export default { save: save, load: load, show: show };
+
+export const load_memory = () => {
+	Patches.add(function () {
+		useStorage.getState().changeFormat(options.memory_format);
+	}, options);
+};
