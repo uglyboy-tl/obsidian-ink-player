@@ -6,13 +6,17 @@ const options = {
 	debug: false,
 };
 
+export type CleanupFunction = () => void;
+export type SideEffectFunction = () => void;
+export type ClearFunction = () => void;
+
 export class InkStory {
 	title: string;
 	story: Story;
 	options: { [key: string]: any };
-	_side_effects: Function[] = [];
-	_cleanups: Function[] = [];
-	_clears: Function[] = [];
+	_side_effects: SideEffectFunction[] = [];
+	_cleanups: CleanupFunction[] = [];
+	_clears: ClearFunction[] = [];
 	_save_label: string[] = ["contents"];
 
 	constructor(story: Story, title: string) {

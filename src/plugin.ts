@@ -9,22 +9,19 @@ import {
 	TAbstractFile,
 	getLanguage,
 } from "obsidian";
-import { InkStoryView, INK_STORY_VIEW } from "./view";
+import { InkStoryView, INK_STORY_VIEW } from "view";
+import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
 import { compiledStory } from "@/lib/markdown2story";
 import { useFile } from "@/hooks";
 import "./patches";
 
-interface InkStoryluginSettings {
-	testSetting: string;
-}
-
-const DEFAULT_SETTINGS: InkStoryluginSettings = {
-	testSetting: "default",
-};
-
 export class InkStorylugin extends Plugin {
-	settings: InkStoryluginSettings;
+	settings: InkStorySettings;
 	async onload() {
+		await this.loadSettings();
+		this.addSettingTab(new GeneralSettingsTab(this.app, this));
+		this.updateRefreshSettings();
+
 		const command_text =
 			getLanguage() === "zh" ? "激活 Ink Story" : "Activate Ink Story";
 		this.registerView(INK_STORY_VIEW, (leaf) => new InkStoryView(leaf));
@@ -67,22 +64,24 @@ export class InkStorylugin extends Plugin {
 				});
 			})
 		);
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new InkStoryluginSettingTab(this.app, this));
 	}
 
+	private async updateRefreshSettings() {
+		//updatePlugins(this.settings);
+	}
 	async onunload() {}
 
 	async loadSettings() {
 		this.settings = Object.assign(
-			{},
 			DEFAULT_SETTINGS,
-			await this.loadData()
+			(await this.loadData()) ?? {}
 		);
 	}
 
-	async saveSettings() {
+	/** Update plugin settings. */
+	async updateSettings(settings: Partial<InkStorySettings>) {
+		Object.assign(this.settings, settings);
+		this.updateRefreshSettings();
 		await this.saveData(this.settings);
 	}
 	async activateView(file: TAbstractFile | null = null) {
@@ -123,7 +122,7 @@ export class InkStorylugin extends Plugin {
 	}
 }
 
-class InkStoryluginSettingTab extends PluginSettingTab {
+class GeneralSettingsTab extends PluginSettingTab {
 	plugin: InkStorylugin;
 
 	constructor(app: App, plugin: InkStorylugin) {
@@ -132,21 +131,136 @@ class InkStoryluginSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const { containerEl } = this;
+		this.containerEl.empty();
 
-		containerEl.empty();
+		new Setting(this.containerEl).setName("Plugins").setHeading();
 
-		new Setting(containerEl)
-			.setName("Setting #1")
-			.setDesc("It's a secret")
-			.addText((text) =>
-				text
-					.setPlaceholder("Enter your secret")
-					.setValue(this.plugin.settings.testSetting)
-					.onChange(async (value) => {
-						this.plugin.settings.testSetting = value;
-						await this.plugin.saveSettings();
-					})
+		new Setting(this.containerEl)
+			.setName("Use Audio")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.audio)
+					.onChange(
+						async (value) =>
+							await this.plugin.updateSettings({ audio: value })
+					)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Use Image")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.image)
+					.onChange(
+						async (value) =>
+							await this.plugin.updateSettings({ image: value })
+					)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Open link in new tab")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.linkopen).onChange(
+					async (value) =>
+						await this.plugin.updateSettings({
+							linkopen: value,
+						})
+				)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Use Memory")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.memory)
+					.onChange(
+						async (value) =>
+							await this.plugin.updateSettings({ memory: value })
+					)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Scroll after choice")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.scrollafterchoice)
+					.onChange(
+						async (value) =>
+							await this.plugin.updateSettings({
+								scrollafterchoice: value,
+							})
+					)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Fade for line")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.fadeforline).onChange(
+					async (value) =>
+						await this.plugin.updateSettings({
+							fadeforline: value,
+						})
+				)
+			);
+
+		new Setting(this.containerEl)
+			.setName("CD Button")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.cd_button).onChange(
+					async (value) =>
+						await this.plugin.updateSettings({
+							cd_button: value,
+						})
+				)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Auto Button")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.auto_button).onChange(
+					async (value) =>
+						await this.plugin.updateSettings({
+							auto_button: value,
+						})
+				)
+			);
+
+		new Setting(this.containerEl)
+			.setName("Auto Save")
+			.setDesc(
+				"Enable or disable executing regular inline Dataview queries."
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.auto_save).onChange(
+					async (value) =>
+						await this.plugin.updateSettings({
+							auto_save: value,
+						})
+				)
 			);
 	}
 }

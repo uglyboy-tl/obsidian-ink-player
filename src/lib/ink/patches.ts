@@ -1,5 +1,6 @@
 import { InkStory } from "./main";
 
+export type PatchFunction = (content: string) => void;
 export class Patches {
 	private static _patches: Function[];
 	private static _options: {
@@ -15,7 +16,7 @@ export class Patches {
 	}
 
 	static add(
-		callback: Function | null,
+		callback: PatchFunction | null,
 		patchOptions: { [key: string]: any } = {}
 	) {
 		Object.assign(this._options, patchOptions);

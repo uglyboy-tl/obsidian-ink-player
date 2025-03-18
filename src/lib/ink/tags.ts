@@ -1,4 +1,7 @@
 import { InkStory } from "./main";
+
+export type TagFunction = (val: string, ink: InkStory) => void;
+
 export class Tags {
 	private static _functions: { [key: string]: Function };
 
@@ -8,7 +11,7 @@ export class Tags {
 	}
 
 	// function executed once the story detects that tag
-	static add(tagName: string, callback: Function) {
+	static add(tagName: string, callback: TagFunction) {
 		Tags.functions[tagName] = callback;
 	}
 	static process = (ink: InkStory, inputString: string) => {
