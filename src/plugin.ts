@@ -7,23 +7,35 @@ import {
 	PluginSettingTab,
 	Setting,
 	TAbstractFile,
-	getLanguage,
 } from "obsidian";
 import { InkStoryView, INK_STORY_VIEW } from "view";
 import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
 import { compiledStory } from "@/lib/markdown2story";
 import { useFile } from "@/hooks";
 import { updatePlugins } from "patches";
+import { I18n, type LangTypeAndAuto, type TransItemType } from "locales/i18n";
 
 export class InkStorylugin extends Plugin {
-	settings: InkStorySettings;
+	settings!: InkStorySettings;
+	i18n!: I18n;
 	async onload() {
 		await this.loadSettings();
 		this.addSettingTab(new GeneralSettingsTab(this.app, this));
 		this.updateRefreshSettings();
 
-		const command_text =
-			getLanguage() === "zh" ? "激活 Ink Story" : "Activate Ink Story";
+		// lang should be load early, but after settings
+		this.i18n = new I18n(
+			this.settings.lang!,
+			async (lang: LangTypeAndAuto) => {
+				this.settings.lang = lang;
+				await this.saveData(this.settings);
+			}
+		);
+		const t = (x: TransItemType, vars?: any) => {
+			return this.i18n.t(x, vars);
+		};
+
+		const command_text = t("command_activate");
 		this.registerView(INK_STORY_VIEW, (leaf) => new InkStoryView(leaf));
 
 		this.addRibbonIcon("dice", command_text, () => {
@@ -130,16 +142,19 @@ class GeneralSettingsTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
+	t(x: TransItemType, vars?: any) {
+		return this.plugin.i18n.t(x, vars);
+	}
 	display(): void {
 		this.containerEl.empty();
 
-		new Setting(this.containerEl).setName("Plugins").setHeading();
+		new Setting(this.containerEl)
+			.setName(this.t("settings_plugins"))
+			.setHeading();
 
 		new Setting(this.containerEl)
-			.setName("Use Audio")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_audio_title"))
+			.setDesc(this.t("settings_audio_desc"))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.audio)

@@ -1,0 +1,7 @@
+{
+  "confirm": "Confirm",
+  "command_activate" :"Activate Ink Story",
+  "settings_plugins":"Plugins",
+  "settings_audio_title":"Use Audio",
+  "settings_audio_desc":"You can play background music (loop) or sound effects (single play) via #music:url and #sound:url"
+}

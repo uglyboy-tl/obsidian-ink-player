@@ -1,0 +1,7 @@
+{
+  "confirm": "确认",
+  "command_activate": "激活 Ink Story",
+  "settings_plugins":"插件",
+  "settings_audio_title": "使用音频",
+  "settings_audio_desc":"可以通过 #music:url 和 #sound:url 来播放背景音乐（循环）或 音效（单次播放）"
+}
