@@ -1,4 +1,3 @@
-import { type LangTypeAndAuto } from "@/locales/i18n";
 export interface PluginSettings {
 	audio: boolean;
 	image: boolean;
@@ -24,12 +23,12 @@ export const DEFAULT_PLUGIN_SETTINGS: PluginSettings = {
 };
 
 export interface OptionSettings {
-	lang: LangTypeAndAuto;
+	linedelay: number;
 	debug: boolean;
 }
 
 export const DEFAULT_OPTION_SETTINGS: OptionSettings = {
-	lang: "auto",
+	linedelay: 0.2,
 	debug: false,
 };
 

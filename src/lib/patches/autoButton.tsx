@@ -7,21 +7,20 @@ const AutoChoice: React.FC<ChoiceProps> = ({
 	children,
 }) => {
 	// 滚动处理
-	let auto: NodeJS.Timeout;
+	let auto: number;
 	let cd = parseFloat(val);
 	useEffect(() => {
-		auto = setTimeout(() => {
+		auto = window.setTimeout(() => {
 			handleClick();
 		}, cd * 1000);
 		return () => {
-			clearTimeout(auto);
+			window.clearTimeout(auto);
 		};
 	}, []);
 	const handleClick = () => {
-		console.log("AutoClick");
 		onClick();
 
-		auto = setTimeout(() => {
+		auto = window.setTimeout(() => {
 			handleClick();
 		}, cd * 1000);
 	};

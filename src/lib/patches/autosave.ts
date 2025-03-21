@@ -6,7 +6,6 @@ var options = {
 };
 const load = () => {
 	Tags.add("autosave", (_: string, ink: InkStory) => {
-		console.log("autosave");
 		if (ink.options.autosave_enabled) {
 			memory.save(2, ink);
 		}

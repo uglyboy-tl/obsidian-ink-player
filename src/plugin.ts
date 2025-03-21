@@ -13,7 +13,7 @@ import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
 import { compiledStory } from "@/lib/markdown2story";
 import { useFile } from "@/hooks";
 import { updatePlugins } from "patches";
-import { I18n, type LangTypeAndAuto, type TransItemType } from "locales/i18n";
+import { I18n, type TransItemType } from "locales/i18n";
 
 export class InkStorylugin extends Plugin {
 	settings!: InkStorySettings;
@@ -24,13 +24,7 @@ export class InkStorylugin extends Plugin {
 		this.updateRefreshSettings();
 
 		// lang should be load early, but after settings
-		this.i18n = new I18n(
-			this.settings.lang!,
-			async (lang: LangTypeAndAuto) => {
-				this.settings.lang = lang;
-				await this.saveData(this.settings);
-			}
-		);
+		this.i18n = new I18n();
 		const t = (x: TransItemType, vars?: any) => {
 			return this.i18n.t(x, vars);
 		};
@@ -38,14 +32,14 @@ export class InkStorylugin extends Plugin {
 		const command_text = t("command_activate");
 		this.registerView(INK_STORY_VIEW, (leaf) => new InkStoryView(leaf));
 
-		this.addRibbonIcon("dice", command_text, () => {
+		this.addRibbonIcon("gamepad-2", command_text, () => {
 			this.activateView();
 		});
 
 		this.addCommand({
 			id: "activate-ink-story",
 			name: command_text,
-			icon: "dice",
+			icon: "gamepad-2",
 			checkCallback: (checking: boolean) => {
 				const { workspace } = this.app;
 				const markdownView =
@@ -69,7 +63,7 @@ export class InkStorylugin extends Plugin {
 			this.app.workspace.on("file-menu", (menu, file) => {
 				menu.addItem((item) => {
 					item.setTitle(command_text)
-						.setIcon("dice")
+						.setIcon("gamepad-2")
 						.onClick(async () => {
 							this.activateView(file);
 						});
@@ -149,6 +143,28 @@ class GeneralSettingsTab extends PluginSettingTab {
 		this.containerEl.empty();
 
 		new Setting(this.containerEl)
+			.setName(this.t("settings_options"))
+			.setHeading();
+
+		new Setting(this.containerEl)
+			.setName(this.t("options_linedelay_title"))
+			.setDesc(this.t("options_linedelay_desc"))
+			.addSlider((slider) => {
+				slider
+					.setLimits(0, 1, 0.05)
+					.setDynamicTooltip()
+					.setValue(
+						this.plugin.settings.linedelay ??
+							DEFAULT_SETTINGS.linedelay
+					)
+					.onChange(async (val) => {
+						await this.plugin.updateSettings({
+							linedelay: val,
+						});
+					});
+			});
+
+		new Setting(this.containerEl)
 			.setName(this.t("settings_plugins"))
 			.setHeading();
 
@@ -165,10 +181,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Use Image")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_image_title"))
+			.setDesc(this.t("settings_image_desc"))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.image)
@@ -179,10 +193,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Open link in new tab")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_linkopen_title"))
+			.setDesc(this.t("settings_linkopen_desc"))
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.linkopen).onChange(
 					async (value) =>
@@ -193,10 +205,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Use Memory")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_memory_title"))
+			.setDesc(this.t("settings_memory_desc"))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.memory)
@@ -207,10 +217,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Scroll after choice")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_scrollafterchoice_title"))
+			.setDesc(this.t("settings_scrollafterchoice_desc"))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.scrollafterchoice)
@@ -223,10 +231,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Fade for line")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_fadeforline_title"))
+			.setDesc(this.t("settings_fadeforline_desc"))
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.fadeforline).onChange(
 					async (value) =>
@@ -237,10 +243,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("CD Button")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_cdbutton_title"))
+			.setDesc(this.t("settings_cdbutton_desc"))
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.cd_button).onChange(
 					async (value) =>
@@ -251,10 +255,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Auto Button")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_autobutton_title"))
+			.setDesc(this.t("settings_autobutton_desc"))
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.auto_button).onChange(
 					async (value) =>
@@ -265,10 +267,8 @@ class GeneralSettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(this.containerEl)
-			.setName("Auto Save")
-			.setDesc(
-				"Enable or disable executing regular inline Dataview queries."
-			)
+			.setName(this.t("settings_autosave_title"))
+			.setDesc(this.t("settings_autosave_desc"))
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.auto_save).onChange(
 					async (value) =>
