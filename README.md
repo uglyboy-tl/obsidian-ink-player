@@ -17,7 +17,7 @@ Thanks to [Calico](https://elliotherriman.itch.io/calico), this plugin offers a 
 
 ## Usage
 
-1.  Open an Ink script file (usually with a `.ink` extension).
+1.  Open an Ink script file.
 2.  Use the `Activate Ink Story` command (available via the command palette or the dedicated ribbon button).
 3.  Enjoy your story!
 
