@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { Root, createRoot } from "react-dom/client";
 import { Ink } from "@/components";
 import { useFile, useStory } from "@/hooks";
+import { SESSION_RESTORE_FLAG } from "@/lib/markdown2story";
 import { compiledStory } from "@/lib/markdown2story";
 
 export const INK_STORY_VIEW = "Ink Story View";
@@ -33,9 +34,9 @@ export class InkStoryView extends ItemView {
 		if (filePath && filePath !== useFile.getState().filePath) {
 			const file = this.app.vault.getAbstractFileByPath(filePath);
 			if (file instanceof TFile) {
-				if (localStorage.getItem(`ink-session-${filePath}`)) {
-					localStorage.setItem("ink-player-restore-session", "true");
-				}
+			if (localStorage.getItem(`ink-session-${filePath}`)) {
+				localStorage.setItem(SESSION_RESTORE_FLAG, "true");
+			}
 				const { vault } = this.app;
 				const markdown = await vault.read(file);
 				// Guard: onLayoutReady may have fired while we were awaiting
@@ -49,7 +50,6 @@ export class InkStoryView extends ItemView {
 						.join("/");
 					useFile.getState().init(filePath, markdown, resourcePath);
 					compiledStory();
-					this.leaf.updateHeader();
 				}
 			}
 		}

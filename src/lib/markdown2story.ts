@@ -3,6 +3,8 @@ import * as inkjs from "inkjs/full";
 import { ErrorHandler } from "inkjs/engine/Error";
 import { ObsidianFileHandler } from "@/lib/utils/ObsidianFileHandler";
 
+export const SESSION_RESTORE_FLAG = "ink-player-restore-session";
+
 export const compiledStory = () => {
 	const fileHandler = new ObsidianFileHandler(
 		useFile.getState().resourcePath
@@ -26,6 +28,9 @@ export const compiledStory = () => {
 		if (!story) {
 			useError.getState().errorHandler("Error: Compilation returned no story");
 			return;
+		}
+		if (localStorage.getItem(`ink-session-${filePath}`)) {
+			localStorage.setItem(SESSION_RESTORE_FLAG, "true");
 		}
 		useStory.getState().setStory(story, filePath);
 	} catch (e) {
