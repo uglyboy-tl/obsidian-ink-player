@@ -134,9 +134,11 @@ export class InkStorylugin extends Plugin {
 		const fileLeaf = workspace.getLeavesOfType("markdown").find(
 			(leaf) => (leaf.view as MarkdownView).file?.path === filePath
 		);
+		const editorContent = (fileLeaf?.view as MarkdownView)?.editor.getValue();
 		const markdown =
-			(fileLeaf?.view as MarkdownView)?.editor.getValue() ||
-			(file instanceof TFile ? await vault.read(file) : "");
+			editorContent != null && editorContent !== ""
+				? editorContent
+				: (file instanceof TFile ? await vault.read(file) : "");
 
 		const resourcePath = fileAdapter
 			.getResourcePath(filePath)
