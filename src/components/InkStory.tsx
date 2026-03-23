@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useRef } from "react";
 import { InkStory } from "@/lib/ink";
 import InkImage from "./InkImage";
 import InkContents from "./InkContents";
@@ -13,7 +13,13 @@ interface InkStoryProps {
 }
 
 const InkStoryComponent: React.FC<InkStoryProps> = ({ ink, className }) => {
+	const lastInkTitle = useRef<string | null>(null);
+
 	useEffect(() => {
+		// 只在 ink.title 变化时重新初始化
+		if (lastInkTitle.current === ink.title) return;
+		lastInkTitle.current = ink.title;
+
 		const sessionData = localStorage.getItem(SESSION_RESTORE_FLAG)
 			? localStorage.getItem(`ink-session-${ink.title}`)
 			: null;
