@@ -22,5 +22,9 @@
   "settings_autosave_desc": "遇到 # autosave 标签时自动保存故事状态",
   "settings_options": "选项",
   "options_linedelay_title": "行延迟",
-  "options_linedelay_desc": "启用逐行显示时，每行出现的间隔时间（秒）"
+  "options_linedelay_desc": "启用逐行显示时，每行出现的间隔时间（秒）",
+  "modal_save": "保存",
+  "modal_restore": "读取",
+  "modal_slot": "存档 {{n}}",
+  "modal_empty": "空"
 }

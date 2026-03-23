@@ -22,5 +22,9 @@
   "settings_autosave_desc": "Automatically save the story state when the # autosave tag is encountered.",
   "settings_options": "Options",
   "options_linedelay_title": "Line delay",
-  "options_linedelay_desc": "Time in seconds between each line appearing when Animate lines is enabled."
+  "options_linedelay_desc": "Time in seconds between each line appearing when Animate lines is enabled.",
+  "modal_save": "Save",
+  "modal_restore": "Restore",
+  "modal_slot": "Slot {{n}}",
+  "modal_empty": "empty"
 }

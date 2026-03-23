@@ -6,7 +6,7 @@ const StorageType: { [key: string]: Storage } = {
 	session: sessionStorage,
 };
 
-let type = "session";
+let type = "local";
 const getStorage = () => {
 	return StorageType[type];
 };
@@ -39,10 +39,8 @@ const useStorage = create<StorageInterface>()(
 		(set, get) => ({
 			storage: new Map(),
 			setStorage: (title, index, data) => {
-				const newSavesMap = get().storage.size
-					? get().storage
-					: new Map();
-				let file_saves = newSavesMap.get(title) || [];
+				const newSavesMap = new Map(get().storage);
+				const file_saves = [...(newSavesMap.get(title) || [])];
 				file_saves[index] = new Save(data);
 				newSavesMap.set(title, file_saves);
 				set({ storage: newSavesMap });

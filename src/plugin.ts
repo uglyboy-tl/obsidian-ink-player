@@ -12,13 +12,15 @@ import {
 import { InkStoryView, INK_STORY_VIEW } from "view";
 import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
 import { compiledStory } from "@/lib/markdown2story";
-import { useFile } from "@/hooks";
+import { useFile, useStory } from "@/hooks";
+import { useContents } from "@/hooks/story";
 import { updatePlugins } from "patches";
 import { I18n, type TransItemType } from "locales/i18n";
 
 export class InkStorylugin extends Plugin {
 	settings!: InkStorySettings;
 	i18n!: I18n;
+	private _sessionUnsub: (() => void) | null = null;
 	async onload() {
 		await this.loadSettings();
 		this.addSettingTab(new GeneralSettingsTab(this.app, this));
@@ -71,12 +73,41 @@ export class InkStorylugin extends Plugin {
 				});
 			})
 		);
+
+		this.app.workspace.onLayoutReady(() => {
+			const leaves = this.app.workspace.getLeavesOfType(INK_STORY_VIEW);
+			if (leaves.length === 0) return;
+			const savedPath = localStorage.getItem("ink-player-last-file");
+			if (savedPath && !useStory.getState().ink) {
+				const file = this.app.vault.getAbstractFileByPath(savedPath);
+				if (file) {
+					localStorage.setItem("ink-player-restore-session", "true");
+					this.activateView(file);
+				}
+			}
+		});
+
+		this._sessionUnsub = useContents.subscribe(() => {
+			const ink = useStory.getState().ink;
+			const filePath = useFile.getState().filePath;
+			if (!ink || !filePath) return;
+			try {
+				const save: Record<string, unknown> = { state: ink.story.state.toJson() };
+				ink.save_label.forEach((label) => {
+					if (label in ink && typeof ink[label as keyof typeof ink] !== "undefined")
+						save[label] = ink[label as keyof typeof ink];
+				});
+				localStorage.setItem(`ink-session-${filePath}`, JSON.stringify(save));
+			} catch (_) {}
+		});
 	}
 
 	private async updateRefreshSettings() {
 		updatePlugins(this.settings);
 	}
-	async onunload() {}
+	async onunload() {
+		this._sessionUnsub?.();
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -113,21 +144,24 @@ export class InkStorylugin extends Plugin {
 			.slice(0, -1)
 			.join("/");
 		useFile.getState().init(filePath, markdown, resourcePath);
+		localStorage.setItem("ink-player-last-file", filePath);
 		compiledStory();
 
 		let leaf: WorkspaceLeaf | null = null;
 		const leaves = workspace.getLeavesOfType(INK_STORY_VIEW);
 
+		const viewState = { type: INK_STORY_VIEW, active: true, state: { filePath } };
+
 		if (leaves.length > 0) {
 			leaf = leaves[0];
+			await leaf.setViewState(viewState);
 		} else {
 			if (Platform.isMobile) {
 				leaf = workspace.getLeaf(true);
-				await leaf.setViewState({ type: INK_STORY_VIEW, active: true });
 			} else {
 				leaf = workspace.createLeafBySplit(workspace.getLeaf(false));
-				await leaf.setViewState({ type: INK_STORY_VIEW, active: true });
 			}
+			await leaf.setViewState(viewState);
 		}
 
 		workspace.revealLeaf(leaf);

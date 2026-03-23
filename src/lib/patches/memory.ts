@@ -2,7 +2,7 @@ import { InkStory, Patches } from "@/lib/ink";
 import { default as useStorage } from "./storage";
 
 let options = {
-	memory_format: "session",
+	memory_format: "local",
 };
 
 const show = (title: string) => {

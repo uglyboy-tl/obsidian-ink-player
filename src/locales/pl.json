@@ -22,5 +22,9 @@
   "settings_autosave_desc": "Automatycznie zapisuje stan historii po napotkaniu tagu # autosave.",
   "settings_options": "Opcje",
   "options_linedelay_title": "Opóźnienie linii",
-  "options_linedelay_desc": "Czas w sekundach między pojawianiem się kolejnych linii, gdy włączona jest animacja linii."
+  "options_linedelay_desc": "Czas w sekundach między pojawianiem się kolejnych linii, gdy włączona jest animacja linii.",
+  "modal_save": "Zapisz",
+  "modal_restore": "Wczytaj",
+  "modal_slot": "Slot {{n}}",
+  "modal_empty": "pusty"
 }
