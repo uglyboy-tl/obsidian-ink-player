@@ -48,7 +48,7 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({
 									}
 								}}
 							>
-								存档 {item + 1}
+								Slot {item + 1}
 							</button>
 							<div className="suggestion-aux">
 								{saves

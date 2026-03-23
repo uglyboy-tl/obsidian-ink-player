@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import createSelectors from "@/lib/utils/createSelectors";
 
+export const INK_DIVIDER = "\x00ink-divider\x00";
+
 type StoryContent = {
 	contents: string[];
 	setContents: (contents: string[]) => void;

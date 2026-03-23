@@ -1,5 +1,5 @@
 import { memo, CSSProperties } from "react";
-import { useContents, useStory } from "@/hooks/story";
+import { useContents, useStory, INK_DIVIDER } from "@/hooks/story";
 
 interface InkContentsProps {
 	DELAY: number;
@@ -22,6 +22,14 @@ const InkContentsComponent: React.FC<InkContentsProps> = ({
 						(i > visibleLines ? i - visibleLines : 0) * DELAY
 					}s`,
 				} as CSSProperties & { "--delay": string };
+
+				if (item === INK_DIVIDER) {
+					return (
+						<div key={`${i}_divider`} style={style}>
+							<hr className="ink-divider" />
+						</div>
+					);
+				}
 
 				return (
 					<div key={`${i}_${item}`} style={style}>

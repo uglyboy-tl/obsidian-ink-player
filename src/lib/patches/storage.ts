@@ -18,7 +18,7 @@ class Save {
 
 	constructor(data: object) {
 		this.data = JSON.stringify(data);
-		this.timestamp = new Intl.DateTimeFormat("zh-CN", {
+		this.timestamp = new Intl.DateTimeFormat(undefined, {
 			month: "short",
 			day: "numeric",
 			hour: "2-digit",

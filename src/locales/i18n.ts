@@ -2,10 +2,12 @@ import Mustache from "mustache";
 import { moment } from "obsidian";
 import en from "./en.json";
 import zh_cn from "./zh_cn.json";
+import pl from "./pl.json";
 
 export const LANGS = {
 	en: en,
 	zh_cn: zh_cn,
+	pl: pl,
 };
 
 export type LangType = keyof typeof LANGS;

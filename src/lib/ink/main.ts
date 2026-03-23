@@ -1,5 +1,5 @@
 import { Story } from "inkjs/engine/Story";
-import { useContents, useChoices, useVariables } from "@/hooks/story";
+import { useContents, useChoices, useVariables, INK_DIVIDER } from "@/hooks/story";
 import { Patches, Tags, Parser, ExternalFunctions } from "@/lib/ink";
 
 const options = {
@@ -91,6 +91,7 @@ export class InkStory {
 
 	choose(index: number) {
 		this.story.ChooseChoiceIndex(index);
+		useContents.getState().add([INK_DIVIDER]);
 		this.continue();
 	}
 

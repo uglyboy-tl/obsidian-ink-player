@@ -37,18 +37,40 @@ If your plugin does not need CSS, delete this file.
 	}
 }
 
+#ink-choices {
+	list-style: none;
+	padding: 1em 0;
+	text-align: center;
+}
+
+#ink-choices li {
+	margin: 0.4em 0;
+}
+
 #ink-choices .btn {
-	padding: 0.2em 0.4em; /* 添加一些内边距 */
-	display: inline-block; /* 使其可以设置宽度和高度 */
-	border: 1px solid #ccc; /* 设置边框样式 */
-	border-radius: 5px; /* 可选：添加圆角 */
+	display: inline-block;
+	padding: 0.1em 0.4em;
+	border: none;
+	background: none;
+	color: var(--text-muted);
 	text-decoration: none;
 	cursor: pointer;
+	font-size: 1em;
+	transition: color 0.15s;
+}
+
+#ink-choices .btn:hover {
+	color: var(--text-normal);
 }
 
 #ink-choices .btn.disabled {
-	color: gray;
+	color: var(--text-faint);
 	cursor: not-allowed;
-	text-decoration: none;
-	pointer-events: none; /* 阻止点击事件 */
+	pointer-events: none;
+}
+
+hr.ink-divider {
+	border: none;
+	border-top: 1px solid var(--background-modifier-border);
+	margin: 1em 0;
 }
