@@ -14,27 +14,30 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/mustache": "^4.2.5",
-		"@types/node": "^20.0.0",
+		"@types/mustache": "^4.2.6",
+		"@types/node": "^20.19.37",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"@typescript-eslint/eslint-plugin": "5.29.0",
 		"@typescript-eslint/parser": "5.29.0",
-		"@vitest/coverage-v8": "^4.1.0",
+		"@vitest/coverage-v8": "^4.1.2",
 		"builtin-modules": "3.3.0",
 		"esbuild": "0.17.3",
 		"jsdom": "^29.0.1",
 		"obsidian": "latest",
 		"tslib": "2.4.0",
-		"typescript": "^5",
-		"vitest": "^4.1.0"
+		"typescript": "^5.9.3",
+		"vitest": "^4.1.2"
 	},
 	"dependencies": {
-		"inkjs": "^2.3.1",
+		"@inkweave/core": "^1.1.0",
+		"@inkweave/plugins": "^1.0.0",
+		"@inkweave/react": "^1.1.0",
+		"inkjs": "^2.4.0",
 		"mustache": "^4.2.0",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"react-icons": "^5.5.0",
-		"zustand": "^5.0.3"
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
+		"react-icons": "^5.6.0",
+		"zustand": "^5.0.12"
 	}
 }

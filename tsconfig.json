@@ -3,13 +3,13 @@
 		"baseUrl": "src",
 		"inlineSourceMap": true,
 		"inlineSources": true,
-		"module": "NodeNext",
+		"module": "ESNext",
 		"target": "ES6",
+		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"allowJs": true,
 		"esModuleInterop": true,
 		"noImplicitAny": true,
-		"moduleResolution": "nodenext",
 		"importHelpers": true,
 		"isolatedModules": true,
 		"strictNullChecks": true,
@@ -20,5 +20,5 @@
 		}
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "src/__tests__", "src/**/*.test.ts", "src/**/*.spec.ts", "src/packages", "src/hooks", "src/lib", "src/components/InkStory.tsx", "src/components/InkChoices.tsx", "src/components/InkContents.tsx", "src/components/InkImage.tsx"]
 }
