@@ -15,7 +15,7 @@ interface InkWeaveMenuModalProps {
 	ink: InkStory;
 }
 
-const SLOTS = [0, 1, 2];
+const SLOTS = [1, 2, 3, 4, 5];
 
 const InkWeaveMenuModal: React.FC<InkWeaveMenuModalProps> = ({
 	modalRef,
@@ -24,6 +24,7 @@ const InkWeaveMenuModal: React.FC<InkWeaveMenuModalProps> = ({
 	ink,
 }) => {
 	const saves = memory.show(title);
+	const autosaveEnabled = ink.options.autosave_enabled === true;
 
 	const close = () => modalRef.current?.close();
 
@@ -38,7 +39,8 @@ const InkWeaveMenuModal: React.FC<InkWeaveMenuModalProps> = ({
 			<div className="inkweave-modal-body">
 				{SLOTS.map((item) => {
 					const save = saves?.[item] as SaveSlot | undefined;
-					const isDisabled = type === "restore" && !save;
+					const isAutosaveSlot = autosaveEnabled && item === 1;
+					const isDisabled = type === "restore" ? !save : isAutosaveSlot;
 
 					return (
 						<button
@@ -56,7 +58,9 @@ const InkWeaveMenuModal: React.FC<InkWeaveMenuModalProps> = ({
 							}}
 						>
 							<span className="inkweave-slot-name">
-								{t("modal_slot", { n: String(item + 1) })}
+								{isAutosaveSlot
+									? t("modal_autosave_slot")
+									: t("modal_slot", { n: String(item) })}
 							</span>
 							<span className="inkweave-slot-timestamp">
 								{save?.timestamp ?? t("modal_empty")}

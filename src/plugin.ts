@@ -10,8 +10,8 @@ import {
 } from "obsidian";
 import { InkWeaveStoryView, INKWEAVE_STORY_VIEW } from "view";
 import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
-import { SESSION_RESTORE_FLAG } from "@/utils/compiler";
 import { contentsStore } from "@inkweave/core";
+import { memory } from "@inkweave/plugins";
 import useFile from "@/utils/file";
 import { updatePlugins } from "patches";
 import { I18n, type TransItemType } from "locales/i18n";
@@ -80,7 +80,6 @@ export class InkWeavePlugin extends Plugin {
 			if (savedPath && !view?.ink) {
 				const file = this.app.vault.getAbstractFileByPath(savedPath);
 				if (file) {
-					localStorage.setItem(SESSION_RESTORE_FLAG, "true");
 					this.activateView(file);
 				}
 			}
@@ -94,14 +93,7 @@ export class InkWeavePlugin extends Plugin {
 			const view = leaves[0].view as InkWeaveStoryView;
 			const ink = view?.ink;
 			if (!ink) return;
-			try {
-				const save: Record<string, unknown> = { state: ink.story.state.toJson() };
-				ink.save_label.forEach((label: string) => {
-					if (label in ink && typeof ink[label as keyof typeof ink] !== "undefined")
-						save[label] = ink[label as keyof typeof ink];
-				});
-				localStorage.setItem(`inkweave-session-${filePath}`, JSON.stringify(save));
-			} catch (_) {}
+			memory.save(0, ink);
 		});
 	}
 

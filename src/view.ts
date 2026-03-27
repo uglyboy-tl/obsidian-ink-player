@@ -4,7 +4,7 @@ import { Root, createRoot } from "react-dom/client";
 import { InkWeavePlayer } from "@/components";
 import { InkStory } from "@inkweave/core";
 import useFile from "@/utils/file";
-import { SESSION_RESTORE_FLAG, compiledStory } from "@/utils/compiler";
+import { compiledStory } from "@/utils/compiler";
 
 export const INKWEAVE_STORY_VIEW = "InkWeave Story View";
 
@@ -34,7 +34,7 @@ export class InkWeaveStoryView extends ItemView {
 	async setState(state: { filePath?: string }, result: ViewStateResult) {
 		const filePath = state?.filePath;
 		const currentFilePath = useFile.getState().filePath;
-		
+
 		if (filePath && filePath !== currentFilePath) {
 			await this.loadFile(filePath);
 		}
@@ -45,12 +45,8 @@ export class InkWeaveStoryView extends ItemView {
 		const file = this.app.vault.getAbstractFileByPath(filePath);
 		if (!(file instanceof TFile)) return;
 
-		if (localStorage.getItem(`inkweave-session-${filePath}`)) {
-			localStorage.setItem(SESSION_RESTORE_FLAG, "true");
-		}
-
 		const { vault, workspace } = this.app;
-		
+
 		const fileLeaf = workspace.getLeavesOfType("markdown").find(
 			(leaf) => (leaf.view as MarkdownView).file?.path === filePath
 		);
@@ -59,7 +55,7 @@ export class InkWeaveStoryView extends ItemView {
 			editorContent != null && editorContent !== ""
 				? editorContent
 				: await vault.read(file);
-		
+
 		const resourcePath = vault.adapter
 			.getResourcePath(filePath)
 			.split("/")
@@ -86,7 +82,7 @@ export class InkWeaveStoryView extends ItemView {
 			if (file.path === filePath && file instanceof TFile) {
 				const markdown = await this.app.vault.read(file);
 				const currentMarkdown = useFile.getState().markdown;
-				
+
 				if (markdown !== currentMarkdown) {
 					const resourcePath = useFile.getState().resourcePath;
 					useFile.getState().init(filePath, markdown, resourcePath);
