@@ -6,11 +6,11 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
-#ink {
+#inkweave-player {
 	height: 99%;
 }
 
-dialog.ink-modal {
+dialog.inkweave-modal {
 	display: none;
 	position: fixed;
 	inset: 0;
@@ -25,16 +25,16 @@ dialog.ink-modal {
 	overflow: hidden;
 }
 
-dialog.ink-modal[open] {
+dialog.inkweave-modal[open] {
 	display: flex;
 	flex-direction: column;
 }
 
-dialog.ink-modal::backdrop {
+dialog.inkweave-modal::backdrop {
 	background: rgba(0, 0, 0, 0.5);
 }
 
-.ink-modal-header {
+.inkweave-modal-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -42,13 +42,13 @@ dialog.ink-modal::backdrop {
 	border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.ink-modal-title {
+.inkweave-modal-title {
 	font-size: 1em;
 	font-weight: 600;
 	color: var(--text-normal);
 }
 
-.ink-modal-close {
+.inkweave-modal-close {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -65,18 +65,18 @@ dialog.ink-modal::backdrop {
 	transition: background 0.1s, color 0.1s;
 }
 
-.ink-modal-close:hover {
+.inkweave-modal-close:hover {
 	background: var(--background-modifier-hover);
 	color: var(--text-normal);
 }
 
-.ink-modal-body {
+.inkweave-modal-body {
 	display: flex;
 	flex-direction: column;
 	padding: 0.4em 0;
 }
 
-.ink-slot {
+.inkweave-slot {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -93,33 +93,32 @@ dialog.ink-modal::backdrop {
 	box-shadow: none;
 }
 
-.ink-slot:hover:not(:disabled) {
+.inkweave-slot:hover:not(:disabled) {
 	background: var(--background-modifier-hover);
 }
 
-.ink-slot:disabled {
+.inkweave-slot:disabled {
 	opacity: 0.4;
 	cursor: not-allowed;
 }
 
-.ink-slot-name {
+.inkweave-slot-name {
 	font-weight: 500;
 }
 
-.ink-slot-timestamp {
+.inkweave-slot-timestamp {
 	color: var(--text-muted);
 	font-size: 0.82em;
 }
-#ink-image {
+#inkweave-image {
 	display: flex;
 	justify-content: center;
 }
-#ink .markdown-preview-view img:not([width]) {
+#inkweave-player .markdown-preview-view img:not([width]) {
 	max-width: 50%;
 }
 
-#ink-contents div,
-#ink-choices {
+#inkweave-contents div {
 	opacity: 0;
 	animation: fadeIn 0.5s forwards;
 	animation-delay: var(--delay, 0s);
@@ -134,17 +133,20 @@ dialog.ink-modal::backdrop {
 	}
 }
 
-#ink-choices {
+#inkweave-choices {
 	list-style: none;
 	padding: 1em 0;
 	text-align: center;
+	opacity: 0;
+	animation: fadeIn 0.5s forwards;
+	animation-delay: var(--delay, 0s);
 }
 
-#ink-choices li {
+#inkweave-choices li {
 	margin: 0.4em 0;
 }
 
-#ink-choices .btn {
+#inkweave-choices .inkweave-btn {
 	display: inline-block;
 	padding: 0.1em 0.4em;
 	border: none;
@@ -156,17 +158,17 @@ dialog.ink-modal::backdrop {
 	transition: color 0.15s;
 }
 
-#ink-choices .btn:hover {
+#inkweave-choices .inkweave-btn:hover {
 	color: var(--text-normal);
 }
 
-#ink-choices .btn.disabled {
+#inkweave-choices .inkweave-btn.disabled {
 	color: var(--text-faint);
 	cursor: not-allowed;
 	pointer-events: none;
 }
 
-hr.ink-divider {
+hr.inkweave-divider {
 	border: none;
 	border-top: 1px solid var(--background-modifier-border);
 	margin: 1em 0;
