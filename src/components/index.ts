@@ -1,1 +1,1 @@
-export { default as Ink } from "./Ink";
+export { default as InkWeavePlayer } from "./InkWeavePlayer";
