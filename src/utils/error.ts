@@ -1,6 +1,6 @@
 import { Notice } from "obsidian";
 import { create } from "zustand";
-import createSelectors from "@/lib/utils/createSelectors";
+import { createSelectors } from "@inkweave/core"
 
 type Error = {
 	error: string | null;
