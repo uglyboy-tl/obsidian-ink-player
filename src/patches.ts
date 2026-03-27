@@ -5,29 +5,29 @@ import {
 	ChoiceParser,
 	ExternalFunctions,
 	Parser,
-} from "@/lib/ink";
+} from "@inkweave/core";
 import {
-	load_audio,
-	load_image,
-	load_fadeforline,
-	load_scrollafterchoice,
-	load_linkopen,
-	load_memory,
-	load_cdButton,
-	load_autoButton,
-	load_autosave,
-} from "@/lib/patches";
+	loadAudio,
+	loadImage,
+	loadFadeEffect,
+	loadScrollafterchoice,
+	loadLinkopen,
+	loadMemory,
+	loadCdButton,
+	loadAutoButton,
+	loadAutosave,
+} from "@inkweave/plugins";
 
 const PLUGIN_LOADER: Record<keyof PluginSettings, () => void> = {
-	audio: load_audio,
-	image: load_image,
-	linkopen: load_linkopen,
-	memory: load_memory,
-	scrollafterchoice: load_scrollafterchoice,
-	fadeforline: load_fadeforline,
-	cd_button: load_cdButton,
-	auto_button: load_autoButton,
-	auto_save: load_autosave,
+	audio: loadAudio,
+	image: loadImage,
+	linkopen: loadLinkopen,
+	memory: loadMemory,
+	scrollafterchoice: loadScrollafterchoice,
+	fadeforline: loadFadeEffect,
+	cd_button: loadCdButton,
+	auto_button: loadAutoButton,
+	auto_save: loadAutosave,
 };
 
 export const updatePlugins = (settings: PluginSettings) => {

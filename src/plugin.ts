@@ -7,17 +7,16 @@ import {
 	PluginSettingTab,
 	Setting,
 	TAbstractFile,
-	TFile,
 } from "obsidian";
-import { InkStoryView, INK_STORY_VIEW } from "view";
+import { InkWeaveStoryView, INKWEAVE_STORY_VIEW } from "view";
 import { InkStorySettings, DEFAULT_SETTINGS } from "settings";
-import { compiledStory } from "@/lib/markdown2story";
-import { useFile, useStory } from "@/hooks";
-import { useContents } from "@/hooks/story";
+import { SESSION_RESTORE_FLAG } from "@/utils/compiler";
+import { contentsStore } from "@inkweave/core";
+import useFile from "@/utils/file";
 import { updatePlugins } from "patches";
 import { I18n, type TransItemType } from "locales/i18n";
 
-export class InkStorylugin extends Plugin {
+export class InkWeavePlugin extends Plugin {
 	settings!: InkStorySettings;
 	i18n!: I18n;
 	private _sessionUnsub: (() => void) | null = null;
@@ -26,14 +25,13 @@ export class InkStorylugin extends Plugin {
 		this.addSettingTab(new GeneralSettingsTab(this.app, this));
 		this.updateRefreshSettings();
 
-		// lang should be load early, but after settings
 		this.i18n = new I18n();
 		const t = (x: TransItemType, vars?: any) => {
 			return this.i18n.t(x, vars);
 		};
 
 		const command_text = t("command_activate");
-		this.registerView(INK_STORY_VIEW, (leaf) => new InkStoryView(leaf));
+		this.registerView(INKWEAVE_STORY_VIEW, (leaf) => new InkWeaveStoryView(leaf));
 
 		this.addRibbonIcon("gamepad-2", command_text, () => {
 			this.activateView();
@@ -75,29 +73,34 @@ export class InkStorylugin extends Plugin {
 		);
 
 		this.app.workspace.onLayoutReady(() => {
-			const leaves = this.app.workspace.getLeavesOfType(INK_STORY_VIEW);
+			const leaves = this.app.workspace.getLeavesOfType(INKWEAVE_STORY_VIEW);
 			if (leaves.length === 0) return;
-			const savedPath = localStorage.getItem("ink-player-last-file");
-			if (savedPath && !useStory.getState().ink) {
+			const savedPath = localStorage.getItem("inkweave-last-file");
+			const view = leaves[0].view as InkWeaveStoryView;
+			if (savedPath && !view?.ink) {
 				const file = this.app.vault.getAbstractFileByPath(savedPath);
 				if (file) {
-					localStorage.setItem("ink-player-restore-session", "true");
+					localStorage.setItem(SESSION_RESTORE_FLAG, "true");
 					this.activateView(file);
 				}
 			}
 		});
 
-		this._sessionUnsub = useContents.subscribe(() => {
-			const ink = useStory.getState().ink;
+		this._sessionUnsub = contentsStore.subscribe(() => {
 			const filePath = useFile.getState().filePath;
-			if (!ink || !filePath) return;
+			if (!filePath) return;
+			const leaves = this.app.workspace.getLeavesOfType(INKWEAVE_STORY_VIEW);
+			if (leaves.length === 0) return;
+			const view = leaves[0].view as InkWeaveStoryView;
+			const ink = view?.ink;
+			if (!ink) return;
 			try {
 				const save: Record<string, unknown> = { state: ink.story.state.toJson() };
-				ink.save_label.forEach((label) => {
+				ink.save_label.forEach((label: string) => {
 					if (label in ink && typeof ink[label as keyof typeof ink] !== "undefined")
 						save[label] = ink[label as keyof typeof ink];
 				});
-				localStorage.setItem(`ink-session-${filePath}`, JSON.stringify(save));
+				localStorage.setItem(`inkweave-session-${filePath}`, JSON.stringify(save));
 			} catch (_) {}
 		});
 	}
@@ -116,7 +119,6 @@ export class InkStorylugin extends Plugin {
 		);
 	}
 
-	/** Update plugin settings. */
 	async updateSettings(settings: Partial<InkStorySettings>) {
 		Object.assign(this.settings, settings);
 		this.updateRefreshSettings();
@@ -128,31 +130,13 @@ export class InkStorylugin extends Plugin {
 			file = workspace.getActiveFile();
 			if (!file) return;
 		}
-		const fileAdapter = vault.adapter;
 		const filePath = file.path;
-
-		const fileLeaf = workspace.getLeavesOfType("markdown").find(
-			(leaf) => (leaf.view as MarkdownView).file?.path === filePath
-		);
-		const editorContent = (fileLeaf?.view as MarkdownView)?.editor.getValue();
-		const markdown =
-			editorContent != null && editorContent !== ""
-				? editorContent
-				: (file instanceof TFile ? await vault.read(file) : "");
-
-		const resourcePath = fileAdapter
-			.getResourcePath(filePath)
-			.split("/")
-			.slice(0, -1)
-			.join("/");
-		useFile.getState().init(filePath, markdown, resourcePath);
-		localStorage.setItem("ink-player-last-file", filePath);
-		compiledStory();
+		localStorage.setItem("inkweave-last-file", filePath);
 
 		let leaf: WorkspaceLeaf | null = null;
-		const leaves = workspace.getLeavesOfType(INK_STORY_VIEW);
+		const leaves = workspace.getLeavesOfType(INKWEAVE_STORY_VIEW);
 
-		const viewState = { type: INK_STORY_VIEW, active: true, state: { filePath } };
+		const viewState = { type: INKWEAVE_STORY_VIEW, active: true, state: { filePath } };
 
 		if (leaves.length > 0) {
 			leaf = leaves[0];
@@ -171,9 +155,9 @@ export class InkStorylugin extends Plugin {
 }
 
 class GeneralSettingsTab extends PluginSettingTab {
-	plugin: InkStorylugin;
+	plugin: InkWeavePlugin;
 
-	constructor(app: App, plugin: InkStorylugin) {
+	constructor(app: App, plugin: InkWeavePlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}

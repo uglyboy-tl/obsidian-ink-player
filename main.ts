@@ -1,3 +1,3 @@
-import { InkStorylugin } from "./src/plugin";
+import { InkWeavePlugin } from "./src/plugin";
 
-export default InkStorylugin;
+export default InkWeavePlugin;
