@@ -3,8 +3,6 @@ import { ObsidianFileHandler } from "./FileHandler";
 import useFile from "./file";
 import useError from "./error";
 
-export const SESSION_RESTORE_FLAG = "ink-player-restore-session";
-
 export const compiledStory = (): InkStory | null => {
 	const basePath = useFile.getState().resourcePath;
 	const fileHandler = new ObsidianFileHandler({ basePath });
@@ -24,11 +22,6 @@ export const compiledStory = (): InkStory | null => {
 			fileHandler,
 			errorHandler,
 		} as any);
-
-		if (localStorage.getItem(`inkweave-session-${filePath}`)) {
-			localStorage.setItem(SESSION_RESTORE_FLAG, "true");
-		}
-
 		return ink;
 	} catch (e) {
 		(useError.getState() as any).errorHandler(`Error: ${e instanceof Error ? e.message : String(e)}`);
