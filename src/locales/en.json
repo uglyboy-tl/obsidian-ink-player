@@ -26,5 +26,6 @@
   "modal_save": "Save",
   "modal_restore": "Restore",
   "modal_slot": "Slot {{n}}",
+  "modal_autosave_slot": "Auto Save",
   "modal_empty": "empty"
 }

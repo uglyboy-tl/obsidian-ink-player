@@ -26,5 +26,6 @@
   "modal_save": "保存",
   "modal_restore": "读取",
   "modal_slot": "存档 {{n}}",
+  "modal_autosave_slot": "自动存档",
   "modal_empty": "空"
 }

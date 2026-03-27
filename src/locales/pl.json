@@ -26,5 +26,6 @@
   "modal_save": "Zapisz",
   "modal_restore": "Wczytaj",
   "modal_slot": "Slot {{n}}",
+  "modal_autosave_slot": "Auto Zapis",
   "modal_empty": "pusty"
 }
