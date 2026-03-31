@@ -63,7 +63,7 @@ function main() {
 
   console.log("\nCommitting...");
   run(`git commit --author "InkWeave Bot <bot@uglyboy.cn>" -m "chore(release): v${version}"`);
-  run(`git tag v${version}`);
+  run(`git tag ${version}`);
 
   console.log("\nGenerating changelog...");
   const lastTag = execSync("git describe --tags --abbrev=0").toString().trim();
@@ -76,7 +76,7 @@ function main() {
   run("git commit --amend --no-edit");
 
   console.log("\nPushing...");
-  run(`git push origin master v${version}`);
+  run(`git push origin master ${version}`);
 
   console.log(`\n✅ Released v${version}`);
 }
