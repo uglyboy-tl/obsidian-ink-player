@@ -20,6 +20,8 @@
   "settings_autobutton_desc": "通过 #auto:N 标签在延迟后自动选择隐藏选项（N 为秒数），适用于定时序列",
   "settings_autosave_title": "自动存档",
   "settings_autosave_desc": "遇到 #autosave 标签时自动保存故事状态",
+  "settings_auto_restore_title": "自动恢复",
+  "settings_auto_restore_desc": "Obsidian 启动时自动恢复上次打开的故事",
   "settings_options": "选项",
   "options_linedelay_title": "行延迟",
   "options_linedelay_desc": "启用逐行显示时，每行出现的间隔时间（秒）",

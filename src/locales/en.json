@@ -20,6 +20,8 @@
   "settings_autobutton_desc": "Automatically selects a hidden choice after a delay via tag: #auto:N (N = seconds). Useful for timed sequences.",
   "settings_autosave_title": "Auto save",
   "settings_autosave_desc": "Automatically save the story state when the #autosave tag is encountered.",
+  "settings_auto_restore_title": "Auto restore",
+  "settings_auto_restore_desc": "Automatically restore the last opened story when Obsidian starts.",
   "settings_options": "Options",
   "options_linedelay_title": "Line delay",
   "options_linedelay_desc": "Time in seconds between each line appearing when Animate lines is enabled.",

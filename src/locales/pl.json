@@ -20,6 +20,8 @@
   "settings_autobutton_desc": "Automatycznie wybiera ukrytą opcję po opóźnieniu przez tag: # auto:N (N = sekundy). Przydatne do sekwencji czasowych.",
   "settings_autosave_title": "Automatyczny zapis",
   "settings_autosave_desc": "Automatycznie zapisuje stan historii po napotkaniu tagu # autosave.",
+  "settings_auto_restore_title": "Automatyczne przywrócenie",
+  "settings_auto_restore_desc": "Automatycznie przywraca ostatnio otwartą historię po uruchomieniu Obsidian.",
   "settings_options": "Opcje",
   "options_linedelay_title": "Opóźnienie linii",
   "options_linedelay_desc": "Czas w sekundach między pojawianiem się kolejnych linii, gdy włączona jest animacja linii.",
