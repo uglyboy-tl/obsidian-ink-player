@@ -11,10 +11,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22.x"
 
@@ -23,13 +23,24 @@ jobs:
           npm install
           npm run build
 
-      - name: Create release
+      - name: Extract release notes
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          sed -n "/^## ${VERSION}/,/^## /p" CHANGELOG.md | sed '1d;$d' > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "::warning::No release notes found for ${VERSION}"
+            echo "No release notes available." > RELEASE_NOTES.md
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          name: ${{ github.ref_name }}
+          body_path: RELEASE_NOTES.md
+          files: |
+            main.js
+            manifest.json
+            styles.css
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tag="${GITHUB_REF#refs/tags/}"
-
-          gh release create "$tag" \
-            --title="$tag" \
-            --draft \
-            main.js manifest.json styles.css
