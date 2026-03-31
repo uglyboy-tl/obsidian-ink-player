@@ -1,41 +1,43 @@
-export interface PluginSettings {
-	audio: boolean;
-	image: boolean;
-	linkopen: boolean;
-	memory: boolean;
-	scrollafterchoice: boolean;
-	fadeforline: boolean;
-	cd_button: boolean;
-	auto_button: boolean;
-	auto_save: boolean;
+export interface Settings {
+  audio: boolean;
+  image: boolean;
+  linkopen: boolean;
+  memory: boolean;
+  scrollafterchoice: boolean;
+  fadeforline: boolean;
+  cd_button: boolean;
+  auto_button: boolean;
+  auto_save: boolean;
+  linedelay: number;
+  debug: boolean;
+  // Features
+  auto_restore: boolean;
 }
 
-export const DEFAULT_PLUGIN_SETTINGS: PluginSettings = {
-	audio: true,
-	image: true,
-	linkopen: false,
-	memory: true,
-	scrollafterchoice: true,
-	fadeforline: true,
-	cd_button: false,
-	auto_button: false,
-	auto_save: false,
-};
+export type PluginSettings = Pick<
+  Settings,
+  | "audio"
+  | "image"
+  | "linkopen"
+  | "memory"
+  | "scrollafterchoice"
+  | "fadeforline"
+  | "cd_button"
+  | "auto_button"
+  | "auto_save"
+>;
 
-export interface OptionSettings {
-	linedelay: number;
-	debug: boolean;
-}
-
-export const DEFAULT_OPTION_SETTINGS: OptionSettings = {
-	linedelay: 0.2,
-	debug: false,
-};
-
-export interface InkStorySettings extends PluginSettings, OptionSettings {}
-
-export const DEFAULT_SETTINGS: InkStorySettings = {
-	...DEFAULT_PLUGIN_SETTINGS,
-	...DEFAULT_OPTION_SETTINGS,
-	...{},
+export const DEFAULT_SETTINGS: Settings = {
+  audio: true,
+  image: true,
+  linkopen: false,
+  memory: true,
+  scrollafterchoice: true,
+  fadeforline: true,
+  cd_button: false,
+  auto_button: false,
+  auto_save: false,
+  linedelay: 0.1,
+  debug: false,
+  auto_restore: false,
 };
