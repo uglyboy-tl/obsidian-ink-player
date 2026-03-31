@@ -1,43 +1,45 @@
 {
-	"name": "ink-player",
-	"version": "1.1.0",
-	"description": "Playing interactive fiction powered by Inkle's ink engine",
-	"main": "main.js",
-	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json",
-		"test": "vitest run",
-		"test:watch": "vitest"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "MIT",
-	"devDependencies": {
-		"@types/mustache": "^4.2.6",
-		"@types/node": "^20.19.37",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
-		"@typescript-eslint/eslint-plugin": "5.29.0",
-		"@typescript-eslint/parser": "5.29.0",
-		"@vitest/coverage-v8": "^4.1.2",
-		"builtin-modules": "3.3.0",
-		"esbuild": "0.17.3",
-		"jsdom": "^29.0.1",
-		"obsidian": "latest",
-		"tslib": "2.4.0",
-		"typescript": "^5.9.3",
-		"vitest": "^4.1.2"
-	},
-	"dependencies": {
-		"@inkweave/core": "^1.1.0",
-		"@inkweave/plugins": "^1.0.0",
-		"@inkweave/react": "^1.1.0",
-		"inkjs": "^2.4.0",
-		"mustache": "^4.2.0",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4",
-		"react-icons": "^5.6.0",
-		"zustand": "^5.0.12"
-	}
+  "name": "ink-player",
+  "version": "1.2.1",
+  "description": "Playing interactive fiction powered by Inkle's ink engine",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "check": "biome check --write --error-on-warnings . && tsc --noEmit",
+    "version": "node scripts/version-bump.mjs && git add manifest.json versions.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@types/mustache": "^4.2.6",
+    "@types/node": "^20.19.37",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.2",
+    "jsdom": "^29.0.1",
+    "obsidian": "latest",
+    "tslib": "2.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
+  },
+  "dependencies": {
+    "@inkweave/core": "^1.1.6",
+    "@inkweave/plugins": "^1.1.6",
+    "@inkweave/react": "^1.1.6",
+    "inkjs": "^2.4.0",
+    "mustache": "^4.2.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.6.0",
+    "zustand": "^5.0.12"
+  },
+  "peerDependencies": {
+    "obsidian": ">=0.15.0"
+  }
 }
