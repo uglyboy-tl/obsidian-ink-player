@@ -76,7 +76,7 @@ function main() {
   run("git commit --amend --no-edit");
 
   console.log("\nPushing...");
-  run(`git push origin main v${version}`);
+  run(`git push origin master v${version}`);
 
   console.log(`\n✅ Released v${version}`);
 }
