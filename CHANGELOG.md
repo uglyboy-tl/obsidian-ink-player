@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.0 (2026-03-31)
+
+### Features
+- **autosave**: implement automatic save and restore functionality
+- **commands**: add command system
+- **autosave**: implement automatic save and restore functionality
+- **components**: add InkWeave components
+
+### Bug Fixes
+- **release**: correct branch name in release script
+
+### Refactoring
+- **components**: refactor InkWeave components
+- **utils**: refactor utility functions and compiler
+- **settings**: refactor settings system with separate tab
+- **styles**: refactor styles to modular css
+- **session**: remove legacy session restore flag and logic
+- **utils**: migrate to @inkweave utilities
+- **components**: remove legacy Ink components
+- **core**: migrate plugin architecture to @inkweave
+
+### Documentation
+- **i18n**: update translation files
+- **i18n**: add autosave slot translation keys
+
+### Styles
+- **css**: update styles for InkWeave components
+
+### Tests
+- **mocks**: update obsidian mock for testing
+
+### Chores
+- **release**: add release automation scripts and changelog
+- **deps**: update dependencies and package structure
+- **tooling**: replace eslint with biome
+- **build**: migrate from esbuild to vite
+- **tests**: remove legacy test file
+- **deps**: migrate to @inkweave libraries
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/1.2.1...v2.0.0
+
 ## 1.2.1 (2026-03-23)
 
 ### Chores

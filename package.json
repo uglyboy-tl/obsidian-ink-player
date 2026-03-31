@@ -1,6 +1,6 @@
 {
   "name": "ink-player",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Playing interactive fiction powered by Inkle's ink engine",
   "main": "main.js",
   "scripts": {
