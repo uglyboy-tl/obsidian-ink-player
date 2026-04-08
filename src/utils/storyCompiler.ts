@@ -22,7 +22,8 @@ export const compiledStory = (): InkStory | null => {
   }
 
   try {
-    const ink: InkStory = createInkStory(markdown, {
+    const content = markdown.replace(/^---\n[\s\S]*?\n---\n?/, "");
+    const ink: InkStory = createInkStory(content, {
       title: filePath,
       fileHandler,
       errorHandler,
