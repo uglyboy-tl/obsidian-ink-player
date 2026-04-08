@@ -16,31 +16,6 @@ All notable changes to this project will be documented in this file.
 
 **Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.1...2.0.4
 
-## 2.0.3 (2026-04-08)
-
-### Features
-- **plugin**: register ink file extension
-
-### Chores
-- **ci**: switch build tool from Node.js to Bun
-- **deps**: upgrade dependencies and clean up dev dependencies
-- **ci**: update release workflow to use release notes from changelog
-- **changelog**: regenerate with correct tag references
-
-**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.1...2.0.3
-
-## 2.0.2 (2026-04-08)
-
-### Features
-- **plugin**: register ink file extension
-
-### Chores
-- **deps**: upgrade dependencies and clean up dev dependencies
-- **ci**: update release workflow to use release notes from changelog
-- **changelog**: regenerate with correct tag references
-
-**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.1...2.0.2
-
 ## 2.0.1 (2026-03-31)
 
 ### Bug Fixes
