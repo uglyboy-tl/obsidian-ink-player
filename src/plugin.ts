@@ -23,6 +23,7 @@ export default class InkWeavePlugin extends Plugin {
     this.i18n = new I18n();
 
     this.registerView(VIEW_TYPE, (leaf) => new StoryView(leaf));
+    this.registerExtensions(["ink"], "markdown");
 
     setupCommands(this);
     features.forEach((f) => {
