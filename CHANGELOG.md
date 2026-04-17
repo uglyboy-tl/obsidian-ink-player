@@ -1,6 +1,21 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## 2.0.6 (2026-04-18)
+
+### Features
+- **plugin**: register ink file extension
+
+### Bug Fixes
+- **compiler**: 移除 YAML frontmatter 避免解析错误
+
+### Chores
+- **release**: update dependencies and release script
+- **deps**: switch from jsdom to esbuild and add clean script
+- **ci**: switch build tool from Node.js to Bun
+- **deps**: upgrade dependencies and clean up dev dependencies
+- **ci**: update release workflow to use release notes from changelog
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.1...2.0.6
 
 ## 2.0.1 (2026-03-31)
 
@@ -43,54 +58,6 @@ All notable changes to this project will be documented in this file.
 - **deps**: migrate to @inkweave libraries
 
 **Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/1.2.1...2.0.1
-
-## 2.0.1 (2026-03-31)
-
-### Bug Fixes
-- **ci**: upgrade Node.js to 22.x in release workflow
-
-**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.0...2.0.1
-
-## 2.0.0 (2026-03-31)
-
-### Features
-- **autosave**: implement automatic save and restore functionality
-- **commands**: add command system
-- **autosave**: implement automatic save and restore functionality
-- **components**: add InkWeave components
-
-### Bug Fixes
-- **release**: correct branch name in release script
-
-### Refactoring
-- **components**: refactor InkWeave components
-- **utils**: refactor utility functions and compiler
-- **settings**: refactor settings system with separate tab
-- **styles**: refactor styles to modular css
-- **session**: remove legacy session restore flag and logic
-- **utils**: migrate to @inkweave utilities
-- **components**: remove legacy Ink components
-- **core**: migrate plugin architecture to @inkweave
-
-### Documentation
-- **i18n**: update translation files
-- **i18n**: add autosave slot translation keys
-
-### Styles
-- **css**: update styles for InkWeave components
-
-### Tests
-- **mocks**: update obsidian mock for testing
-
-### Chores
-- **release**: add release automation scripts and changelog
-- **deps**: update dependencies and package structure
-- **tooling**: replace eslint with biome
-- **build**: migrate from esbuild to vite
-- **tests**: remove legacy test file
-- **deps**: migrate to @inkweave libraries
-
-**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/1.2.1...2.0.0
 
 ## 1.2.1 (2026-03-23)
 

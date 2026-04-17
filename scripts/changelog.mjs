@@ -40,14 +40,26 @@ function parseCommit(message) {
 
 function isReleaseCommit(commit) {
   return (
-    commit.type === "chore" &&
-    commit.scope === "release" &&
-    /^v?\d+\.\d+\.\d+$/.test(commit.subject)
+    (commit.type === "chore" &&
+     commit.scope === "release" &&
+     /^v?\d+\.\d+\.\d+$/.test(commit.subject)) ||
+    (commit.type === "chore" && 
+     commit.scope === "changelog")
   );
 }
 
+async function tagExists(tag) {
+  try {
+    await $`git rev-parse --verify ${tag}`.quiet();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function getCommitsBetween(fromTag, toTag = "HEAD") {
-  const range = fromTag ? `${fromTag}..${toTag}` : toTag;
+  const effectiveToTag = (await tagExists(toTag)) ? toTag : "HEAD";
+  const range = fromTag ? `${fromTag}..${effectiveToTag}` : effectiveToTag;
   const result = await $`git log ${range} --pretty=format:%s%n%b%n---COMMIT_END---`.quiet();
   const output = result.text();
 
@@ -68,16 +80,21 @@ async function getCommitsBetween(fromTag, toTag = "HEAD") {
 }
 
 async function getPreviousTag(currentTag) {
-  try {
-    const result = await $`git describe --tags --abbrev=0 ${currentTag}^`.quiet();
-    return result.text().trim() || null;
-  } catch {
-    return null;
+  const exists = await tagExists(currentTag);
+  if (exists) {
+    try {
+      const result = await $`git describe --tags --abbrev=0 ${currentTag}^`.quiet();
+      return result.text().trim() || null;
+    } catch {
+      return null;
+    }
   }
+  const result = await $`git describe --tags --abbrev=0 HEAD`.quiet();
+  return result.text().trim() || null;
 }
 
 async function getTagDate(tag) {
-  if (!tag) return formatDate();
+  if (!tag || !(await tagExists(tag))) return formatDate();
   const result = await $`git log -1 --format=%ci ${tag}`.quiet();
   const dateStr = result.text().trim().split(" ")[0];
   return dateStr || formatDate();
@@ -142,19 +159,54 @@ async function generateChangelog(version, commits, previousTag, repoUrl) {
 }
 
 function updateChangelogFile(newSection, changelogPath = "CHANGELOG.md") {
+  // Extract the version number from the new section
+  const newVersionMatch = newSection.match(/^## (\d+\.\d+\.\d+)/);
+  if (!newVersionMatch) {
+    console.warn("Could not extract version from new section");
+    return;
+  }
+  const newVersion = newVersionMatch[1];
+
   if (existsSync(changelogPath)) {
     const content = readFileSync(changelogPath, "utf-8");
     const lines = content.split("\n");
     const headerEndIndex = lines.findIndex((line) => line.startsWith("## "));
+    
     if (headerEndIndex >= 0) {
       const header = headerEndIndex > 0 ? `${lines.slice(0, headerEndIndex).join("\n")}\n` : "";
-      const existingVersions = lines.slice(headerEndIndex).join("\n").trim();
+      
+      // Parse remaining content to find existing versions and remove duplicates of the new version
+      let remainingLines = lines.slice(headerEndIndex);
+      let filteredLines = [];
+      
+      let i = 0;
+      while (i < remainingLines.length) {
+        // Look for version headers
+        if (remainingLines[i].startsWith("## ")) {
+          const versionMatch = remainingLines[i].match(/^## (\d+\.\d+\.\d+)/);
+          if (versionMatch && versionMatch[1] === newVersion) {
+            // Skip this version section (it's a duplicate of the one we're adding)
+            i++;
+            // Skip until we reach the next version or end
+            while (i < remainingLines.length && !remainingLines[i].startsWith("## ") && 
+                   (remainingLines[i].trim() !== "" || i + 1 < remainingLines.length && !remainingLines[i + 1].startsWith("## "))) {
+              i++;
+            }
+            continue; // Don't add this duplicate version
+          }
+        }
+        filteredLines.push(remainingLines[i]);
+        i++;
+      }
+      
+      const existingVersions = filteredLines.join("\n").trim();
       const newContent = existingVersions
         ? `${header + newSection}\n\n${existingVersions}\n`
         : `${header + newSection}\n`;
       writeFileSync(changelogPath, newContent);
       return;
     }
+    
     if (lines[0]?.startsWith("# ")) {
       writeFileSync(changelogPath, `${lines[0]}\n\n${newSection}\n`);
       return;
