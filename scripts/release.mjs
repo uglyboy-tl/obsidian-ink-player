@@ -58,22 +58,18 @@ function main() {
   console.log("\nRunning version-bump script...");
   run(`npm_package_version=${version} bun run scripts/version-bump.mjs`);
 
-  console.log("\nStaging modified files...");
-  run("git add manifest.json versions.json package.json");
-
-  console.log("\nCommitting...");
-  run(`git commit --author "InkWeave Bot <bot@uglyboy.cn>" -m "chore(release): v${version}"`);
-  run(`git tag ${version}`);
-
   console.log("\nGenerating changelog...");
   const lastTag = execSync("git describe --tags --abbrev=0").toString().trim();
   run(`bun run scripts/changelog.mjs ${lastTag}`);
 
-  console.log("\nStaging changelog...");
-  run("git add CHANGELOG.md");
+  console.log("\nStaging all files...");
+  run("git add .");
 
-  console.log("\nAmending commit with changelog...");
-  run("git commit --amend --no-edit");
+  console.log("\nCommitting...");
+  run(`git commit --author "InkWeave Bot <bot@uglyboy.cn>" -m "chore(release): v${version}"`);
+
+  console.log("\nCreating tag...");
+  run(`git tag ${version}`);
 
   console.log("\nPushing...");
   run(`git push origin master ${version}`);
