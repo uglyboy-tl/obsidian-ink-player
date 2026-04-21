@@ -2,6 +2,7 @@ import { ChoiceParser, ExternalFunctions, Parser, Patches, Tags } from "@inkweav
 import {
   loadAudio,
   loadAutoButton,
+  loadAutoRestore,
   loadAutosave,
   loadCdButton,
   loadFadeEffect,
@@ -17,6 +18,7 @@ const PLUGIN_LOADER: Record<keyof PluginSettings, () => void> = {
   image: loadImage,
   linkopen: loadLinkopen,
   memory: loadMemory,
+  auto_restore: loadAutoRestore,
   scrollafterchoice: loadScrollafterchoice,
   fadeforline: loadFadeEffect,
   cd_button: loadCdButton,

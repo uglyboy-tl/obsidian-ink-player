@@ -4,7 +4,6 @@ import { Platform, Plugin, type TAbstractFile, type WorkspaceLeaf } from "obsidi
 import { DEFAULT_SETTINGS, type Settings } from "settings";
 import { StoryView, VIEW_TYPE } from "view";
 import { setupCommands } from "./commands";
-import { features } from "./features";
 import { SettingsTab } from "./settingsTab";
 
 export default class InkWeavePlugin extends Plugin {
@@ -26,32 +25,10 @@ export default class InkWeavePlugin extends Plugin {
     this.registerExtensions(["ink"], "markdown");
 
     setupCommands(this);
-    features.forEach((f) => {
-      if (this.settings[f.id]) {
-        f.setup(this, this.settings);
-      }
-    });
   }
 
   private updateRefreshSettings() {
     applySettings(this.settings);
-    features.forEach((f) => {
-      const wasEnabled = this.settings[f.id];
-      const isEnabled = this.settings[f.id];
-      if (isEnabled && !wasEnabled) {
-        f.setup(this, this.settings);
-      } else if (!isEnabled && wasEnabled) {
-        f.cleanup?.();
-      } else {
-        f.update?.(this.settings);
-      }
-    });
-  }
-
-  async onunload() {
-    features.forEach((f) => {
-      f.cleanup?.();
-    });
   }
 
   async loadSettings() {

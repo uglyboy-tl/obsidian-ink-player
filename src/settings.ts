@@ -3,6 +3,7 @@ export interface Settings {
   image: boolean;
   linkopen: boolean;
   memory: boolean;
+  auto_restore: boolean;
   scrollafterchoice: boolean;
   fadeforline: boolean;
   cd_button: boolean;
@@ -10,8 +11,6 @@ export interface Settings {
   auto_save: boolean;
   linedelay: number;
   debug: boolean;
-  // Features
-  auto_restore: boolean;
 }
 
 export type PluginSettings = Pick<
@@ -20,6 +19,7 @@ export type PluginSettings = Pick<
   | "image"
   | "linkopen"
   | "memory"
+  | "auto_restore"
   | "scrollafterchoice"
   | "fadeforline"
   | "cd_button"
@@ -32,6 +32,7 @@ export const DEFAULT_SETTINGS: Settings = {
   image: true,
   linkopen: false,
   memory: true,
+  auto_restore: true,
   scrollafterchoice: true,
   fadeforline: true,
   cd_button: false,
@@ -39,5 +40,4 @@ export const DEFAULT_SETTINGS: Settings = {
   auto_save: false,
   linedelay: 0.1,
   debug: false,
-  auto_restore: false,
 };
