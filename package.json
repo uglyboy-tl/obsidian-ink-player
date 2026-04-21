@@ -26,13 +26,13 @@
     "obsidian": "^1.12.3",
     "tslib": "2.4.0",
     "typescript": "^5.9.3",
-    "vite": "^8.0.8",
+    "vite": "^8.0.9",
     "vitest": "^4.1.4"
   },
   "dependencies": {
-    "@inkweave/core": "^1.4.2",
-    "@inkweave/plugins": "^1.4.2",
-    "@inkweave/react": "^1.4.2",
+    "@inkweave/core": "^1.5.0",
+    "@inkweave/plugins": "^1.5.0",
+    "@inkweave/react": "^1.5.0",
     "inkjs": "^2.4.0",
     "mustache": "^4.2.0",
     "react": "^19.2.5",
