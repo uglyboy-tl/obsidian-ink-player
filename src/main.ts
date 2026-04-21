@@ -1,10 +1,10 @@
-import { applySettings } from "applySettings";
-import { I18n, type TransItemType } from "locales/i18n";
 import { Platform, Plugin, type TAbstractFile, type WorkspaceLeaf } from "obsidian";
-import { DEFAULT_SETTINGS, type Settings } from "settings";
-import { StoryView, VIEW_TYPE } from "view";
+import { applySettings } from "./applySettings";
 import { setupCommands } from "./commands";
+import { I18n, type TransItemType } from "./locales/i18n";
+import { DEFAULT_SETTINGS, type Settings } from "./settings";
 import { SettingsTab } from "./settingsTab";
+import { StoryView, VIEW_TYPE } from "./view";
 
 export default class InkWeavePlugin extends Plugin {
   settings!: Settings;
@@ -14,7 +14,7 @@ export default class InkWeavePlugin extends Plugin {
     return this.i18n.t(x, vars);
   }
 
-  async onload() {
+  override async onload() {
     await this.loadSettings();
     this.addSettingTab(new SettingsTab(this.app, this));
     this.updateRefreshSettings();
@@ -60,17 +60,27 @@ export default class InkWeavePlugin extends Plugin {
     };
 
     if (leaves.length > 0) {
-      leaf = leaves[0];
+      leaf = leaves[0] as WorkspaceLeaf;
       await leaf.setViewState(viewState);
     } else {
       if (Platform.isMobile) {
-        leaf = workspace.getLeaf(true);
+        const mobileLeaf = workspace.getLeaf(true);
+        if (mobileLeaf) {
+          leaf = mobileLeaf;
+        }
       } else {
-        leaf = workspace.createLeafBySplit(workspace.getLeaf(false));
+        const desktopLeaf = workspace.getLeaf(false);
+        if (desktopLeaf) {
+          leaf = workspace.createLeafBySplit(desktopLeaf);
+        }
       }
-      await leaf.setViewState(viewState);
+      if (leaf) {
+        await leaf.setViewState(viewState);
+      }
     }
 
-    workspace.revealLeaf(leaf);
+    if (leaf) {
+      workspace.revealLeaf(leaf);
+    }
   }
 }
