@@ -36,8 +36,8 @@ jobs:
           name: ${{ github.ref_name }}
           body_path: RELEASE_NOTES.md
           files: |
-            main.js
+            dist/main.js
+            dist/styles.css
             manifest.json
-            styles.css
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
