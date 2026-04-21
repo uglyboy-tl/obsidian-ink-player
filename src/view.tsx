@@ -4,11 +4,11 @@ import "./styles/styles.custom.css";
 
 import type { InkStory } from "@inkweave/core";
 import { type EventRef, ItemView, type MarkdownView, TFile, type ViewStateResult } from "obsidian";
-import { createElement } from "react";
+import { StrictMode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { InkWeavePlayer } from "@/components";
-import useFile from "@/utils/file";
-import { compiledStory } from "@/utils/storyCompiler";
+import { InkWeavePlayer } from "./components";
+import useFile from "./utils/file";
+import { compiledStory } from "./utils/storyCompiler";
 
 export const VIEW_TYPE = "InkWeave Story View";
 
@@ -17,11 +17,11 @@ export class StoryView extends ItemView {
   ink: InkStory | null = null;
   private watcher: EventRef | null = null;
 
-  getViewType() {
+  override getViewType() {
     return VIEW_TYPE;
   }
 
-  getDisplayText() {
+  override getDisplayText() {
     const filePath = useFile.getState().filePath;
     if (!filePath) return "Ink Player";
     return (
@@ -32,11 +32,11 @@ export class StoryView extends ItemView {
     );
   }
 
-  getState() {
+  override getState() {
     return { filePath: useFile.getState().filePath };
   }
 
-  async setState(state: { filePath?: string }, result: ViewStateResult) {
+  override async setState(state: { filePath?: string }, result: ViewStateResult) {
     const filePath = state?.filePath;
     const currentFilePath = useFile.getState().filePath;
 
@@ -72,8 +72,10 @@ export class StoryView extends ItemView {
     }
   }
 
-  async onOpen() {
+  override async onOpen() {
     const container = this.containerEl.children[1];
+    if (!container) return;
+
     this.root = createRoot(container);
     this.ink = compiledStory();
     this.renderInk();
@@ -96,14 +98,19 @@ export class StoryView extends ItemView {
 
   private renderInk() {
     if (this.root && this.ink) {
-      this.root.render(createElement(InkWeavePlayer, { ink: this.ink }));
+      this.root.render(
+        <StrictMode>
+          <InkWeavePlayer ink={this.ink} />
+        </StrictMode>,
+      );
     }
   }
 
-  async onClose() {
+  override async onClose() {
     if (this.watcher) {
       this.app.vault.offref(this.watcher);
     }
     this.ink?.dispose();
+    this.root?.unmount();
   }
 }
