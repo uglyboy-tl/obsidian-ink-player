@@ -1,5 +1,5 @@
 import { MarkdownView } from "obsidian";
-import type InkWeavePlugin from "./plugin";
+import type InkWeavePlugin from "./main";
 
 export const setupCommands = (plugin: InkWeavePlugin) => {
   const commandText = plugin.i18n.t("command_activate");

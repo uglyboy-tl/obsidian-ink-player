@@ -11,7 +11,7 @@ import {
   loadMemory,
   loadScrollafterchoice,
 } from "@inkweave/plugins";
-import type { PluginSettings } from "settings";
+import type { PluginSettings } from "./settings";
 
 const PLUGIN_LOADER: Record<keyof PluginSettings, () => void> = {
   audio: loadAudio,

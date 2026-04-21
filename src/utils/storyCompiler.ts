@@ -3,7 +3,7 @@ import useError from "./error";
 import useFile from "./file";
 
 class ObsidianFileHandler extends BaseFileHandler {
-  loadFile(filename: string): string {
+  override loadFile(filename: string): string {
     return useFile.getState().getResource(filename);
   }
 }

@@ -1,6 +1,6 @@
-import type { TransItemType } from "locales/i18n";
 import { type App, PluginSettingTab, Setting } from "obsidian";
-import type InkWeavePlugin from "./plugin";
+import type { TransItemType } from "./locales/i18n";
+import type InkWeavePlugin from "./main";
 import { DEFAULT_SETTINGS } from "./settings";
 
 export class SettingsTab extends PluginSettingTab {

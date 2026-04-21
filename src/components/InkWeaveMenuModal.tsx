@@ -1,8 +1,8 @@
 import type { InkStory } from "@inkweave/core";
 import type { SaveSlot } from "@inkweave/plugins";
 import { memory } from "@inkweave/plugins";
-import { I18n } from "locales/i18n";
 import { memo } from "react";
+import { I18n } from "../locales/i18n";
 
 const i18n = new I18n();
 const t = (key: Parameters<typeof i18n.t>[0], vars?: Record<string, string>) => i18n.t(key, vars);

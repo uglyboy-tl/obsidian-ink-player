@@ -8,7 +8,7 @@ interface InkWeavePlayerProps {
   ink: InkStory;
 }
 
-const InkWeavePlayer: React.FC<InkWeavePlayerProps> = ({ ink }) => {
+const InkWeavePlayer = ({ ink }: InkWeavePlayerProps) => {
   return (
     <div id="inkweave-player" className="container">
       <InkWeaveMenu ink={ink} />
