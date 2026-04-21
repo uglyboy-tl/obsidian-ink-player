@@ -41,10 +41,9 @@ function parseCommit(message) {
 function isReleaseCommit(commit) {
   return (
     (commit.type === "chore" &&
-     commit.scope === "release" &&
-     /^v?\d+\.\d+\.\d+$/.test(commit.subject)) ||
-    (commit.type === "chore" && 
-     commit.scope === "changelog")
+      commit.scope === "release" &&
+      /^v?\d+\.\d+\.\d+$/.test(commit.subject)) ||
+    (commit.type === "chore" && commit.scope === "changelog")
   );
 }
 
@@ -171,14 +170,14 @@ function updateChangelogFile(newSection, changelogPath = "CHANGELOG.md") {
     const content = readFileSync(changelogPath, "utf-8");
     const lines = content.split("\n");
     const headerEndIndex = lines.findIndex((line) => line.startsWith("## "));
-    
+
     if (headerEndIndex >= 0) {
       const header = headerEndIndex > 0 ? `${lines.slice(0, headerEndIndex).join("\n")}\n` : "";
-      
+
       // Parse remaining content to find existing versions and remove duplicates of the new version
-      let remainingLines = lines.slice(headerEndIndex);
-      let filteredLines = [];
-      
+      const remainingLines = lines.slice(headerEndIndex);
+      const filteredLines = [];
+
       let i = 0;
       while (i < remainingLines.length) {
         // Look for version headers
@@ -188,8 +187,12 @@ function updateChangelogFile(newSection, changelogPath = "CHANGELOG.md") {
             // Skip this version section (it's a duplicate of the one we're adding)
             i++;
             // Skip until we reach the next version or end
-            while (i < remainingLines.length && !remainingLines[i].startsWith("## ") && 
-                   (remainingLines[i].trim() !== "" || i + 1 < remainingLines.length && !remainingLines[i + 1].startsWith("## "))) {
+            while (
+              i < remainingLines.length &&
+              !remainingLines[i].startsWith("## ") &&
+              (remainingLines[i].trim() !== "" ||
+                (i + 1 < remainingLines.length && !remainingLines[i + 1].startsWith("## ")))
+            ) {
               i++;
             }
             continue; // Don't add this duplicate version
@@ -198,7 +201,7 @@ function updateChangelogFile(newSection, changelogPath = "CHANGELOG.md") {
         filteredLines.push(remainingLines[i]);
         i++;
       }
-      
+
       const existingVersions = filteredLines.join("\n").trim();
       const newContent = existingVersions
         ? `${header + newSection}\n\n${existingVersions}\n`
@@ -206,7 +209,7 @@ function updateChangelogFile(newSection, changelogPath = "CHANGELOG.md") {
       writeFileSync(changelogPath, newContent);
       return;
     }
-    
+
     if (lines[0]?.startsWith("# ")) {
       writeFileSync(changelogPath, `${lines[0]}\n\n${newSection}\n`);
       return;

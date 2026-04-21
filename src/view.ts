@@ -65,6 +65,8 @@ export class StoryView extends ItemView {
     useFile.getState().init(filePath, markdown, resourcePath);
 
     if (markdown !== currentMarkdown || this.ink?.title !== filePath) {
+      this.ink?.dispose();
+      this.ink?.clear();
       this.ink = compiledStory();
       this.renderInk();
     }
