@@ -1,25 +1,9 @@
 {
+  "$schema": "https://www.schemastore.org/tsconfig",
+  "extends": ["@tsconfig/bun/tsconfig.json", "@tsconfig/vite-react/tsconfig.json"],
   "compilerOptions": {
-    "skipLibCheck": true,
-    "baseUrl": "src",
-    "inlineSourceMap": true,
-    "inlineSources": true,
-    "module": "ESNext",
-    "target": "ES6",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "importHelpers": true,
-    "isolatedModules": true,
-    "strictNullChecks": true,
-    "lib": ["DOM", "ES2018"],
-    "jsx": "react-jsx",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "types": ["bun-types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "src/__tests__", "src/**/*.test.ts", "src/packages"]
+  "include": ["src/**/*", "src/types/**/*"],
+  "exclude": ["node_modules", "src/**/*.test.ts"]
 }
