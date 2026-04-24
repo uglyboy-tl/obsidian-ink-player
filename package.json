@@ -31,19 +31,17 @@
     "obsidian": "^1.12.3",
     "tslib": "2.4.0",
     "typescript": "^5.9.3",
-    "vite": "^8.0.9",
+    "vite": "^8.0.10",
     "vitest": "^4.1.5"
   },
   "dependencies": {
-    "@inkweave/core": "^1.5.1",
-    "@inkweave/plugins": "^1.5.1",
-    "@inkweave/react": "^1.5.1",
-    "inkjs": "^2.4.0",
+    "@inkweave/core": "^1.6.0",
+    "@inkweave/plugins": "^1.6.0",
+    "@inkweave/react": "^1.6.0",
     "mustache": "^4.2.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-icons": "^5.6.0",
-    "zustand": "^5.0.12"
+    "react-icons": "^5.6.0"
   },
   "peerDependencies": {
     "obsidian": ">=0.15.0"
