@@ -1,9 +1,22 @@
+import { Plugins } from "@inkweave/core";
+import {
+  audioPlugin,
+  autoButtonPlugin,
+  autoRestorePlugin,
+  cdButtonPlugin,
+  classTagPlugin,
+  fadeEffectPlugin,
+  imagePlugin,
+  linkOpenPlugin,
+  memoryPlugin,
+  scrollAfterChoicePlugin,
+} from "@inkweave/plugins";
+
 import { Platform, Plugin, type TAbstractFile, type WorkspaceLeaf } from "obsidian";
-import { applySettings } from "./applySettings";
 import { setupCommands } from "./commands";
 import { I18n, type TransItemType } from "./locales/i18n";
-import { DEFAULT_SETTINGS, type Settings } from "./settings";
-import { SettingsTab } from "./settingsTab";
+import { SettingsTab } from "./settings";
+import { DEFAULT_SETTINGS, type Settings } from "./types";
 import { StoryView, VIEW_TYPE } from "./view";
 
 export default class InkWeavePlugin extends Plugin {
@@ -14,10 +27,14 @@ export default class InkWeavePlugin extends Plugin {
     return this.i18n.t(x, vars);
   }
 
+  private getPluginSettings(): Record<string, boolean> {
+    const { linedelay, debug, ...pluginSettings } = this.settings;
+    return pluginSettings;
+  }
+
   override async onload() {
     await this.loadSettings();
     this.addSettingTab(new SettingsTab(this.app, this));
-    this.updateRefreshSettings();
 
     this.i18n = new I18n();
 
@@ -25,19 +42,27 @@ export default class InkWeavePlugin extends Plugin {
     this.registerExtensions(["ink"], "markdown");
 
     setupCommands(this);
-  }
-
-  private updateRefreshSettings() {
-    applySettings(this.settings);
+    Plugins.register(imagePlugin);
+    Plugins.register(audioPlugin);
+    Plugins.register(autoRestorePlugin);
+    Plugins.register(fadeEffectPlugin);
+    Plugins.register(scrollAfterChoicePlugin);
+    Plugins.register(linkOpenPlugin);
+    Plugins.register(memoryPlugin);
+    Plugins.register(autoButtonPlugin);
+    Plugins.register(cdButtonPlugin);
+    Plugins.register(classTagPlugin);
+    Plugins.setPluginsEnabled(this.getPluginSettings());
   }
 
   async loadSettings() {
     this.settings = Object.assign(DEFAULT_SETTINGS, (await this.loadData()) ?? {});
+    Plugins.setPluginsEnabled(this.getPluginSettings());
   }
 
   async updateSettings(settings: Partial<Settings>) {
     Object.assign(this.settings, settings);
-    this.updateRefreshSettings();
+    Plugins.setPluginsEnabled(this.getPluginSettings());
     await this.saveData(this.settings);
   }
 

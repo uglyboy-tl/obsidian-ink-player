@@ -4,11 +4,9 @@ import "./styles/styles.custom.css";
 
 import type { InkStory } from "@inkweave/core";
 import { type EventRef, ItemView, type MarkdownView, TFile, type ViewStateResult } from "obsidian";
-import { StrictMode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { InkWeavePlayer } from "./components";
-import useFile from "./utils/file";
-import { compiledStory } from "./utils/storyCompiler";
+import { render } from "./components";
+import { compile, useFile } from "./utils";
 
 export const VIEW_TYPE = "InkWeave Story View";
 
@@ -46,6 +44,10 @@ export class StoryView extends ItemView {
     await super.setState(state, result);
   }
 
+  private isMarkdownView(view: any): view is MarkdownView {
+    return view && typeof view === "object" && "editor" in view && "file" in view;
+  }
+
   private async loadFile(filePath: string) {
     const file = this.app.vault.getAbstractFileByPath(filePath);
     if (!(file instanceof TFile)) return;
@@ -54,8 +56,9 @@ export class StoryView extends ItemView {
 
     const fileLeaf = workspace
       .getLeavesOfType("markdown")
-      .find((leaf) => (leaf.view as MarkdownView).file?.path === filePath);
-    const editorContent = (fileLeaf?.view as MarkdownView)?.editor.getValue();
+      .find((leaf) => this.isMarkdownView(leaf.view) && leaf.view.file?.path === filePath);
+    const editorContent =
+      fileLeaf && this.isMarkdownView(fileLeaf.view) ? fileLeaf.view.editor.getValue() : null;
     const markdown =
       editorContent != null && editorContent !== "" ? editorContent : await vault.read(file);
 
@@ -66,9 +69,8 @@ export class StoryView extends ItemView {
 
     if (markdown !== currentMarkdown || this.ink?.title !== filePath) {
       this.ink?.dispose();
-      this.ink?.clear();
-      this.ink = compiledStory();
-      this.renderInk();
+      this.ink = compile();
+      render(this.root, this.ink);
     }
   }
 
@@ -77,8 +79,8 @@ export class StoryView extends ItemView {
     if (!container) return;
 
     this.root = createRoot(container);
-    this.ink = compiledStory();
-    this.renderInk();
+    this.ink = compile();
+    render(this.root, this.ink);
 
     this.watcher = this.app.vault.on("modify", async (file) => {
       const filePath = useFile.getState().filePath;
@@ -89,21 +91,11 @@ export class StoryView extends ItemView {
         if (markdown !== currentMarkdown) {
           const resourcePath = useFile.getState().resourcePath;
           useFile.getState().init(filePath, markdown, resourcePath);
-          this.ink = compiledStory();
-          this.renderInk();
+          this.ink = compile();
+          render(this.root, this.ink);
         }
       }
     });
-  }
-
-  private renderInk() {
-    if (this.root && this.ink) {
-      this.root.render(
-        <StrictMode>
-          <InkWeavePlayer ink={this.ink} />
-        </StrictMode>,
-      );
-    }
   }
 
   override async onClose() {

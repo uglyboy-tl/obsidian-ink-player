@@ -1,4 +1,9 @@
-import { BaseFileHandler, createInkStory, type InkStory } from "@inkweave/core";
+import {
+  BaseFileHandler,
+  createInkStory,
+  type InkStory,
+  type InkStoryOptions,
+} from "@inkweave/core";
 import useError from "./error";
 import useFile from "./file";
 
@@ -8,11 +13,11 @@ class ObsidianFileHandler extends BaseFileHandler {
   }
 }
 
-export const compiledStory = (): InkStory | null => {
+export const compile = (): InkStory | null => {
   const basePath = useFile.getState().resourcePath;
   const fileHandler = new ObsidianFileHandler({ basePath });
-  const errorHandler = (message: string, errorType: string) => {
-    (useError.getState() as any).errorHandler(`${errorType}: ${message}`);
+  const errorHandler = (message: string, errorType: any) => {
+    useError.getState().errorHandler(`${errorType}: ${message}`);
   };
   const filePath = useFile.getState().filePath;
   const markdown = useFile.getState().markdown;
@@ -27,12 +32,13 @@ export const compiledStory = (): InkStory | null => {
       title: filePath,
       fileHandler,
       errorHandler,
-    } as any);
+    } as InkStoryOptions);
     return ink;
   } catch (e) {
-    (useError.getState() as any).errorHandler(
-      `Error: ${e instanceof Error ? e.message : String(e)}`,
-    );
+    const filePath = useFile.getState().filePath;
+    useError
+      .getState()
+      .errorHandler(`Error compiling ${filePath}: ${e instanceof Error ? e.message : String(e)}`);
     return null;
   }
 };
