@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.0.7 (2026-04-22)
+
+### Features
+- **types**: add CSS modules type declarations
+
+### Refactoring
+- **code**: various code improvements and fixes
+- **view**: rename view.ts to view.tsx for React component
+- **plugin-entry**: rename plugin.ts to main.ts and update config
+- **plugin-architecture**: simplify plugin architecture by removing features system
+
+### Chores
+- **deps**: update dependencies and release workflow
+- **config**: improve view lifecycle and update configuration
+- **deps**: upgrade dependencies to latest versions
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.6...2.0.7
+
 ## 2.0.6 (2026-04-18)
 
 ### Features

@@ -59,8 +59,7 @@ function main() {
   run(`npm_package_version=${version} bun run scripts/version-bump.mjs`);
 
   console.log("\nGenerating changelog...");
-  const lastTag = execSync("git describe --tags --abbrev=0").toString().trim();
-  run(`bun run scripts/changelog.mjs ${lastTag}`);
+  run(`bun run scripts/changelog.mjs ${version}`);
 
   console.log("\nStaging all files...");
   run("git add .");
