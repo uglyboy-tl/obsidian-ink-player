@@ -1,6 +1,7 @@
 import {
   BaseFileHandler,
   createInkStory,
+  type ErrorHandler,
   type InkStory,
   type InkStoryOptions,
 } from "@inkweave/core";
@@ -16,7 +17,7 @@ class ObsidianFileHandler extends BaseFileHandler {
 export const compile = (): InkStory | null => {
   const basePath = useFile.getState().resourcePath;
   const fileHandler = new ObsidianFileHandler({ basePath });
-  const errorHandler = (message: string, errorType: any) => {
+  const errorHandler: ErrorHandler = (message, errorType) => {
     useError.getState().errorHandler(`${errorType}: ${message}`);
   };
   const filePath = useFile.getState().filePath;

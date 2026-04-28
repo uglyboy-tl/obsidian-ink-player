@@ -44,8 +44,8 @@ export class StoryView extends ItemView {
     await super.setState(state, result);
   }
 
-  private isMarkdownView(view: any): view is MarkdownView {
-    return view && typeof view === "object" && "editor" in view && "file" in view;
+  private isMarkdownView(view: unknown): view is MarkdownView {
+    return view != null && typeof view === "object" && "editor" in view && "file" in view;
   }
 
   private async loadFile(filePath: string) {
