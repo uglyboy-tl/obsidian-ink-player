@@ -25,9 +25,11 @@
   "settings_options": "Options",
   "options_linedelay_title": "Line delay",
   "options_linedelay_desc": "Time in seconds between each line appearing when Animate lines is enabled.",
-  "modal_save": "Save",
-  "modal_restore": "Restore",
+  "menu_save": "Save",
+  "menu_restore": "Restore",
+  "modal_save_title": "Save Game",
+  "modal_restore_title": "Restore Game",
   "modal_slot": "Slot {{n}}",
-  "modal_autosave_slot": "Auto Save",
-  "modal_empty": "empty"
+  "modal_slot_autosave": "Auto Save",
+  "modal_slot_empty": "empty"
 }

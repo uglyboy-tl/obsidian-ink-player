@@ -25,9 +25,11 @@
   "settings_options": "Opcje",
   "options_linedelay_title": "Opóźnienie linii",
   "options_linedelay_desc": "Czas w sekundach między pojawianiem się kolejnych linii, gdy włączona jest animacja linii.",
-  "modal_save": "Zapisz",
-  "modal_restore": "Wczytaj",
+  "menu_save": "Zapisz",
+  "menu_restore": "Wczytaj",
+  "modal_save_title": "Zapisz",
+  "modal_restore_title": "Wczytaj",
   "modal_slot": "Slot {{n}}",
-  "modal_autosave_slot": "Auto Zapis",
-  "modal_empty": "pusty"
+  "modal_slot_autosave": "Auto Zapis",
+  "modal_slot_empty": "pusty"
 }

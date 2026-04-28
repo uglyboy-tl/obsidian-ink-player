@@ -20,7 +20,7 @@ export class I18n {
       realLang = moment.locale().replace("-", "_") as LangType;
     }
 
-    const res: string = (LANGS[realLang] as (typeof LANGS)["en"])[key] || LANGS.en[key] || key;
+    const res: string | undefined = (LANGS[realLang] as (typeof LANGS)["en"])[key] || LANGS.en[key];
     return res;
   }
 
@@ -31,3 +31,16 @@ export class I18n {
     return Mustache.render(this._get(key), vars);
   }
 }
+const i18n = new I18n();
+export const t = (content: string | undefined): string | undefined => {
+  if (!content) return;
+
+  // 处理 modal_slot_N 格式的字符串
+  const modalSlotMatch = content.match(/^modal_slot_(\d+)$/);
+  if (modalSlotMatch && modalSlotMatch[1] !== undefined) {
+    return i18n.t("modal_slot", { n: modalSlotMatch[1] });
+  }
+
+  // 其他情况直接作为翻译键使用
+  return i18n.t(content as TransItemType);
+};
