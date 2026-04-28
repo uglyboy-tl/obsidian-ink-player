@@ -4,6 +4,6 @@
   "compilerOptions": {
     "types": ["bun-types"]
   },
-  "include": ["src/**/*", "src/types/**/*"],
-  "exclude": ["node_modules", "src/**/*.test.ts"]
+  "include": ["src", "package.json"],
+  "exclude": ["dist"]
 }
