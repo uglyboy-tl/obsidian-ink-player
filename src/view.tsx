@@ -6,7 +6,8 @@ import type { InkStory } from "@inkweave/core";
 import { type EventRef, ItemView, type MarkdownView, TFile, type ViewStateResult } from "obsidian";
 import { createRoot, type Root } from "react-dom/client";
 import { render } from "./components";
-import { compile, useFile } from "./utils";
+import { compile } from "./utils/compile";
+import { default as useFile } from "./utils/file";
 
 export const VIEW_TYPE = "InkWeave Story View";
 
