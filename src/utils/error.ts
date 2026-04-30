@@ -2,12 +2,12 @@ import { createSelectors } from "@inkweave/core";
 import { Notice } from "obsidian";
 import { create } from "zustand";
 
-type Error = {
+type ErrorState = {
   error: string | null;
   errorHandler: (message: string) => void;
 };
 
-const useError = create<Error>((set) => ({
+const useError = create<ErrorState>((set) => ({
   error: null,
   errorHandler: (message) => {
     console.error(message);
