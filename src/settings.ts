@@ -1,8 +1,9 @@
 import { type App, PluginSettingTab, Setting } from "obsidian";
 import type { TransItemType } from "./locales/i18n";
 import type InkWeavePlugin from "./main";
-import type { PluginSettings, Settings } from "./types";
+import type { PluginSettings } from "./types";
 import { DEFAULT_SETTINGS } from "./types";
+import { resolve } from "./utils/deps";
 
 export class SettingsTab extends PluginSettingTab {
   plugin: InkWeavePlugin;
@@ -25,16 +26,21 @@ export class SettingsTab extends PluginSettingTab {
       .setName(this.t(titleKey))
       .setDesc(this.t(descKey))
       .addToggle((toggle) =>
-        toggle
-          .setValue(this.plugin.settings[key])
-          .onChange(
-            async (value) =>
-              await this.plugin.updateSettings({ [key]: value } as Partial<Settings>),
-          ),
+        toggle.setValue(this.plugin.settings[key]).onChange(async (value) => {
+          // 获取当前插件设置（排除 linedelay 和 debug）
+          const { linedelay, debug, ...currentPluginSettings } = this.plugin.settings;
+
+          // 计算包含依赖关系的新设置
+          const newPluginSettings = resolve(currentPluginSettings, key, value);
+
+          // 更新所有相关设置
+          await this.plugin.updateSettings(newPluginSettings);
+          this.display();
+        }),
       );
   }
 
-  display(): void {
+  override display(): void {
     this.containerEl.empty();
 
     new Setting(this.containerEl).setName(this.t("settings_options")).setHeading();
@@ -56,24 +62,23 @@ export class SettingsTab extends PluginSettingTab {
 
     new Setting(this.containerEl).setName(this.t("settings_plugins")).setHeading();
 
-    // Fixed plugin settings
     this.addPluginToggle("audio", "settings_audio_title", "settings_audio_desc");
     this.addPluginToggle("image", "settings_image_title", "settings_image_desc");
-    this.addPluginToggle("linkopen", "settings_linkopen_title", "settings_linkopen_desc");
+    this.addPluginToggle("link-open", "settings_linkopen_title", "settings_linkopen_desc");
     this.addPluginToggle("memory", "settings_memory_title", "settings_memory_desc");
     this.addPluginToggle(
-      "auto_restore",
+      "auto-restore",
       "settings_auto_restore_title",
       "settings_auto_restore_desc",
     );
     this.addPluginToggle(
-      "scrollafterchoice",
+      "scroll-after-choice",
       "settings_scrollafterchoice_title",
       "settings_scrollafterchoice_desc",
     );
-    this.addPluginToggle("fadeforline", "settings_fadeforline_title", "settings_fadeforline_desc");
-    this.addPluginToggle("cd_button", "settings_cdbutton_title", "settings_cdbutton_desc");
-    this.addPluginToggle("auto_button", "settings_autobutton_title", "settings_autobutton_desc");
-    this.addPluginToggle("auto_save", "settings_autosave_title", "settings_autosave_desc");
+    this.addPluginToggle("fade-effect", "settings_fadeforline_title", "settings_fadeforline_desc");
+    this.addPluginToggle("cd-button", "settings_cdbutton_title", "settings_cdbutton_desc");
+    this.addPluginToggle("auto-button", "settings_autobutton_title", "settings_autobutton_desc");
+    this.addPluginToggle("auto-save", "settings_autosave_title", "settings_autosave_desc");
   }
 }

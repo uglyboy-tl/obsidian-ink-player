@@ -1,22 +1,11 @@
 import { Plugins } from "@inkweave/core";
-import {
-  audioPlugin,
-  autoButtonPlugin,
-  autoRestorePlugin,
-  cdButtonPlugin,
-  classTagPlugin,
-  fadeEffectPlugin,
-  imagePlugin,
-  linkOpenPlugin,
-  memoryPlugin,
-  scrollAfterChoicePlugin,
-} from "@inkweave/plugins";
 
 import { Platform, Plugin, type TAbstractFile, type WorkspaceLeaf } from "obsidian";
 import { setupCommands } from "./commands";
 import { I18n, type TransItemType } from "./locales/i18n";
 import { SettingsTab } from "./settings";
 import { DEFAULT_SETTINGS, type Settings } from "./types";
+import { plugins } from "./utils/deps";
 import { StoryView, VIEW_TYPE } from "./view";
 
 export default class InkWeavePlugin extends Plugin {
@@ -42,21 +31,12 @@ export default class InkWeavePlugin extends Plugin {
     this.registerExtensions(["ink"], "markdown");
 
     setupCommands(this);
-    Plugins.register(imagePlugin);
-    Plugins.register(audioPlugin);
-    Plugins.register(autoRestorePlugin);
-    Plugins.register(fadeEffectPlugin);
-    Plugins.register(scrollAfterChoicePlugin);
-    Plugins.register(linkOpenPlugin);
-    Plugins.register(memoryPlugin);
-    Plugins.register(autoButtonPlugin);
-    Plugins.register(cdButtonPlugin);
-    Plugins.register(classTagPlugin);
+    for (const p of plugins) Plugins.register(p);
     Plugins.setPluginsEnabled(this.getPluginSettings());
   }
 
   async loadSettings() {
-    this.settings = Object.assign(DEFAULT_SETTINGS, (await this.loadData()) ?? {});
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) ?? {});
     Plugins.setPluginsEnabled(this.getPluginSettings());
   }
 

@@ -1,14 +1,14 @@
 export interface PluginSettings {
   audio: boolean;
   image: boolean;
-  linkopen: boolean;
+  "link-open": boolean;
   memory: boolean;
-  auto_restore: boolean;
-  scrollafterchoice: boolean;
-  fadeforline: boolean;
-  cd_button: boolean;
-  auto_button: boolean;
-  auto_save: boolean;
+  "auto-restore": boolean;
+  "scroll-after-choice": boolean;
+  "fade-effect": boolean;
+  "cd-button": boolean;
+  "auto-button": boolean;
+  "auto-save": boolean;
 }
 
 export interface Settings extends PluginSettings {
@@ -19,14 +19,14 @@ export interface Settings extends PluginSettings {
 export const DEFAULT_SETTINGS: Settings = {
   audio: true,
   image: true,
-  linkopen: false,
+  "link-open": false,
   memory: true,
-  auto_restore: true,
-  scrollafterchoice: true,
-  fadeforline: true,
-  cd_button: false,
-  auto_button: false,
-  auto_save: false,
+  "auto-restore": true,
+  "scroll-after-choice": true,
+  "fade-effect": true,
+  "cd-button": false,
+  "auto-button": false,
+  "auto-save": false,
   linedelay: 0.1,
   debug: false,
 };
