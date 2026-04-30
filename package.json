@@ -13,6 +13,8 @@
   "author": "Uglyboy",
   "license": "MIT",
   "devDependencies": {
+    "@tsconfig/bun": "^1.0.0",
+    "@tsconfig/vite-react": "^7.0.0",
     "@types/mustache": "^4.2.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
