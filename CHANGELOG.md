@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.1.0 (2026-04-30)
+
+### Features
+- **plugins**: migrate deps to core, add class-tag UI
+- **plugins**: add plugin dependency resolution system
+- **i18n**: add restart menu translations for zh_cn
+
+### Bug Fixes
+- **utils**: rename Error type to ErrorState to avoid global shadowing
+
+### Refactoring
+- **utils**: remove barrel exports, use direct imports
+- **core**: improve type safety with proper type annotations
+- **components**: replace InkWeaveMenu with CommandBar
+- **plugin-core**: migrate to Plugins API and consolidate module structure
+
+### Chores
+- **deps**: add tsconfig preset packages
+- **mocks**: remove unused obsidian test mocks
+- **config**: remove unused tooling and streamline build setup
+- **deps**: upgrade @inkweave packages to v2.0.4
+- **release**: update changelog and fix release script tag reference
+- **deps**: upgrade @inkweave packages to v1.6.0 and remove unused deps
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.0.7...2.1.0
+
 ## 2.0.7 (2026-04-22)
 
 ### Features
