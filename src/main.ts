@@ -5,7 +5,7 @@ import { setupCommands } from "./commands";
 import { I18n, type TransItemType } from "./locales/i18n";
 import { SettingsTab } from "./settings";
 import { DEFAULT_SETTINGS, type Settings } from "./types";
-import { plugins } from "./utils/deps";
+import { plugins } from "./utils/plugins";
 import { StoryView, VIEW_TYPE } from "./view";
 
 export default class InkWeavePlugin extends Plugin {

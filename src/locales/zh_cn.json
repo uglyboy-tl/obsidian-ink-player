@@ -35,5 +35,7 @@
   "modal_restore_title": "读取游戏",
   "modal_slot": "存档 {{n}}",
   "modal_slot_autosave": "自动存档",
-  "modal_slot_empty": "空"
+  "modal_slot_empty": "空",
+  "settings_classtag_title": "CSS 样式类",
+  "settings_classtag_desc": "通过 #class:类名1 类名2 标签为内容和选项添加 CSS 样式类"
 }

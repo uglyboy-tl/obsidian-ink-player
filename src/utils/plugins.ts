@@ -1,0 +1,28 @@
+import type { Plugin } from "@inkweave/core";
+import {
+  audioPlugin,
+  autoButtonPlugin,
+  autoRestorePlugin,
+  autoSavePlugin,
+  cdButtonPlugin,
+  classTagPlugin,
+  fadeEffectPlugin,
+  imagePlugin,
+  linkOpenPlugin,
+  memoryPlugin,
+  scrollAfterChoicePlugin,
+} from "@inkweave/plugins";
+
+export const plugins: Plugin[] = [
+  audioPlugin,
+  autoButtonPlugin,
+  autoRestorePlugin,
+  autoSavePlugin,
+  cdButtonPlugin,
+  classTagPlugin,
+  fadeEffectPlugin,
+  imagePlugin,
+  linkOpenPlugin,
+  memoryPlugin,
+  scrollAfterChoicePlugin,
+];

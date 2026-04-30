@@ -9,6 +9,7 @@ export interface PluginSettings {
   "cd-button": boolean;
   "auto-button": boolean;
   "auto-save": boolean;
+  "class-tag": boolean;
 }
 
 export interface Settings extends PluginSettings {
@@ -27,6 +28,7 @@ export const DEFAULT_SETTINGS: Settings = {
   "cd-button": false,
   "auto-button": false,
   "auto-save": false,
+  "class-tag": true,
   linedelay: 0.1,
   debug: false,
 };

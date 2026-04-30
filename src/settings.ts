@@ -1,9 +1,9 @@
+import { Plugins } from "@inkweave/core";
 import { type App, PluginSettingTab, Setting } from "obsidian";
 import type { TransItemType } from "./locales/i18n";
 import type InkWeavePlugin from "./main";
 import type { PluginSettings } from "./types";
 import { DEFAULT_SETTINGS } from "./types";
-import { resolve } from "./utils/deps";
 
 export class SettingsTab extends PluginSettingTab {
   plugin: InkWeavePlugin;
@@ -27,11 +27,14 @@ export class SettingsTab extends PluginSettingTab {
       .setDesc(this.t(descKey))
       .addToggle((toggle) =>
         toggle.setValue(this.plugin.settings[key]).onChange(async (value) => {
-          // 获取当前插件设置（排除 linedelay 和 debug）
-          const { linedelay, debug, ...currentPluginSettings } = this.plugin.settings;
+          // 获取当前插件布尔设置（排除 linedelay 和 debug）
+          const { linedelay, debug, ...pluginBools } = this.plugin.settings;
 
-          // 计算包含依赖关系的新设置
-          const newPluginSettings = resolve(currentPluginSettings, key, value);
+          // 计算包含依赖关系的新设置并持久化，供界面展示级联状态
+          const newPluginSettings: PluginSettings = {
+            ...pluginBools,
+            ...Plugins.resolveDependencies({ [key]: value }),
+          };
 
           // 更新所有相关设置
           await this.plugin.updateSettings(newPluginSettings);
@@ -80,5 +83,6 @@ export class SettingsTab extends PluginSettingTab {
     this.addPluginToggle("cd-button", "settings_cdbutton_title", "settings_cdbutton_desc");
     this.addPluginToggle("auto-button", "settings_autobutton_title", "settings_autobutton_desc");
     this.addPluginToggle("auto-save", "settings_autosave_title", "settings_autosave_desc");
+    this.addPluginToggle("class-tag", "settings_classtag_title", "settings_classtag_desc");
   }
 }

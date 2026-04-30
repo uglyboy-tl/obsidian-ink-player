@@ -31,5 +31,7 @@
   "modal_restore_title": "Wczytaj",
   "modal_slot": "Slot {{n}}",
   "modal_slot_autosave": "Auto Zapis",
-  "modal_slot_empty": "pusty"
+  "modal_slot_empty": "pusty",
+  "settings_classtag_title": "Klasy CSS",
+  "settings_classtag_desc": "Stosuje klasy CSS do treści i wyborów przez tag: #class:klasa1 klasa2"
 }

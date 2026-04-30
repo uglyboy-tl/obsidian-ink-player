@@ -31,5 +31,7 @@
   "modal_restore_title": "Restore Game",
   "modal_slot": "Slot {{n}}",
   "modal_slot_autosave": "Auto Save",
-  "modal_slot_empty": "empty"
+  "modal_slot_empty": "empty",
+  "settings_classtag_title": "CSS classes",
+  "settings_classtag_desc": "Apply CSS classes to content and choices via tag: #class:className1 className2"
 }
