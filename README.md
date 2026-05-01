@@ -23,6 +23,10 @@ Thanks to [Calico](https://elliotherriman.itch.io/calico), this plugin offers a 
 
 ## Contributing
 
--   Clone this repository.
--   Run `npm i` or `yarn` to install dependencies.
--   Run `npm run dev` to start compilation in watch mode.
+This plugin is part of the [InkWeave](https://github.com/uglyboy-tl/InkWeave) monorepo. It depends on `@inkweave/core`, `@inkweave/react`, and `@inkweave/plugins`.
+
+-   Clone the InkWeave repository.
+-   Run `git submodule update --init` to pull the plugin source.
+-   Run `bun install` to install dependencies.
+-   Run `bun run build:obsidian` to build the plugin.
+-   Run `bun check` for linting and type checking.

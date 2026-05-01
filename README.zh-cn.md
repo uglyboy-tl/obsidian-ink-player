@@ -23,6 +23,10 @@
 
 ## 贡献
 
--   克隆此仓库。
--   运行 `npm i` 或 `yarn` 安装依赖项。
--   运行 `npm run dev` 以启动监听模式下的编译。
+本插件是 [InkWeave](https://github.com/uglyboy-tl/InkWeave) 单体仓库的一部分，依赖于 `@inkweave/core`、`@inkweave/react` 和 `@inkweave/plugins`。
+
+-   克隆 InkWeave 仓库。
+-   运行 `git submodule update --init` 拉取插件源码。
+-   运行 `bun install` 安装依赖。
+-   运行 `bun run build:obsidian` 构建插件。
+-   运行 `bun check` 进行 lint 和类型检查。
