@@ -1,4 +1,3 @@
-import { createSelectors } from "@inkweave/core";
 import { Notice } from "obsidian";
 import { create } from "zustand";
 
@@ -16,4 +15,4 @@ const useError = create<ErrorState>((set) => ({
   },
 }));
 
-export default createSelectors(useError);
+export default useError;

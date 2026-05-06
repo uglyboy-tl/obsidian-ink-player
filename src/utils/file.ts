@@ -1,4 +1,3 @@
-import { createSelectors } from "@inkweave/core";
 import { create } from "zustand";
 
 type File = {
@@ -33,4 +32,4 @@ const useFile = create<File>((set) => ({
   },
 }));
 
-export default createSelectors(useFile);
+export default useFile;
