@@ -11,7 +11,7 @@ import {
   linkOpenPlugin,
   memoryPlugin,
   scrollAfterChoicePlugin,
-} from "@inkweave/plugins";
+} from "@inkweave/plugins/svelte";
 
 export const plugins: Plugin[] = [
   audioPlugin,

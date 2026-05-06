@@ -1,18 +1,18 @@
-import "@inkweave/react/react.css";
+import "@inkweave/svelte/svelte.css";
 import "@inkweave/plugins/plugins.css";
 import "./styles/styles.custom.css";
 
 import type { InkStory } from "@inkweave/core";
 import { type EventRef, ItemView, type MarkdownView, TFile, type ViewStateResult } from "obsidian";
-import { createRoot, type Root } from "react-dom/client";
-import { render } from "./components";
+import { mount, unmount } from "svelte";
+import App from "./App.svelte";
 import { compile } from "./utils/compile";
 import { default as useFile } from "./utils/file";
 
 export const VIEW_TYPE = "InkWeave Story View";
 
 export class StoryView extends ItemView {
-  root: Root | null = null;
+  appInstance: Record<string, unknown> | null = null;
   ink: InkStory | null = null;
   private watcher: EventRef | null = null;
 
@@ -49,6 +49,22 @@ export class StoryView extends ItemView {
     return view != null && typeof view === "object" && "editor" in view && "file" in view;
   }
 
+  private render() {
+    const container = this.containerEl.children[1];
+    if (!container) return;
+
+    if (this.appInstance) {
+      unmount(this.appInstance);
+    }
+
+    if (this.ink) {
+      this.appInstance = mount(App, {
+        target: container as HTMLElement,
+        props: { ink: this.ink },
+      });
+    }
+  }
+
   private async loadFile(filePath: string) {
     const file = this.app.vault.getAbstractFileByPath(filePath);
     if (!(file instanceof TFile)) return;
@@ -71,17 +87,13 @@ export class StoryView extends ItemView {
     if (markdown !== currentMarkdown || this.ink?.title !== filePath) {
       this.ink?.dispose();
       this.ink = compile();
-      render(this.root, this.ink);
+      this.render();
     }
   }
 
   override async onOpen() {
-    const container = this.containerEl.children[1];
-    if (!container) return;
-
-    this.root = createRoot(container);
     this.ink = compile();
-    render(this.root, this.ink);
+    this.render();
 
     this.watcher = this.app.vault.on("modify", async (file) => {
       const filePath = useFile.getState().filePath;
@@ -93,7 +105,7 @@ export class StoryView extends ItemView {
           const resourcePath = useFile.getState().resourcePath;
           useFile.getState().init(filePath, markdown, resourcePath);
           this.ink = compile();
-          render(this.root, this.ink);
+          this.render();
         }
       }
     });
@@ -104,6 +116,9 @@ export class StoryView extends ItemView {
       this.app.vault.offref(this.watcher);
     }
     this.ink?.dispose();
-    this.root?.unmount();
+    if (this.appInstance) {
+      unmount(this.appInstance);
+      this.appInstance = null;
+    }
   }
 }
