@@ -1,4 +1,4 @@
-import { Plugins } from "@inkweave/core";
+import { PluginRegistry } from "@inkweave/core";
 import { type App, PluginSettingTab, Setting } from "obsidian";
 import type { TransItemType } from "./locales/i18n";
 import type InkWeavePlugin from "./main";
@@ -33,7 +33,7 @@ export class SettingsTab extends PluginSettingTab {
           // 计算包含依赖关系的新设置并持久化，供界面展示级联状态
           const newPluginSettings: PluginSettings = {
             ...pluginBools,
-            ...Plugins.resolveDependencies({ [key]: value }),
+            ...PluginRegistry.resolveDependencies({ [key]: value }),
           };
 
           // 更新所有相关设置

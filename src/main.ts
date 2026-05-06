@@ -1,4 +1,4 @@
-import { Plugins } from "@inkweave/core";
+import { PluginRegistry } from "@inkweave/core";
 
 import { Platform, Plugin, type TAbstractFile, type WorkspaceLeaf } from "obsidian";
 import { setupCommands } from "./commands";
@@ -31,18 +31,18 @@ export default class InkWeavePlugin extends Plugin {
     this.registerExtensions(["ink"], "markdown");
 
     setupCommands(this);
-    for (const p of plugins) Plugins.register(p);
-    Plugins.setPluginsEnabled(this.getPluginSettings());
+    for (const p of plugins) PluginRegistry.register(p);
+    PluginRegistry.setEnabled(this.getPluginSettings());
   }
 
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) ?? {});
-    Plugins.setPluginsEnabled(this.getPluginSettings());
+    PluginRegistry.setEnabled(this.getPluginSettings());
   }
 
   async updateSettings(settings: Partial<Settings>) {
     Object.assign(this.settings, settings);
-    Plugins.setPluginsEnabled(this.getPluginSettings());
+    PluginRegistry.setEnabled(this.getPluginSettings());
     await this.saveData(this.settings);
   }
 
