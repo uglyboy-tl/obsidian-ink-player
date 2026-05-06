@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.2.0 (2026-05-06)
+
+### Refactoring
+- **view**: migrate view layer from React to Svelte
+- **utils**: remove createSelectors wrapper from Zustand stores
+- **core**: migrate from Plugins to PluginRegistry API
+
+### Documentation
+- **readme**: update build steps for monorepo
+
+### Chores
+- **config**: migrate build toolchain from React to Svelte
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.1.0...2.2.0
+
 ## 2.1.0 (2026-04-30)
 
 ### Features
