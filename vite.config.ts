@@ -1,14 +1,11 @@
 import { builtinModules } from "node:module";
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 
-
-const processPolyfill = `if(typeof window!=="undefined"&&typeof window.process==="undefined"){window.process={env:{NODE_ENV:"production"},browser:true}}`;
-
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   define: {
-    "process.env.NODE_ENV": JSON.stringify("production"),
+    "process.env.NODE_ENV": JSON.stringify(mode || "production"),
   },
   build: {
     lib: {
@@ -18,26 +15,13 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        // Obsidian
         "obsidian",
         "electron",
-        // CodeMirror
-        "@codemirror/autocomplete",
-        "@codemirror/collab",
-        "@codemirror/commands",
-        "@codemirror/language",
-        "@codemirror/lint",
-        "@codemirror/search",
-        "@codemirror/state",
-        "@codemirror/view",
-        "@lezer/common",
-        "@lezer/highlight",
-        "@lezer/lr",
-        // Node builtins
+        /^@codemirror\//,
+        /^@lezer\//,
         ...builtinModules,
       ],
       output: {
-        banner: processPolyfill,
         exports: "default",
         assetFileNames: "styles.css",
       },
@@ -48,7 +32,5 @@ export default defineConfig({
     cssMinify: "esbuild",
     emptyOutDir: true,
   },
-  plugins: [
-    react(),
-  ],
-});
+  plugins: [svelte()],
+}));
