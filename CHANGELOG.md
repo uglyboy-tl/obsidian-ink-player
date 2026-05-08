@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.0 (2026-05-08)
+
+### Refactoring
+- **core**: migrate UI framework from Svelte to SolidJS
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.2.0...2.3.0
+
 ## 2.2.0 (2026-05-06)
 
 ### Refactoring
