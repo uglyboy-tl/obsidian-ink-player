@@ -1,6 +1,38 @@
 import { afterAll, describe, expect, it } from "bun:test";
+import type { Plugin } from "@inkweave/core";
 import { PluginRegistry } from "@inkweave/core";
-import { plugins } from "../plugins";
+
+// Stub plugins matching the obsidian plugin list (no SolidJS imports needed)
+const plugins: Plugin[] = [
+  { id: "audio", name: "Audio", enabledByDefault: true, onLoad: () => {} },
+  { id: "auto-button", name: "Auto Button", enabledByDefault: true, onLoad: () => {} },
+  {
+    id: "auto-restore",
+    name: "Auto Restore",
+    enabledByDefault: true,
+    onLoad: () => {},
+    dependencies: ["memory"],
+  },
+  {
+    id: "auto-save",
+    name: "Auto Save",
+    enabledByDefault: true,
+    onLoad: () => {},
+    dependencies: ["memory"],
+  },
+  { id: "cd-button", name: "CD Button", enabledByDefault: true, onLoad: () => {} },
+  { id: "class-tag", name: "Class Tag", enabledByDefault: true, onLoad: () => {} },
+  { id: "fade-effect", name: "Fade Effect", enabledByDefault: true, onLoad: () => {} },
+  { id: "image", name: "Image", enabledByDefault: true, onLoad: () => {} },
+  { id: "link-open", name: "Link Open", enabledByDefault: true, onLoad: () => {} },
+  { id: "memory", name: "Memory", enabledByDefault: true, onLoad: () => {} },
+  {
+    id: "scroll-after-choice",
+    name: "Scroll After Choice",
+    enabledByDefault: true,
+    onLoad: () => {},
+  },
+];
 
 for (const p of plugins) {
   PluginRegistry.register(p);

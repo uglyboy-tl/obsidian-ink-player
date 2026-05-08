@@ -1,8 +1,11 @@
 {
   "$schema": "https://www.schemastore.org/tsconfig",
-  "extends": ["@tsconfig/bun/tsconfig.json", "@tsconfig/svelte/tsconfig.json"],
+  "extends": ["@tsconfig/bun/tsconfig.json"],
   "compilerOptions": {
-    "types": ["bun-types"]
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "lib": ["ESNext", "DOM"],
+    "types": ["bun-types", "vite/client"]
   },
   "include": ["src", "package.json"],
   "exclude": ["dist"]

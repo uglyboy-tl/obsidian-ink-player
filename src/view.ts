@@ -1,18 +1,18 @@
-import "@inkweave/svelte/svelte.css";
-import "@inkweave/plugins/plugins.css";
+import "@inkweave/solidjs/solidjs.css";
+import "@inkweave/plugins/solidjs.css";
 import "./styles/styles.custom.css";
 
 import type { InkStory } from "@inkweave/core";
 import { type EventRef, ItemView, type MarkdownView, TFile, type ViewStateResult } from "obsidian";
-import { mount, unmount } from "svelte";
-import App from "./App.svelte";
+import { render } from "solid-js/web";
+import App from "./App";
 import { compile } from "./utils/compile";
 import { default as useFile } from "./utils/file";
 
 export const VIEW_TYPE = "InkWeave Story View";
 
 export class StoryView extends ItemView {
-  appInstance: Record<string, unknown> | null = null;
+  appInstance: (() => void) | null = null;
   ink: InkStory | null = null;
   private watcher: EventRef | null = null;
 
@@ -54,14 +54,13 @@ export class StoryView extends ItemView {
     if (!container) return;
 
     if (this.appInstance) {
-      unmount(this.appInstance);
+      this.appInstance();
+      this.appInstance = null;
     }
 
     if (this.ink) {
-      this.appInstance = mount(App, {
-        target: container as HTMLElement,
-        props: { ink: this.ink },
-      });
+      const ink = this.ink;
+      this.appInstance = render(() => App({ ink }), container as HTMLElement);
     }
   }
 
@@ -117,7 +116,7 @@ export class StoryView extends ItemView {
     }
     this.ink?.dispose();
     if (this.appInstance) {
-      unmount(this.appInstance);
+      this.appInstance();
       this.appInstance = null;
     }
   }

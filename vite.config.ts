@@ -1,7 +1,7 @@
 import { builtinModules } from "node:module";
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
+import solid from "vite-plugin-solid";
 
 export default defineConfig(({ mode }) => ({
   define: {
@@ -32,5 +32,5 @@ export default defineConfig(({ mode }) => ({
     cssMinify: "esbuild",
     emptyOutDir: true,
   },
-  plugins: [svelte()],
+  plugins: [solid()],
 }));
