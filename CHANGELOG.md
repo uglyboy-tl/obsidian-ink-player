@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.1 (2026-05-17)
+
+### Features
+- **player**: add StatusBar and frontmatter-driven layout switching
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.3.0...2.3.1
+
 ## 2.3.0 (2026-05-08)
 
 ### Refactoring
