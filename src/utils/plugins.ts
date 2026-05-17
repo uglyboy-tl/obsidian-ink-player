@@ -26,3 +26,5 @@ export const plugins: Plugin[] = [
   memoryPlugin,
   scrollAfterChoicePlugin,
 ];
+
+export { reignsPlugin } from "@inkweave/plugins/solidjs";

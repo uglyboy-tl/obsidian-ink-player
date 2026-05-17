@@ -2,7 +2,8 @@ import "@inkweave/solidjs/solidjs.css";
 import "@inkweave/plugins/solidjs.css";
 import "./styles/styles.custom.css";
 
-import type { InkStory } from "@inkweave/core";
+import type { InkStory, StatusBarConfig } from "@inkweave/core";
+import { PluginRegistry } from "@inkweave/core";
 import { type EventRef, ItemView, type MarkdownView, TFile, type ViewStateResult } from "obsidian";
 import { render } from "solid-js/web";
 import App from "./App";
@@ -15,6 +16,11 @@ export class StoryView extends ItemView {
   appInstance: (() => void) | null = null;
   ink: InkStory | null = null;
   private watcher: EventRef | null = null;
+  private frontmatter: {
+    title?: string;
+    display?: string;
+    statusBar?: StatusBarConfig[];
+  } = {};
 
   override getViewType() {
     return VIEW_TYPE;
@@ -37,9 +43,8 @@ export class StoryView extends ItemView {
 
   override async setState(state: { filePath?: string }, result: ViewStateResult) {
     const filePath = state?.filePath;
-    const currentFilePath = useFile.getState().filePath;
 
-    if (filePath && filePath !== currentFilePath) {
+    if (filePath) {
       await this.loadFile(filePath);
     }
     await super.setState(state, result);
@@ -60,7 +65,10 @@ export class StoryView extends ItemView {
 
     if (this.ink) {
       const ink = this.ink;
-      this.appInstance = render(() => App({ ink }), container as HTMLElement);
+      this.appInstance = render(
+        () => App({ ink, statusBar: this.frontmatter.statusBar }),
+        container as HTMLElement,
+      );
     }
   }
 
@@ -85,15 +93,20 @@ export class StoryView extends ItemView {
 
     if (markdown !== currentMarkdown || this.ink?.title !== filePath) {
       this.ink?.dispose();
-      this.ink = compile();
-      this.render();
+      this.ink = null;
     }
+
+    if (!this.ink) {
+      const cache = this.app.metadataCache.getFileCache(file);
+      this.frontmatter = cache?.frontmatter ?? {};
+      PluginRegistry.setLayout(this.frontmatter.display ?? null);
+      this.ink = compile();
+    }
+
+    this.render();
   }
 
   override async onOpen() {
-    this.ink = compile();
-    this.render();
-
     this.watcher = this.app.vault.on("modify", async (file) => {
       const filePath = useFile.getState().filePath;
       if (file.path === filePath && file instanceof TFile) {
@@ -103,6 +116,10 @@ export class StoryView extends ItemView {
         if (markdown !== currentMarkdown) {
           const resourcePath = useFile.getState().resourcePath;
           useFile.getState().init(filePath, markdown, resourcePath);
+          const cache = this.app.metadataCache.getFileCache(file);
+          this.frontmatter = cache?.frontmatter ?? {};
+          PluginRegistry.setLayout(this.frontmatter.display ?? null);
+          this.ink?.dispose();
           this.ink = compile();
           this.render();
         }
@@ -115,6 +132,7 @@ export class StoryView extends ItemView {
       this.app.vault.offref(this.watcher);
     }
     this.ink?.dispose();
+    this.ink = null;
     if (this.appInstance) {
       this.appInstance();
       this.appInstance = null;
