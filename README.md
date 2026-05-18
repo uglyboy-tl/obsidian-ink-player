@@ -23,7 +23,7 @@ Thanks to [Calico](https://elliotherriman.itch.io/calico), this plugin offers a 
 
 ## Contributing
 
-This plugin is part of the [InkWeave](https://github.com/uglyboy-tl/InkWeave) monorepo. It depends on `@inkweave/core`, `@inkweave/react`, and `@inkweave/plugins`.
+This plugin is part of the [InkWeave](https://github.com/uglyboy-tl/InkWeave) monorepo. It depends on `@inkweave/core`, `@inkweave/solidjs`, and `@inkweave/plugins`.
 
 -   Clone the InkWeave repository.
 -   Run `git submodule update --init` to pull the plugin source.

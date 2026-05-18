@@ -23,7 +23,7 @@
 
 ## 贡献
 
-本插件是 [InkWeave](https://github.com/uglyboy-tl/InkWeave) 单体仓库的一部分，依赖于 `@inkweave/core`、`@inkweave/react` 和 `@inkweave/plugins`。
+本插件是 [InkWeave](https://github.com/uglyboy-tl/InkWeave) 单体仓库的一部分，依赖于 `@inkweave/core`、`@inkweave/solidjs` 和 `@inkweave/plugins`。
 
 -   克隆 InkWeave 仓库。
 -   运行 `git submodule update --init` 拉取插件源码。
