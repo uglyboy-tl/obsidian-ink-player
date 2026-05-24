@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.3.2 (2026-05-24)
+
+### Bug Fixes
+- **deps**: update @inkweave/solidjs to v2.4.2 (#6)
+
+### Documentation
+- **readme**: update dependency reference from react to solidjs
+
+### Chores
+- **deps**: add bun-types and bun lockfile
+
+**Full Changelog**: https://github.com/uglyboy-tl/obsidian-ink-player/compare/2.3.1...2.3.2
+
 ## 2.3.1 (2026-05-17)
 
 ### Features
